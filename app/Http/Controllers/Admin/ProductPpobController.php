@@ -1,0 +1,174 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\ProductPpob;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+
+class ProductPpobController extends Controller
+{
+    public function index()
+    {
+        $type = [
+            'pulsa-reguler'       => 'Pulsa Reguler',
+            'pulsa-transfer'       => 'Pulsa Transfer',
+            'voucher-game'        => 'Voucher Game',
+            'aktivasi-voucher'    => 'Aktivasi Voucher',
+            'aktivasi-perdana'    => 'Aktivasi Perdana',
+            'paket-internet'      => 'Paket Internet',
+            'saldo-emoney'        => 'Saldo E-Money',
+            'paket-telepon'       => 'Paket Telepon dan SMS',
+            'paket-lainnya'       => 'Kategori Lainnya',
+            'token-pln'           => 'Token Listrik (PLN)',
+            'pascabayar'          => 'Pascabayar',
+            'masa-aktif'          => 'Masa Aktif',
+        ];
+
+        return view('admin.pulsa-ppob.product', compact('type'));
+    }
+
+    public function getBrands()
+    {
+        $type = request('type');
+
+        // Ambil semua data yang sesuai dengan type yang dipilih
+        $brands = Category::where('type', $type)->get(['type', 'name']);
+
+        return response()->json($brands);
+    }
+
+    public function getData()
+    {
+        $product = ProductPpob::orderBy('brand', 'asc')->get();
+
+        return DataTables::of($product)
+            ->addColumn('product_name', function ($row) {
+                return  $row->brand . '<br>' . '<small class="text-primary">' . $row->name . '<br><font class="text-success">[' . $row->status . ']</font></small>';
+            })
+            ->addColumn('product_price', function ($row) {
+                return '<td class="focus">
+                <li class="mt-1">Rp. ' . nominal($row->price, 'IDR') . ' [Source]</li>
+                <li>Rp. ' . nominal($row->cust_price, 'IDR') . ' [Customer]</li>
+                </td>';
+            })
+            ->addColumn('action', function ($row) {
+                return '
+                            <a class="btn btn-sm btn-primary edit-btn" data-id="' . base64_encode($row->id) . '" data-bs-toggle="modal" data-bs-target="#editModal"><ion-icon name="pencil-outline"></ion-icon></a>
+                            <a class="btn btn-sm btn-danger delete-btn" href="' . url('/admin/pulsa-ppob/product/delete/' . base64_encode($row->id)) . '" data-id="' . base64_encode($row->id) . '"><ion-icon name="trash-outline"></ion-icon></a>
+                        ';
+            })
+            ->rawColumns(['action', 'product_name', 'product_price'])
+            ->make(true);
+    }
+
+    public function getProduct($id)
+    {
+        // Decode base64 ID
+        $decodedId = base64_decode($id);
+        // Ambil produk berdasarkan ID
+        $product = ProductPpob::findOrFail($decodedId);
+
+        return response()->json([
+            'provider' => $product->provider,
+            'code' => $product->code,
+            'type' => $product->type,
+            'brand' => $product->brand,
+            'name' => $product->name,
+            'note' => $product->note,
+            'price' => $product->price,
+            'cust_price' => $product->cust_price,
+            'status' => $product->status
+        ]);
+    }
+
+    public function addProduct(Request $request)
+    {
+        // Validasi input form
+        $validatedData = $request->validate([
+            'provider' => 'required|string',
+            'code' => 'required|string|max:50',
+            'type' => 'required|string',
+            'brand' => 'required|string',
+            'name' => 'required|string|max:255',
+            'note' => 'nullable|string',
+            'price' => 'required|numeric',
+            'cust_price' => 'required|numeric',
+            'status' => 'required|string|in:empty,available',
+        ]);
+
+        // Buat produk baru di database
+        $product = ProductPpob::create([
+            'provider' => $validatedData['provider'],
+            'code' => $validatedData['code'],
+            'type' => $validatedData['type'],
+            'brand' => $validatedData['brand'],
+            'name' => $validatedData['name'],
+            'note' => $validatedData['note'],
+            'price' => $validatedData['price'],
+            'cust_price' => $validatedData['cust_price'],
+            'status' => $validatedData['status'],
+        ]);
+
+        return response()->json(['success' => 'Product added successfully!']);
+    }
+
+    public function deleteProduct($id)
+    {
+        // Decode base64 ID
+        $decodedId = base64_decode($id);
+
+        // Cari dan hapus data
+        $prodcut = ProductPpob::findOrFail($decodedId);
+        if ($prodcut) {
+            $prodcut->delete();
+            return response()->json(['success' => __('Prodcut deleted successfully')]);
+        }
+
+        return response()->json(['error' => __('Prodcut not found')], 404);
+    }
+
+    public function updateProduct(Request $request, $id)
+    {
+        $decodedId = base64_decode($id);
+
+        // Validasi input form
+        $validatedData = $request->validate([
+            'provider' => 'required|string',
+            'code' => 'required|string|max:50',
+            'type' => 'required|string',
+            'brand' => 'required|string',
+            'name' => 'required|string|max:255',
+            'note' => 'nullable|string',
+            'price' => 'required|numeric',
+            'cust_price' => 'required|numeric',
+            'status' => 'required|string|in:empty,available',
+        ]);
+
+        // Cari produk berdasarkan ID
+        $product = ProductPpob::findOrFail($decodedId);
+
+        // Update produk di database
+        $product->update([
+            'provider' => $validatedData['provider'],
+            'code' => $validatedData['code'],
+            'type' => $validatedData['type'],
+            'brand' => $validatedData['brand'],
+            'name' => $validatedData['name'],
+            'note' => $validatedData['note'],
+            'price' => $validatedData['price'],
+            'cust_price' => $validatedData['cust_price'],
+            'status' => $validatedData['status'],
+        ]);
+
+        return response()->json(['success' => 'Product updated successfully!']);
+    }
+
+    public function deleteAllProduct(Request $request)
+    {
+        ProductPpob::truncate();
+        return response()->json(['success' => __('All Product deleted successfully')]);
+    }
+}
