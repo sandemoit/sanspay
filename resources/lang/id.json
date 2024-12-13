@@ -128,7 +128,21 @@
     "Not Connected": "Tidak Terhubung",
     "Connect": "Hubungkan",
     "Manage Deposit": "Kelola Deposit",
-    "Add Method": "Tambahkan Metode"
-
-
+    "Add Method": "Tambahkan Metode",
+    "Delete Deposit": "Hapus Deposit",
+    "Add Payment": "Tambahkan Pembayaran",
+    "Delete Payment": "Hapus Pembayaran",
+    "Add Method Deposit": "Tambahkan Metode Deposit",
+    "Delete Method Deposit": "Hapus Metode Deposit",
+    "Add Payment Deposit": "Tambahkan Pembayaran Deposit",
+    "Delete Payment Deposit": "Hapus Pembayaran Deposit",
+    "Add Category Deposit": "Tambahkan Kategori Deposit",
+    "Delete Category Deposit": "Hapus Kategori Deposit",
+    "Add Provider Deposit": "Tambahkan Penyedia Deposit",
+    "Delete Provider Deposit": "Hapus Penyedia Deposit",
+    "Add Product Deposit": "Tambahkan Produk Deposit",
+    "Delete Product Deposit": "Hapus Produk Deposit",
+    "Announcement": "Pengumuman",
+    "Add Announcement": "Tambahkan Pengumuman",
+    "History Deposit": "Riwayat Deposit"
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MidtransController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -10,3 +11,5 @@ Route::get('/admin/getSaldoDigi', function () {
 Route::get('/admin/pulsa-ppob/product/pull-product', function () {
     Artisan::call('get:product');
 })->name('pulsa-ppob.product.pull');
+
+Route::post('/midtrans-callback', [MidtransController::class, 'callback']);

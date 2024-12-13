@@ -26,6 +26,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'number',
         'status',
+        'saldo',
+        'point',
     ];
 
     /**
@@ -53,6 +55,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function user()
     {
-        return $this->hasMany(User::class, 'user_id', 'member_id');
+        return $this->hasMany(User::class, 'member_id', 'id');
     }
 }

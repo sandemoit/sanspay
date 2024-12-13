@@ -131,7 +131,29 @@
     "Not Connected": "Not Connected",
     "Connect": "Connect",
     "Manage Deposit": "Manage Deposit",
-    "Add Method": "Add Method"
-
+    "Add Method": "Add Method",
+    "Delete Method": "Delete Method",
+    "Add Provider": "Add Provider",
+    "Delete Provider": "Delete Provider",
+    "Delete Product": "Delete Product",
+    "Add Category": "Add Category",
+    "Delete Category": "Delete Category",
+    "Add Deposit": "Add Deposit",
+    "Delete Deposit": "Delete Deposit",
+    "Add Payment": "Add Payment",
+    "Delete Payment": "Delete Payment",
+    "Add Method Deposit": "Add Method Deposit",
+    "Delete Method Deposit": "Delete Method Deposit",
+    "Add Payment Deposit": "Add Payment Deposit",
+    "Delete Payment Deposit": "Delete Payment Deposit",
+    "Add Category Deposit": "Add Category Deposit",
+    "Delete Category Deposit": "Delete Category Deposit",
+    "Add Provider Deposit": "Add Provider Deposit",
+    "Delete Provider Deposit": "Delete Provider Deposit",
+    "Add Product Deposit": "Add Product Deposit",
+    "Delete Product Deposit": "Delete Product Deposit",
+    "Announcement": "Announcement",
+    "Add Announcement": "Add Announcement",
+    "History Deposit": "History Deposit"
 
 }

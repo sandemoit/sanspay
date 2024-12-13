@@ -20,6 +20,15 @@
                                 @enderror
                             </div>
                             <div class="col-12">
+                                <label class="form-label">{{ __('Agent') }}</label>
+                                <input type="text" name="agent" id="agent"
+                                    class="form-control @error('agent') is-invalid @enderror"
+                                    value="{{ @old('agent', $agent->value) }}">
+                                @error('agent')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-12">
                                 <label class="form-label">{{ __('Customer') }}</label>
                                 <input type="text" name="customer" id="customer"
                                     class="form-control @error('customer') is-invalid @enderror"

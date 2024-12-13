@@ -15,13 +15,13 @@ class DepositSeeder extends Seeder
     {
         DepositPayment::insert([
             ['code' => '', 'name' => '', 'type' => ''],
-            ['code' => 'CIMBVA', 'name' => 'CIMB Niaga Virtual Account', 'type' => 'va'],
-            ['code' => 'BNIVA', 'name' => 'BNI Virtual Account', 'type' => 'va'],
-            ['code' => 'BRIVA', 'name' => 'BRI Virtual Account', 'type' => 'va'],
-            ['code' => 'MANDIRIVA', 'name' => 'Bank Mandiri Virtual Account', 'type' => 'va'],
-            ['code' => 'PERMATAVA', 'name' => 'PermataBank Virtual Account', 'type' => 'va'],
-            ['code' => 'GOPAY', 'name' => 'GoPay', 'type' => 'emoney'],
-            ['code' => 'QRIS', 'name' => 'QRIS', 'type' => 'emoney'],
+            ['code' => 'cimb_va', 'name' => 'Virtual Account Bank CIMB', 'type' => 'va'],
+            ['code' => 'bni_va', 'name' => 'Virtual Account Bank BNI', 'type' => 'va'],
+            ['code' => 'bri_va', 'name' => 'Virtual Account Bank BRI', 'type' => 'va'],
+            ['code' => 'mandiri_va', 'name' => 'Virtual Account Bank Mandiri', 'type' => 'va'],
+            ['code' => 'permata_va', 'name' => 'Virtual Account Bank Permata', 'type' => 'va'],
+            ['code' => 'gopay', 'name' => 'GoPay & Qris', 'type' => 'gopay'],
+            ['code' => 'shopeepay', 'name' => 'Shopeepay & Qris', 'type' => 'shopeepay'],
         ]);
     }
 }

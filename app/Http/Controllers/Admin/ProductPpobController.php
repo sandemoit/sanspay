@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\ProductPpob;
+use App\Models\Profit;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -46,11 +47,13 @@ class ProductPpobController extends Controller
 
         return DataTables::of($product)
             ->addColumn('product_name', function ($row) {
-                return  $row->brand . '<br>' . '<small class="text-primary">' . $row->name . '<br><font class="text-success">[' . $row->status . ']</font></small>';
+                $statusLabel = $row->status != 'empty' ? '<font class="text-success">[available]</font>' : '<font class="text-danger">[empty]</font>';
+                return $row->brand . '<br>' . '<small class="text-primary">' . $row->name . '<br>' . $statusLabel . '</small>';
             })
             ->addColumn('product_price', function ($row) {
                 return '<td class="focus">
                 <li class="mt-1">Rp. ' . nominal($row->price, 'IDR') . ' [Source]</li>
+                <li>Rp. ' . nominal($row->agent_price, 'IDR') . ' [Agent]</li>
                 <li>Rp. ' . nominal($row->cust_price, 'IDR') . ' [Customer]</li>
                 </td>';
             })
@@ -79,7 +82,6 @@ class ProductPpobController extends Controller
             'name' => $product->name,
             'note' => $product->note,
             'price' => $product->price,
-            'cust_price' => $product->cust_price,
             'status' => $product->status
         ]);
     }
@@ -95,9 +97,13 @@ class ProductPpobController extends Controller
             'name' => 'required|string|max:255',
             'note' => 'nullable|string',
             'price' => 'required|numeric',
-            'cust_price' => 'required|numeric',
             'status' => 'required|string|in:empty,available',
         ]);
+
+        $profits = Profit::whereIn('key', ['customer', 'agent'])->pluck('value', 'key');
+
+        $priceAgentMargin = $validatedData['price'] * (1 + $profits['agent'] / 100);
+        $priceBasicMargin = $validatedData['price'] * (1 + $profits['customer'] / 100);
 
         // Buat produk baru di database
         $product = ProductPpob::create([
@@ -108,7 +114,8 @@ class ProductPpobController extends Controller
             'name' => $validatedData['name'],
             'note' => $validatedData['note'],
             'price' => $validatedData['price'],
-            'cust_price' => $validatedData['cust_price'],
+            'agent_price' => $priceAgentMargin,
+            'cust_price' => $priceBasicMargin,
             'status' => $validatedData['status'],
         ]);
 
@@ -143,12 +150,16 @@ class ProductPpobController extends Controller
             'name' => 'required|string|max:255',
             'note' => 'nullable|string',
             'price' => 'required|numeric',
-            'cust_price' => 'required|numeric',
             'status' => 'required|string|in:empty,available',
         ]);
 
         // Cari produk berdasarkan ID
         $product = ProductPpob::findOrFail($decodedId);
+
+        $profits = Profit::whereIn('key', ['customer', 'agent'])->pluck('value', 'key');
+
+        $priceAgentMargin = $validatedData['price'] * (1 + $profits['agent'] / 100);
+        $priceBasicMargin = $validatedData['price'] * (1 + $profits['customer'] / 100);
 
         // Update produk di database
         $product->update([
@@ -159,7 +170,8 @@ class ProductPpobController extends Controller
             'name' => $validatedData['name'],
             'note' => $validatedData['note'],
             'price' => $validatedData['price'],
-            'cust_price' => $validatedData['cust_price'],
+            'agent_price' => $priceAgentMargin,
+            'cust_price' => $priceBasicMargin,
             'status' => $validatedData['status'],
         ]);
 

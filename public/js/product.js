@@ -5,6 +5,11 @@ $(document).ready(function() {
         ajax: '/admin/pulsa-ppob/product/get-product',
         columns: [
             {
+                data: 'id',
+                name: 'id',
+                orderable: true, 
+            },
+            {
                 data: 'code',
                 name: 'code',
                 orderable: true, 
@@ -76,7 +81,6 @@ $(document).ready(function() {
             name: $('#addProductForm #name').val(),
             note: $('#addProductForm #note').val(),
             price: $('#addProductForm #price').val(),
-            cust_price: $('#addProductForm #cust_price').val(),
             status: $('#addProductForm #status').val()
         };
 
@@ -94,11 +98,11 @@ $(document).ready(function() {
                 $('#products-table').DataTable().ajax.reload();
 
                 // Tampilkan notifikasi sukses
-                toastr.success(response.success, {timeOut: 3000})
+                toastr.success(response.success, {timeOut: 2000})
             },
             error: function(xhr) {
                 let errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'An error occurred';
-                toastr.error(errorMessage, {timeOut: 3000})
+                toastr.error(errorMessage, {timeOut: 2000})
             }
         });
     });
@@ -122,7 +126,6 @@ $(document).ready(function() {
                 $('#editProductForm #name').val(response.name);
                 $('#editProductForm #note').val(response.note);
                 $('#editProductForm #price').val(response.price);
-                $('#editProductForm #cust_price').val(response.cust_price);
                 $('#editProductForm #status').val(response.status).change();
 
                 // Tampilkan modal setelah data berhasil di-load
@@ -130,7 +133,7 @@ $(document).ready(function() {
             },
             error: function(xhr) {
                 let errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'An error occurred';
-                toastr.error(errorMessage, {timeOut: 3000})
+                toastr.error(errorMessage, {timeOut: 2000})
             }
         });
     });
@@ -149,7 +152,6 @@ $(document).ready(function() {
             name: $('#editProductForm #name').val(),
             note: $('#editProductForm #note').val(),
             price: $('#editProductForm #price').val(),
-            cust_price: $('#editProductForm #cust_price').val(),
             status: $('#editProductForm #status').val()
         };
 
@@ -167,11 +169,11 @@ $(document).ready(function() {
                 $('#products-table').DataTable().ajax.reload();
 
                 // Tampilkan pesan berhasil
-                toastr.success(response.success, {timeOut: 3000})
+                toastr.success(response.success, {timeOut: 2000})
                 },
                 error: function(xhr) {
                 let errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'An error occurred';
-                toastr.error(errorMessage, {timeOut: 3000})
+                toastr.error(errorMessage, {timeOut: 2000})
             }
         });
     });
@@ -199,14 +201,14 @@ $(document).on('click', '.delete-btn', function (e) {
                 type: 'GET',
                 success: function (response) {
                     // Tampilkan pesan berhasil
-                    toastr.success(response.success, {timeOut: 3000})
+                    toastr.success(response.success, {timeOut: 2000})
                     
                     // Refresh DataTable atau hapus baris secara manual
                     $('#products-table').DataTable().ajax.reload();
                 },
                 error: function(xhr) {
                 let errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'An error occurred';
-                toastr.error(errorMessage, {timeOut: 3000})
+                toastr.error(errorMessage, {timeOut: 2000})
             }
             });
         }
@@ -235,14 +237,14 @@ $(document).on('click', '#pullProductBtn', function (e) {
                 type: 'GET',
                 success: function (response) {
                     // Tampilkan pesan berhasil
-                    toastr.success("Product has been pulled.", {timeOut: 3000})
+                    toastr.success("Product has been pulled.", {timeOut: 2000})
 
                     // Refresh DataTable atau hapus baris secara manual
                     $('#products-table').DataTable().ajax.reload();
                 },
                 error: function(xhr) {
                 let errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'An error occurred';
-                toastr.error(errorMessage, {timeOut: 3000})
+                toastr.error(errorMessage, {timeOut: 2000})
             }
             });
         }
@@ -271,13 +273,13 @@ $(document).on('click', '#delProductBtn', function (e) {
                 type: 'GET',
                 success: function (response) {
                     // Tampilkan pesan berhasil
-                    toastr.success(response.success, {timeOut: 3000})
+                    toastr.success(response.success, {timeOut: 2000})
                     // Refresh DataTable atau hapus baris secara manual
                     $('#products-table').DataTable().ajax.reload();
                 },
                 error: function(xhr) {
                 let errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'An error occurred';
-                toastr.error(errorMessage, {timeOut: 3000})
+                toastr.error(errorMessage, {timeOut: 2000})
             }
             });
         }

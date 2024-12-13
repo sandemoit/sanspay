@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "guzzlehttp/guzzle": "^7.9",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "midtrans/midtrans-php": "^2.6",
@@ -29,7 +30,8 @@
         },
         "files": [
         "app/Helpers/global.php",
-        "app/Helpers/DigiFlazz.php"
+        "app/Helpers/DigiFlazz.php",
+        "app/Helpers/WhatsApp.php"
     ]
     },
     "autoload-dev": {

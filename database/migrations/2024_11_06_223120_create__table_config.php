@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notifikasi_whatsapp', function (Blueprint $table) {
+        Schema::create('config', function (Blueprint $table) {
             $table->id();
-            $table->text('trx_pending');
-            $table->text('deposit_pending');
-            $table->text('trx_success');
-            $table->text('deposit_success');
+            $table->string('key');
+            $table->string('value');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notifikasi_whatsapp');
+        Schema::dropIfExists('config');
     }
 };

@@ -13,12 +13,13 @@ class ProviderController extends Controller
     {
         $data = [
             'digi' => Provider::where('code', 'DigiFlazz')->first(),
+            'midtrans' => Provider::where('code', 'Midtrans')->first(),
         ];
 
         return view('admin.provider', $data);
     }
 
-    public function configurationDIgiFlazz(Request $request)
+    public function configDigiFlazz(Request $request)
     {
         $username = $request->input('username');
         $proApiKey = $request->input('product_api_key');
@@ -58,6 +59,32 @@ class ProviderController extends Controller
                 'product_api_key' => $proApiKey,
                 'development_api_key' => $devApiKey,
                 'saldo' => $saldo,
+                'status' => $status
+            ]
+        );
+
+        // Response sukses
+        return response()->json([
+            'result' => true,
+            'message' => 'Configuration updated successfully'
+        ]);
+    }
+
+    public function configMidtrans(Request $request)
+    {
+        $username = $request->input('username');
+        $proApiKey = $request->input('product_api_key');
+        $devApiKey = $request->input('development_api_key');
+        $status = $request->input('status');
+
+        // Simpan data ke tabel Provider
+        Provider::updateOrCreate(
+            ['code' => 'Midtrans'],  // field unik untuk update atau create
+            [
+                'username' => $username,
+                'product_api_key' => $proApiKey,
+                'development_api_key' => $devApiKey,
+                'saldo' => 0,
                 'status' => $status
             ]
         );

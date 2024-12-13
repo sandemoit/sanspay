@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\WhatsApp;
 use App\Http\Controllers\Controller;
 use App\Models\Deposit;
 use App\Models\DepositMethod;
 use App\Models\DepositPayment;
 use App\Models\Mutation;
+use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class DepositController extends Controller
@@ -20,7 +22,7 @@ class DepositController extends Controller
 
     public function getData()
     {
-        $product = Deposit::with(['user', 'depositmethod'])->get();
+        $product = Deposit::with(['user', 'depositmethod', 'depositpayment'])->get();
 
         return DataTables::of($product)
             ->addColumn('name', function ($row) {
@@ -41,14 +43,14 @@ class DepositController extends Controller
             ->addColumn('action', function ($row) {
                 switch ($row->status) {
                     case 'settlement':
-                        return '<span class="badge bg-scuccess">Paid</span>';
+                        return '<span class="badge bg-success">Paid</span>';
                     case 'cancel':
                     case 'deny':
                     case 'expire':
-                        return '<span class="badge badge-danger">Canceled</span>';
+                        return '<span class="badge bg-danger">Canceled</span>';
                     case 'pending';
-                        if (strpos($row->depositmethod->code, '_va') !== false) {
-                            return '<span class="badge badge-waring">Pending</span>';
+                        if (in_array($row->depositmethod->type_payment, ['va', 'gopay', 'shopeepay', 'qris'])) {
+                            return '<span class="badge bg-warning">Pending</span>';
                         } else {
                             return '
                                 <a class="btn btn-sm btn-success accept-btn" href="' . url('/admin/deposit/management/' . base64_encode($row->id) . '/accept') . '"><ion-icon name="checkmark-outline"></ion-icon></a>
@@ -66,26 +68,45 @@ class DepositController extends Controller
     public function actionDeposit($id, $action)
     {
         $id = base64_decode($id);
-        $deposit = Deposit::with('user')->find($id);
+        $deposit = Deposit::find($id);
+        $user = User::where('id', $deposit->member_id)->first();
 
         if ($action == 'accept') {
             $deposit->update(['status' => 'settlement']);
+
             Mutation::create([
-                'username' => $deposit->user->name,
+                'username' => $user->name,
                 'type' => '+',
                 'amount' => $deposit->total_transfer,
                 'note' => 'Deposit :: ' . uniqid(6),
             ]);
 
-            return response()->json([
-                'result' => true,
-                'message' => 'Deposit berhasil diterima'
-            ]);
+            $isuser = $user->update(['saldo' => $user->saldo + $deposit->total_transfer]);
+
+            $amount = nominal($deposit->amount);
+            $target = "$user->number|$user->name|$amount|$deposit->payment_method|Accepted|$user->saldo";
+            $sendWa = WhatsApp::sendMessage($target, formatNotif('deposit_wa')->value);
+
+            if ($sendWa['success'] == false) {
+                return redirect()->back()->with('error', __($sendWa['message']));
+            }
+
+            if ($isuser) {
+                return response()->json([
+                    'result' => true,
+                    'message' => 'Deposit successfully sent'
+                ]);
+            } else {
+                return response()->json([
+                    'result' => false,
+                    'message' => 'Deposit failed'
+                ]);
+            }
         } elseif ($action == 'decline') {
             $deposit->update(['status' => 'cancel']);
             return response()->json([
                 'result' => true,
-                'message' => 'Deposit berhasil ditolak'
+                'message' => 'Deposit has been declined'
             ]);
         }
 
@@ -145,7 +166,7 @@ class DepositController extends Controller
             'xfee' => 'required|string',
             'fee' => 'nullable|numeric',
             'rate' => 'nullable|numeric',
-            'minDeposit' => 'nullable|numeric',
+            'minDeposit' => 'required|numeric',
             'depositType' => 'required|string',
             'midtrans' => 'required|boolean',
         ]);
@@ -161,7 +182,7 @@ class DepositController extends Controller
         $paymentData = [
             'code' => $request->code,
             'name' => $payment->name,
-            'data' => $request->accountname ? "$request->accountname A/n $request->accountnumber" : 'Midtrans',
+            'data' => $request->accountname ? "$request->accountname A/n $request->accountnumber" : 'Midtrans A/n Midtrans',
             'rate' => $request->rate ?? 0,
             'fee' => $request->fee ?? 0,
             'xfee' => $request->xfee,
@@ -264,5 +285,62 @@ class DepositController extends Controller
             return response()->json(['success' => __('Method deleted successfully')]);
         }
         return response()->json(['error' => __('Method not found')], 404);
+    }
+
+    public function payment()
+    {
+        return view('admin.deposit.payment');
+    }
+
+    public function getPayment()
+    {
+        $payment = Payment::orderBy('name', 'desc')->get();
+
+        return DataTables::of($payment)
+
+            ->addColumn('action', function ($row) {
+                return '
+                <a class="btn btn-sm btn-success" href="#"><ion-icon name="pencil-outline"></ion-icon></a>
+
+                <a class="btn btn-sm btn-danger delete-btn" href="' . url('/admin/deposit/payment/delete/' . base64_encode($row->id)) . '" data-id="' . base64_encode($row->id) . '"><ion-icon name="trash-outline"></ion-icon></a>
+                ';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function storePayment(Request $request)
+    {
+        // Validasi request
+        $request->validate([
+            'code' => 'required|string',
+            'name' => 'required|string',
+            'type' => 'required|string',
+        ]);
+        $paymentData = [
+            'code' => $request->code,
+            'name' => $request->name,
+            'type' => $request->type,
+        ];
+
+        try {
+            // Simpan data ke database
+            Payment::create($paymentData);
+            return back()->with('success', 'Deposit payment successfully added.');
+        } catch (\Exception $e) {
+            // Tampilkan error jika terjadi kesalahan
+            return back()->with('error', 'Failed to add deposit method: ' . $e->getMessage());
+        }
+    }
+
+    public function deletePayment($id)
+    {
+        $id = base64_decode($id);
+        $method = Payment::find($id);
+        if ($method) {
+            $method->delete();
+            return response()->json(['success' => __('Data deleted successfully')]);
+        }
+        return response()->json(['error' => __('Data not found')], 404);
     }
 }

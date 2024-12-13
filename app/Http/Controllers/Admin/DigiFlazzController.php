@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\DigiFlazz;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class DigiFlazzController extends Controller
 {
@@ -16,8 +16,8 @@ class DigiFlazzController extends Controller
     public function __construct()
     {
         $this->baseUrl = 'https://api.digiflazz.com/v1';
-        $this->username = env("USERNAME_DIGIFLAZZ");
-        $this->key = env("DEVELOPMENT_KEY_DIGIFLAZZ");
+        $this->username = DigiFlazz::ProvDigi()->username;
+        $this->key = DigiFlazz::ProvDigi()->development_api_key;
     }
 
     public function getPriceList(): array
@@ -113,6 +113,7 @@ class DigiFlazzController extends Controller
                 'price' => $item['price'],
                 'status' => $this->stock($item['buyer_product_status']),
                 'prepost' => strtolower($prepost),
+                'label' => $item['type']
             ];
         }
         return $output;

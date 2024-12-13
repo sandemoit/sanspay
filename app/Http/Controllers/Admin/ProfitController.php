@@ -11,12 +11,13 @@ class ProfitController extends Controller
 {
     public function index()
     {
-        $profit = Profit::whereIn('key', ['admin', 'customer'])->get()->keyBy('key');
+        $profit = Profit::whereIn('key', ['admin', 'agent', 'customer'])->get()->keyBy('key');
 
         // Inisialisasi array $data dengan nilai-nilai yang diambil
         $data = [
             'pageTitle' => 'Pengaturan Umum',
             'admin' => $profit->get('admin'),
+            'agent' => $profit->get('agent'),
             'customer' => $profit->get('customer'),
         ];
 
@@ -28,6 +29,7 @@ class ProfitController extends Controller
         try {
             $validated = $request->validate([
                 'admin' => 'required|numeric',
+                'agent' => 'required|numeric',
                 'customer' => 'required|numeric',
             ]);
 

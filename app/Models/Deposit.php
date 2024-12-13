@@ -22,4 +22,9 @@ class Deposit extends Model
     {
         return $this->belongsTo(DepositMethod::class, 'payment_method', 'code');
     }
+
+    public function depositpayment(): BelongsTo
+    {
+        return $this->belongsTo(DepositPayment::class, 'deposit_payment', 'code');
+    }
 }

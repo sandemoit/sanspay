@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('xfee', ['-', '%'])->default('-');
             $table->integer('minimum');
             $table->integer('maximum')->nullable();
-            $table->enum('type_payment', ['bank', 'va', 'qris', 'gopay', 'indomaret', 'alfamart']);
+            $table->enum('type_payment', ['bank', 'va', 'shopeepay', 'gopay', 'indomaret', 'alfamart', 'qris']);
             $table->boolean('is_auto')->default(false);
             $table->boolean('is_midtrans')->default(false); // Midtrans boolean untuk tipe auto
             $table->timestamps();

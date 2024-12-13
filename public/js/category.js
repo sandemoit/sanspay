@@ -28,7 +28,7 @@ $(document).ready(function() {
                 $('#editModal').data('id', id);
             },
             error: function(xhr) {
-                toastr.error("Error: " + xhr.responseText, {timeOut: 3000})
+                toastr.error("Error: " + xhr.responseText, {timeOut: 2000})
             }
         });
     });
@@ -54,10 +54,10 @@ $(document).ready(function() {
                 $('#category-table').DataTable().ajax.reload();
 
                 // Tampilkan notifikasi atau pesan sukses (opsional)
-                toastr.error(response.success, {timeOut: 3000})
+                toastr.error(response.success, {timeOut: 2000})
             },
             error: function(xhr) {
-                toastr.error("Something went wrong!", {timeOut: 3000})
+                toastr.error("Something went wrong!", {timeOut: 2000})
             }
         });
     });
@@ -85,13 +85,13 @@ $(document).on('click', '.delete-btn', function (e) {
                 type: 'GET',
                 success: function (response) {
                     // Tampilkan pesan berhasil
-                    toastr.error(response.success, {timeOut: 3000})
+                    toastr.error(response.success, {timeOut: 2000})
                     
                     // Refresh DataTable atau hapus baris secara manual
                     $('#category-table').DataTable().ajax.reload();
                 },
                 error: function (xhr, status, error) {
-                    toastr.error("Failed to delete the item.", {timeOut: 3000})
+                    toastr.error("Failed to delete the item.", {timeOut: 2000})
                 }
             });
         }

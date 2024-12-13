@@ -9,7 +9,7 @@
                 <div class="mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#addModal"><ion-icon
-                            name="add-outline"></ion-icon>{{ __('Add Method') }}</button>
+                            name="add-circle-outline"></ion-icon>{{ __('Add Method') }}</button>
                 </div>
                 <table id="methodDeposit-table" class="table table-striped table-bordered" style="width:100%">
                     <thead>

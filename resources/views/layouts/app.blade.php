@@ -4,12 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="csrf-token" content="{!! csrf_token() !!}" />
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ configWeb('title')->value }}</title>
 
     {{-- icon --}}
-    <link rel="icon" type="image/x-icon" href="{{ asset('storage') }}/images/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{ asset(configWeb('favicon')->value) }}" />
 
     <!-- loader-->
     <link href="{{ asset('/') }}css/pace.min.css" rel="stylesheet" />

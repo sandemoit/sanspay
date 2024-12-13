@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\MidtransController;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class NotificationMidtrans extends Command
 {

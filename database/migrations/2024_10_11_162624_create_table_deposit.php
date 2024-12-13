@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('payment_method'); // Metode pembayaran yang digunakan (contoh: "Midtrans - BNI VA")
             $table->integer('amount'); // Jumlah yang di-top-up oleh user
             $table->integer('total_transfer'); // Total yang harus ditransfer (amount + code_unique + fee, jika ada)
-            $table->integer('code_unique'); // Kode unik untuk memastikan nominal unik setiap transaksi
             $table->string('status')->default('pending'); // Status transaksi ('pending', 'success', 'failed')
             $table->string('snap_token')->nullable(); // URL untuk user melakukan pembayaran melalui Midtrans
             $table->string('redirect_url')->nullable(); // URL untuk user melakukan pembayaran melalui Midtrans

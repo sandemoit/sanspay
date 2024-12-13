@@ -37,26 +37,44 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('Nominal Deposit') }}</label>
+                                    <div class="row row-cols-auto mb-3">
+                                        <div class="col">
+                                            <button type="button" class="btn btn-outline-secondary px-5"
+                                                onclick="setNominal(25000)">25.000</button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" class="btn btn-outline-secondary px-5"
+                                                onclick="setNominal(50000)">50.000</button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" class="btn btn-outline-secondary px-5"
+                                                onclick="setNominal(100000)">100.000</button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" class="btn btn-outline-secondary px-5"
+                                                onclick="setNominal(150000)">150.000</button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" class="btn btn-outline-secondary px-5"
+                                                onclick="setNominal(200000)">200.000</button>
+                                        </div>
+                                    </div>
                                     <input name="nominalDeposit" id="nominalDeposit" class="form-control">
                                     @error('nominalDeposit')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-3 mb-3">
+                            <div class="col-lg-4 col-md-12 col-sm-12 mb-3">
                                 <label class="form-label">{{ __('Fee') }}</label>
                                 <input name="fee" id="fee" class="form-control" readonly>
                             </div>
-                            <div class="col-3">
-                                <label class="form-label">{{ __('Code Unique') }}</label>
-                                <input name="code_unique" id="code_unique" class="form-control" readonly>
-                            </div>
-                            <div class="col-3">
+                            <div class="col-lg-4 col-md-12 col-sm-12 mb-3">
                                 <label class="form-label">{{ __('Total Transfer') }}</label>
                                 <input name="total_transfer" id="total_transfer" class="form-control" readonly>
                             </div>
-                            <div class="col-3">
-                                <label class="form-label">{{ __('Salod Recived') }}</label>
+                            <div class="col-lg-4 col-md-12 col-sm-12 mb-3">
+                                <label class="form-label">{{ __('Saldo Recived') }}</label>
                                 <input name="saldo_recived" id="saldo_recived" class="form-control" readonly>
                             </div>
                             <div class="col-12">
@@ -76,5 +94,11 @@
         <script src="{{ asset('/') }}plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
         <script src="{{ asset('/') }}js/table-datatable.js"></script>
         <script type="text/javascript" src="{{ asset('/') }}js/deposit_cust.js"></script>
+
+        <script>
+            function setNominal(value) {
+                document.getElementById('nominalDeposit').value = value;
+            }
+        </script>
     @endpush
 </x-app-layout>

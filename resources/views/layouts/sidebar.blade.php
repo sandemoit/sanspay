@@ -2,20 +2,16 @@
 <aside class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
         <div>
-            <img src="{{ asset('storage') }}/images/logo.svg" class="logo-icon" alt="logo" width="60" height="60">
+            <img src="{{ asset(configWeb('logo')->value) }}" class="logo-icon" alt="logo" width="60" height="60">
         </div>
         <div>
-            <h4 class="logo-text">{{ config('app.name') }}</h4>
+            <h4 class="logo-text">{{ configWeb('title')->value }}</h4>
         </div>
     </div>
     <!--navigation-->
     <ul class="metismenu" id="menu">
 
-        @php
-            $segment1 = Request::segment(1);
-        @endphp
-
-        @if (Auth::user()->role == 'admin' && $segment1 == 'admin')
+        @if (Auth::user()->role == 'admin' && segment(1) == 'admin')
             <li>
                 <a href="{{ route('admin.dashboard') }}">
                     <div class="parent-icon">
@@ -23,6 +19,32 @@
                     </div>
                     <div class="menu-title">{{ __('Dashboard') }}</div>
                 </a>
+            </li>
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon">
+                        <ion-icon name="cog-outline"></ion-icon>
+                    </div>
+                    <div class="menu-title">{{ __('Configuration') }}</div>
+                </a>
+                <ul>
+                    <li> <a href="{{ route('admin.configure.website') }}">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('Website') }}
+                        </a>
+                    </li>
+                    <li> <a href="{{ route('admin.configure.contact') }}">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('Contact') }}
+                        </a>
+                    </li>
+                    <li> <a href="{{ route('admin.configure.wa') }}">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('WhatsApp Config') }}
+                        </a>
+                    </li>
+                    <li> <a href="{{ route('admin.configure.mail') }}">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('eMail Config') }}
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="{{ route('order') }}">
@@ -56,7 +78,7 @@
                             <ion-icon name="ellipse-outline"></ion-icon>{{ __('Method Deposit') }}
                         </a>
                     </li>
-                    <li> <a href="widgets-data-widgets.html">
+                    <li> <a href="{{ route('admin.deposit.payment') }}">
                             <ion-icon name="ellipse-outline"></ion-icon>{{ __('Payment Deposit') }}
                         </a>
                     </li>
@@ -100,7 +122,23 @@
                     <div class="menu-title">{{ __('Ticket Helpdesk') }}</div>
                 </a>
             </li>
-        @elseif (Auth::user()->role == 'customer' || Auth::user()->role == 'admin' || $segment1 != 'admin')
+            <li>
+                <a href="{{ route('admin.announcement') }}">
+                    <div class="parent-icon">
+                        <ion-icon name="information-outline"></ion-icon>
+                    </div>
+                    <div class="menu-title">{{ __('Announcement') }}</div>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.notification') }}">
+                    <div class="parent-icon">
+                        <ion-icon name="notifications-outline"></ion-icon>
+                    </div>
+                    <div class="menu-title">{{ __('Format Notification') }}</div>
+                </a>
+            </li>
+        @elseif (in_array(Auth::user()->role, ['customer', 'admin']) && segment(1) != 'admin')
             <li>
                 <a href="{{ route('dashboard') }}">
                     <div class="parent-icon">
@@ -108,6 +146,8 @@
                     </div>
                     <div class="menu-title">{{ __('Dashboard') }}</div>
                 </a>
+            </li>
+            <li class="menu-label">{{ __('Main Menu') }}</li>
             </li>
             <li>
                 <a href="javascript:;" class="has-arrow">
@@ -117,17 +157,25 @@
                     <div class="menu-title">{{ __('Deposit') }}</div>
                 </a>
                 <ul>
-                    <li> <a href="{{ route('deposit.new') }}">
+                    <li>
+                        <a href="#">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('History Deposit') }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('deposit.new') }}">
                             <ion-icon name="ellipse-outline"></ion-icon>{{ __('Request Deposit') }}
                         </a>
                     </li>
                 </ul>
             </li>
+        @elseif (Auth::user()->role == 'agent' && segment(1) != 'admin')
+            <p>Agent</p>
         @endif
 
-        @if (Auth::user()->role == 'admin' && $segment1 != 'admin')
+        {{-- Menu Additional --}}
+        @if (Auth::user()->role == 'admin' && segment(1) != 'admin')
             <li class="menu-label">{{ __('Admin Area') }}</li>
-
             <li>
                 <a href="{{ route('admin.dashboard') }}">
                     <div class="parent-icon">
@@ -136,7 +184,7 @@
                     <div class="menu-title">{{ __('Dashboard Admin') }}</div>
                 </a>
             </li>
-        @elseif(Auth::user()->role == 'admin' && $segment1 == 'admin')
+        @elseif(Auth::user()->role == 'admin' && segment(1) == 'admin')
             <li class="menu-label">{{ __('User Area') }}</li>
             <li>
                 <a href="{{ route('dashboard') }}">

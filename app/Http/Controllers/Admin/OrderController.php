@@ -11,9 +11,17 @@ use Yajra\DataTables\Facades\DataTables;
 
 class OrderController extends Controller
 {
+
     public function index()
     {
-        return view('admin.order');
+        $statuses = [
+            'pending' => TrxPpob::where('status_trx', 'pending')->count(),
+            'in_process' => TrxPpob::where('status_trx', 'in_process')->count(),
+            'success' => TrxPpob::where('status_trx', 'success')->count(),
+            'canceled' => TrxPpob::where('status_trx', 'canceled')->count(),
+        ];
+
+        return view('admin.order', compact('statuses'));
     }
 
     public function getData()

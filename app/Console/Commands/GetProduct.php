@@ -36,9 +36,11 @@ class GetProduct extends Command
             $priceList = $priceListResponse['data'];
             // Loop through the price list and insert/update products
             foreach ($priceList as $product) {
-                $profit = Profit::where('key', 'customer')->value('value');
-                $priceBasicMargin = $product['price'] + ($product['price'] * $profit / 100); // Harga Basic dengan margin
-                $status = $product['status'] == true ? 'available' : 'empty';
+                $profits = Profit::whereIn('key', ['customer', 'agent'])->pluck('value', 'key');
+
+                $priceAgentMargin = $product['price'] * (1 + $profits['agent'] / 100);
+                $priceBasicMargin = $product['price'] * (1 + $profits['customer'] / 100);
+                $status = $product['status'] ? 'available' : 'empty';
 
                 // Cek dan tambahkan kategori jika belum ada
                 $category = Category::firstOrCreate([
@@ -55,6 +57,7 @@ class GetProduct extends Command
                     // Update data produk jika ada perubahan
                     $changes = [];
                     if (
+                        $existingProduct->agent_price != $priceAgentMargin ||
                         $existingProduct->cust_price != $priceBasicMargin ||
                         $existingProduct->price != $product['price'] ||
                         $existingProduct->name != $product['name'] ||
@@ -69,10 +72,12 @@ class GetProduct extends Command
                             'note' => $product['note'],
                             'brand' => $product['brand'],
                             'price' => $product['price'],
+                            'agent_price' => $priceAgentMargin,
                             'cust_price' => $priceBasicMargin,
                             'status' => $status,
                             'type' => $product['type'],
-                            'provider' => 'DigiFlazz'
+                            'provider' => 'DigiFlazz',
+                            'label' => $product['label'],
                         ]);
 
                         print '<font color="green"><pre>';
@@ -80,6 +85,7 @@ class GetProduct extends Command
                         print "Type: {$product['type']}<br>";
                         print "Status: {$existingProduct->status} -> {$status}<br>";
                         print "Harga Pusat: {Rp. " . nominal($existingProduct->price, 'IDR') . "} -> {Rp. " . nominal($product['price'], 'IDR') . "}<br>";
+                        print "Harga Agent: {Rp. " . nominal($existingProduct->agent_price, 'IDR') . "} -> Rp. " . nominal($priceAgentMargin, 'IDR') . "<br>";
                         print "Harga Customer: {Rp. " . nominal($existingProduct->cust_price, 'IDR') . "} -> Rp. " . nominal($priceBasicMargin, 'IDR') . "<br>";
                         print '</pre></font><hr>';
                     } else {
@@ -96,10 +102,12 @@ class GetProduct extends Command
                         'note' => $product['note'],
                         'brand' => $product['brand'],
                         'price' => $product['price'],
+                        'agent_price' => $priceAgentMargin,
                         'cust_price' => $priceBasicMargin,
                         'status' => $status,
                         'type' => $product['type'],
-                        'provider' => 'DigiFlazz'
+                        'provider' => 'DigiFlazz',
+                        'label' => $product['label'],
                     ]);
 
                     print '<font color="green"><pre>';

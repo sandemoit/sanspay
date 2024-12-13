@@ -58,7 +58,7 @@
             </div>
         </div>
         <div class="col-xl-6 col-lg-12">
-            <div class="position-fixed top-0 h-100 d-xl-block d-none login-cover-img">
+            <div class="top-0 h-100 d-xl-block d-none login-cover-img">
             </div>
         </div>
     </div>

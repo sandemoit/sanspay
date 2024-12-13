@@ -34,11 +34,6 @@ $(document).ready(function() {
                 orderable: true,
             },
             {
-                data: 'code_unique',
-                name: 'code_unique',
-                orderable: true,
-            },
-            {
                 data: 'tanggal',
                 name: 'tanggal',
                 orderable: true,
@@ -102,6 +97,42 @@ $(document).ready(function() {
         ]
     });
 
+    $('#paymentDeposit-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: 'payment/get',
+        columns: [{
+                data: null,
+                name: 'no',
+                orderable: true,
+                searchable: false,
+                render: function(data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            {
+                data: 'code',
+                name: 'code',
+                orderable: true,
+            },
+            {
+                data: 'name',
+                name: 'name',
+                orderable: true,
+            },
+            {
+                data: 'type',
+                name: 'type',
+                orderable: true,
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: true,
+            },
+        ]
+    });
+
     $('#methodDeposit-table').on('click', '.edit-btn', function() {
         var id = $(this).data('id'); // Ambil ID dari tombol edit
 
@@ -127,7 +158,7 @@ $(document).ready(function() {
             },
             error: function(xhr) {
                 let errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'An error occurred';
-                toastr.error(errorMessage, { timeOut: 3000 });
+                toastr.error(errorMessage, { timeOut: 2000 });
             }
         });
     });
@@ -141,7 +172,6 @@ $(document).on('click', '.accept-btn, .decline-btn', function (e) {
     let url = $(this).attr('href');
     let actionText = $(this).hasClass('accept-btn') ? "accept" : "decline";
     let confirmText = actionText === "accept" ? "Yes, accept deposit!" : "Yes, decline deposit!";
-    let successMessage = actionText === "accept" ? "Deposit has been accepted." : "Deposit has been declined.";
 
     Swal.fire({
         title: "Are you sure?",
@@ -159,11 +189,7 @@ $(document).on('click', '.accept-btn, .decline-btn', function (e) {
                 type: 'GET',
                 success: function (response) {
                     // Tampilkan pesan berhasil
-                    Swal.fire({
-                        title: "Success!",
-                        text: successMessage,
-                        icon: "success"
-                    });
+                    toastr.success(response.message, {timeOut: 2000});
 
                     // Refresh DataTable atau hapus baris secara manual
                     $('#deposit-table').DataTable().ajax.reload();
@@ -204,14 +230,14 @@ $(document).on('click', '.delete-btn', function (e) {
                 type: 'GET',
                 success: function (response) {
                     // Tampilkan pesan berhasil
-                    toastr.success(response.success, {timeOut: 3000})
+                    toastr.success(response.success, {timeOut: 2000})
                     
                     // Refresh DataTable atau hapus baris secara manual
-                    $('#methodDeposit-table').DataTable().ajax.reload();
+                    $('#methodDeposit-table, #paymentDeposit-table').DataTable().ajax.reload();
                 },
                 error: function(xhr) {
                 let errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'An error occurred';
-                toastr.error(errorMessage, {timeOut: 3000})
+                toastr.error(errorMessage, {timeOut: 2000})
             }
             });
         }

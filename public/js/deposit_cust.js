@@ -18,7 +18,7 @@ $(document).ready(function() {
 
                 // Looping array data methods dari response
                 $.each(response, function(index, method) {
-                    $methodSelect.append('<option value="' + method.code + '">' + method.name + '</option>');
+                    $methodSelect.append('<option value="' + method.code + '">' + method.name + ' (Min. ' + new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(method.minimum) + ')</option>');
                 });
             },
             error: function(xhr) {
@@ -50,7 +50,6 @@ $(document).ready(function() {
                     $('#fee').val(response.fee);
                     $('#total_transfer').val(response.total_transfer);
                     $('#saldo_recived').val(response.saldo_received);
-                    $('#code_unique').val(response.code_unique);
                 },
                 error: function(xhr) {
                     // Menangani kesalahan

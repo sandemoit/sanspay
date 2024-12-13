@@ -19,6 +19,7 @@
                 <table id="products-table" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
+                            <th>{{ __('ID') }}</th>
                             <th>{{ __('Code') }}</th>
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Price') }}</th>
@@ -85,20 +86,9 @@
                             <label for="note" class="form-label">{{ __('Note') }}</label>
                             <textarea type="text" class="form-control" id="note" name="note" required></textarea>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="price" class="form-label">{{ __('Price') }}</label>
-                                    <input type="text" class="form-control" name="price" id="price"required>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="cust_price" class="form-label">{{ __('Price Customer') }}</label>
-                                    <input type="text" class="form-control" id="cust_price" name="cust_price"
-                                        required>
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            <label for="price" class="form-label">{{ __('Price') }}</label>
+                            <input type="text" class="form-control" name="price" id="price"required>
                         </div>
                         <div class="mb-3">
                             <label for="status" class="form-label">{{ __('Status') }}</label>
@@ -169,21 +159,9 @@
                             <label for="note" class="form-label">{{ __('Note') }}</label>
                             <textarea type="text" class="form-control" id="note" name="note" required></textarea>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="price" class="form-label">{{ __('Price') }}</label>
-                                    <input type="text" class="form-control" name="price"
-                                        id="price"required>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="cust_price" class="form-label">{{ __('Price Customer') }}</label>
-                                    <input type="text" class="form-control" id="cust_price" name="cust_price"
-                                        required>
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            <label for="price" class="form-label">{{ __('Price') }}</label>
+                            <input type="text" class="form-control" name="price" id="price"required>
                         </div>
                         <div class="mb-3">
                             <label for="status" class="form-label">{{ __('Status') }}</label>

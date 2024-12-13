@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sosmed', function (Blueprint $table) {
+        Schema::create('announcement', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('url');
+            $table->string('title');
+            $table->string('slug');
+            $table->string('type');
+            $table->text('description');
+            $table->enum('viewer', ['all', 'admin', 'agent', 'customer']);
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sosmed');
+        Schema::dropIfExists('announcement');
     }
 };

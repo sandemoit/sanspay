@@ -17,13 +17,15 @@ return new class extends Migration
             $table->string('code');
             $table->string('brand');
             $table->integer('price');
+            $table->integer('agent_price');
             $table->integer('cust_price');
-            $table->string('note')->nullable();
             $table->integer('discount')->nullable();
-            $table->enum('promo_type', ['percentage', 'fixed'])->nullable();
+            $table->integer('quota')->nullable();
+            $table->string('note')->nullable();
             $table->enum('status', ['empty', 'available'])->default('available');
             $table->string('provider');
             $table->string('type');
+            $table->string('label');
             $table->timestamps();
         });
     }

@@ -4,12 +4,12 @@
     @endpush
 
     <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-4">
-        <div class="col">
+        <div class="col mb-3">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-start gap-2">
                         <div>
-                            <p class="mb-0 fs-6">Transaksi Sukses</p>
+                            <p class="mb-0 fs-6">{{ __('Transaction Success') }}</p>
                         </div>
                         <div class="ms-auto widget-icon-small text-white bg-gradient-success">
                             <ion-icon name="checkmark-outline"></ion-icon>
@@ -17,18 +17,18 @@
                     </div>
                     <div class="d-flex align-items-center mt-3">
                         <div>
-                            <h4 class="mb-0">0</h4>
+                            <h4 class="mb-0">{{ $statuses['success'] }}</h4>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col mb-3">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-start gap-2">
                         <div>
-                            <p class="mb-0 fs-6">Transaksi Diproses</p>
+                            <p class="mb-0 fs-6">{{ __('Transaction in Process') }}</p>
                         </div>
                         <div class="ms-auto widget-icon-small text-white bg-gradient-info">
                             <ion-icon name="hourglass-outline"></ion-icon>
@@ -36,18 +36,18 @@
                     </div>
                     <div class="d-flex align-items-center mt-3">
                         <div>
-                            <h4 class="mb-0">0</h4>
+                            <h4 class="mb-0">{{ $statuses['in_process'] }}</h4>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col mb-3">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-start gap-2">
                         <div>
-                            <p class="mb-0 fs-6">Transaksi Pending</p>
+                            <p class="mb-0 fs-6">{{ __('Transaction Pending') }}</p>
                         </div>
                         <div class="ms-auto widget-icon-small text-white bg-gradient-warning">
                             <ion-icon name="timer-outline"></ion-icon>
@@ -55,18 +55,18 @@
                     </div>
                     <div class="d-flex align-items-center mt-3">
                         <div>
-                            <h4 class="mb-0">0</h4>
+                            <h4 class="mb-0">{{ $statuses['pending'] }}</h4>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col mb-3">
             <div class="card radius-10">
                 <div class="card-body">
                     <div class="d-flex align-items-start gap-2">
                         <div>
-                            <p class="mb-0 fs-6">Transaksi Dibatalkan</p>
+                            <p class="mb-0 fs-6">{{ __('Transaction Canceled') }}</p>
                         </div>
                         <div class="ms-auto widget-icon-small text-white bg-gradient-danger">
                             <ion-icon name="close-outline"></ion-icon>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="d-flex align-items-center mt-3">
                         <div>
-                            <h4 class="mb-0">0</h4>
+                            <h4 class="mb-0">{{ $statuses['canceled'] }}</h4>
                         </div>
                     </div>
                 </div>
@@ -89,12 +89,12 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Username</th>
-                            <th>Product</th>
-                            <th>Target</th>
-                            <th>Total Payment</th>
-                            <th>Status</th>
+                            <th>{{ __('Date') }}</th>
+                            <th>{{ __('Username ') }}</th>
+                            <th>{{ __('Product') }}</th>
+                            <th>{{ __('Target') }}</th>
+                            <th>{{ __('Total Payment') }}</th>
+                            <th>{{ __('Status') }}</th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">
