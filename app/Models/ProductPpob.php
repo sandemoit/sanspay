@@ -15,6 +15,11 @@ class ProductPpob extends Model
 
     public function order()
     {
-        return $this->hasMany(TrxPpob::class, 'product_id');
+        return $this->hasMany(TrxPpob::class, 'code', 'code');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'type', 'type');
     }
 }

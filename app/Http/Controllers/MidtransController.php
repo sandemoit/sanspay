@@ -50,23 +50,23 @@ class MidtransController extends Controller
                 break;
             case 'settlement':
                 $order->update(['status' => 'settlement']);
-                $this->saveMutationAndBalance($order);
-                $this->sendNotifCallback($order, 'Success');
+                // $this->saveMutationAndBalance($order);
+                $this->sendNotifCallback($order, 'SUCCESS');
                 break;
             case 'pending':
                 $order->update(['status' => 'pending']);
                 break;
             case 'deny':
-                $order->update(['status' => 'failed']);
-                $this->sendNotifCallback($order, 'Failed');
+                $order->update(['status' => 'deny']);
+                $this->sendNotifCallback($order, 'DENY');
                 break;
             case 'expire':
                 $order->update(['status' => 'expired']);
-                $this->sendNotifCallback($order, 'Expired');
+                $this->sendNotifCallback($order, 'EXPIRED');
                 break;
             case 'cancel':
                 $order->update(['status' => 'canceled']);
-                $this->sendNotifCallback($order, 'Canceled');
+                $this->sendNotifCallback($order, 'CANCELED');
                 break;
             default:
                 $order->update(['status' => 'unknown']);
@@ -79,13 +79,14 @@ class MidtransController extends Controller
     private function sendNotifCallback(Deposit $order, $status)
     {
         $user = $order->user;
-        $method = $order->depositpayment;
+        $method = $order->depositmethod;
         $amount = nominal($order->amount);
-        dd($method);
-        $target = "$user->number|$user->name|$amount|$method->name|$status|TOTAL SALDO KAMU: $user->saldo";
-        $sendWa = WhatsApp::sendMessage($target, formatNotif('deposit_wa')->value);
+        $saldo = nominal($user->saldo);
 
-        if ($sendWa['success'] == false) {
+        $target = "$user->number|$user->name|$order->topup_id|$method->name|$amount|$status";
+        $sendWa = WhatsApp::sendMessage($target, formatNotif('done_deposit_wa')->value);
+
+        if (!$sendWa['success']) {
             return redirect()->back()->with('error', __($sendWa['message']));
         }
     }

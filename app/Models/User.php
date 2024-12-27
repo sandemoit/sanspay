@@ -28,6 +28,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'status',
         'saldo',
         'point',
+        'fullname',
+        'from_referral',
+        'code_referral',
+        'pin',
     ];
 
     /**

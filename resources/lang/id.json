@@ -144,5 +144,15 @@
     "Delete Product Deposit": "Hapus Produk Deposit",
     "Announcement": "Pengumuman",
     "Add Announcement": "Tambahkan Pengumuman",
-    "History Deposit": "Riwayat Deposit"
+    "History Deposit": "Riwayat Deposit",
+    "Deposit Now": "Deposit Sekarang",
+    "Type Payment": "Tipe Pembayaran",
+    "Method Payment": "Metode Pembayaran",
+    "Deposit Nominal": "Nominal Setoran",
+    "Fee": "Biaya",
+    "Saldo Recived": "Saldo Diterima",
+    "Reset": "Atur Ulang",
+    "Pay": "Bayar",
+    "Confirmation Deposit": "Konfirmasi Deposit",
+    "Cancel Deposit": "Batalkan Deposit"
 }

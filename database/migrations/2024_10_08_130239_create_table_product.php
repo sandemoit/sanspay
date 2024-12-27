@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('code');
             $table->string('brand');
             $table->integer('price');
-            $table->integer('agent_price');
+            $table->integer('mitra_price');
             $table->integer('cust_price');
             $table->integer('discount')->nullable();
             $table->integer('quota')->nullable();

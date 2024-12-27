@@ -29,21 +29,27 @@ $(document).ready(function() {
                 orderable: true, 
                 searchable: true 
             },
-            {
-                data: 'target',
-                name: 'target', 
+            { 
+                data: 'id_ref', 
+                name: 'id_ref', 
                 orderable: true, 
                 searchable: true 
             },
             {
-                data: 'total_payment',
-                name: 'total_payment', 
+                data: 'data',
+                name: 'data', 
                 orderable: true, 
                 searchable: true 
             },
             {
-                data: 'status',
-                name: 'status',
+                data: 'price_transaction',
+                name: 'price_transaction', 
+                orderable: true, 
+                searchable: true 
+            },
+            {
+                data: 'action',
+                name: 'action',
                 orderable: false,
                 searchable: false
             }

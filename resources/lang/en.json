@@ -154,6 +154,16 @@
     "Delete Product Deposit": "Delete Product Deposit",
     "Announcement": "Announcement",
     "Add Announcement": "Add Announcement",
-    "History Deposit": "History Deposit"
+    "History Deposit": "History Deposit",
+    "Deposit Now": "Deposit Now",
+    "Type Payment": "Type Payment",
+    "Method Payment": "Method Payment",
+    "Deposit Nominal": "Deposit Nominal",
+    "Fee": "Fee",
+    "Saldo Recived": "Saldo Recived",
+    "Reset": "Reset",
+    "Pay": "Pay",
+    "Confirmation Deposit": "Confirmation Deposit",
+    "Cancel Deposit": "Cancel Deposit"
 
 }

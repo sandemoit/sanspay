@@ -17,6 +17,7 @@ File: style.css
 - Responsive
 - swicther
 - Responsive
+- Custom
 
  */
 
@@ -1477,4 +1478,14 @@ ul.categories-list li {
 
 div:where(.swal2-container) h2:where(.swal2-title) {
     color: #212121 !important;
+}
+
+/* Custom */
+.text-announcement ion-icon {
+    font-size: 1.5rem;
+}
+.text-announcement {
+    margin-bottom: 12px;
+    font-size: 1rem;
+    font-weight: 500;
 }

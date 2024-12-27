@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Midtrans\Snap;
 use Midtrans\Config;
+use Yajra\DataTables\Facades\DataTables;
 
 class DepositController extends Controller
 {
@@ -25,6 +26,54 @@ class DepositController extends Controller
     }
 
     public function index()
+    {
+        return view('users.deposit.index');
+    }
+
+    public function getData()
+    {
+        $deposit = Deposit::with('depositmethod')->where('member_id', Auth::id())->get();
+
+        return DataTables::of($deposit)
+            ->addColumn('INVDate', function ($row) {
+                // return "#$row->topup_id<br><small class=\"text-primary\">$row->update_at</small>";
+                return '<a href="' . route('deposit.invoice', ['topup_id' => $row->topup_id]) . '">#' . $row->topup_id . '</a><br>' . tanggal($row->created_at);
+            })
+            ->addColumn('Method', function ($row) {
+                return $row->depositmethod->name;
+            })
+            ->addColumn('TotalTransfer', function ($row) {
+                return 'Rp. ' . nominal($row->total_transfer);
+            })
+            ->addColumn('Amount', function ($row) {
+                return 'Rp. ' . nominal($row->amount);
+            })
+            ->addColumn('Status', function ($row) {
+                switch ($row->status) {
+                    case 'settlement':
+                        return '<span class="badge bg-success">Paid</span>';
+                    case 'cancel':
+                        return '<span class="badge bg-danger">Canceled</span>';
+                    case 'deny':
+                        return '<span class="badge bg-danger">Deny</span>';
+                    case 'expired':
+                        return '<span class="badge bg-danger">Expired</span>';
+                    case 'pending';
+                        if (in_array($row->depositmethod->type_payment, ['va', 'gopay', 'shopeepay', 'qris'])) {
+                            return '<a class="btn btn-sm btn-warning accept-btn" href="' . $row->redirect_url . '"><ion-icon name="cash-outline"></ion-icon>Pay</a>';
+                        } else {
+                            return '
+                                <a class="btn btn-sm btn-warning accept-btn" href="' . route('deposit.invoice', ['topup_id' => $row->topup_id]) . '"><ion-icon name="cash-outline"></ion-icon>Pay</a>
+                            ';
+                        }
+                }
+            })
+
+            ->rawColumns(['INVDate', 'Status'])
+            ->make(true);
+    }
+
+    public function request()
     {
         // Ambil user yang sedang login
         $userId = Auth::id();
@@ -39,7 +88,7 @@ class DepositController extends Controller
             return redirect()->route('deposit.invoice', ['topup_id' => $pendingDeposit->topup_id]);
         }
 
-        return view('users.deposit.index');
+        return view('users.deposit.request');
     }
 
     public function getDepositMethod()
@@ -106,112 +155,96 @@ class DepositController extends Controller
 
     public function store(Request $request)
     {
-        // Ambil data metode pembayaran
-        $method = DepositMethod::where('code', $request->methodpayment)->first();
-        $member_id = Auth::user()->id;
-        $user = User::where('id', $member_id)->first();
+        $user = Auth::user(); // Hindari query ulang user
 
-        // Pastikan metode ditemukan
-        if (!$method) {
-            return back()->with('error', 'Metode pembayaran tidak valid.');
-        }
+        // Validasi input dan metode pembayaran
+        $method = DepositMethod::where('code', $request->methodpayment)->firstOrFail(); // Fail jika metode tidak ditemukan
 
-        // Validasi input
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'typepayment' => 'required|in:0,1',
             'methodpayment' => 'required',
             'nominalDeposit' => 'required|numeric|min:' . $method->minimum,
         ]);
 
-        if ($validator->fails()) {
-            $messages = $validator->messages()->all();
-            return back()->with('error', implode('. ', $messages), 422);
-        }
-
+        // Generate data untuk deposit
         $total_transfer = (int)str_replace('.', '', $request->total_transfer) + rand(100, 999);
         $amount = (int)str_replace('.', '', $request->saldo_recived);
 
-        // Data deposit untuk disimpan
-        $deposit = Deposit::create([
-            'topup_id' => 'INV' . time(),  // Contoh ID topup unik
-            'member_id' => $member_id,
-            'payment_method' => $request->methodpayment,
-            'amount' => $amount,
-            'total_transfer' => $total_transfer,
-            'status' => 'pending',
-        ]);
-
-        $amount = nominal($amount);
-        $target = "$user->number|$user->name|$amount|$method->name|Pending|";
-        $sendWa = WhatsApp::sendMessage($target, formatNotif('deposit_wa')->value);
-
-        if ($sendWa['success'] == false) {
-            return redirect()->back()->with('error', __($sendWa['message']));
-        }
-
         try {
+            // Simpan data deposit
+            $deposit = Deposit::create([
+                'topup_id' => 'INV' . time(),
+                'member_id' => $user->id,
+                'payment_method' => $request->methodpayment,
+                'amount' => $amount,
+                'total_transfer' => $total_transfer,
+                'status' => 'pending',
+            ]);
+
+            // Kirim notifikasi WhatsApp
+            $amountFormatted = nominal($amount);
+            $target = "{$user->number}|{$user->name}|{$deposit->topup_id}|{$method->name}|$amountFormatted|PENDING";
+
+            $sendWa = WhatsApp::sendMessage($target, formatNotif('create_deposit_wa')->value);
+            if (!$sendWa['success']) {
+                return redirect()->back()->with('error', __($sendWa['message']));
+            }
+
+            // Proses pembayaran jika typepayment adalah Midtrans
             if ($request->typepayment == 1) {
-                // Persiapkan data Midtrans
-                $params = [
-                    'transaction_details' => [
-                        'order_id' => $deposit->topup_id,
-                        'gross_amount' => $deposit->total_transfer,
-                    ],
-                    'customer_details' => [
-                        'first_name' => Auth::user()->name,
-                        'email' => Auth::user()->email,
-                        'phone' => Auth::user()->number,
-                    ],
-                    'callbacks' => [
-                        'finish' => route('deposit.invoice', ['topup_id' => $deposit->topup_id]),
-                    ],
-                ];
-
-                // Konfigurasi parameter berdasarkan methodpayment
-                switch ($request->methodpayment) {
-                    case 'bni_va':
-                    case 'bri_va':
-                    case 'mandiri_va':
-                    case 'cimb_va':
-                    case 'permata_va':
-                    case 'bca_va':
-                        $params['enabled_payments'] = ["$request->methodpayment"];
-                        $params['payment_type'] = "bank_transfer";
-                        break;
-                    case 'gopay':
-                        $params['enabled_payments'] = ["gopay"];
-                        $params['payment_type'] = "gopay";
-                        break;
-                    case 'shopeepay':
-                        $params['enabled_payments'] = ["shopeepay"];
-                        $params['payment_type'] = "shopeepay";
-                        break;
-                    case 'qris':
-                        $params['enabled_payments'] = ["other_qris"];
-                        $params['payment_type'] = "other_qris";
-                        // $this->qrisMethod($deposit->total_transfer, $deposit->topup_id);
-                        break;
-
-                    default:
-                        return back()->with('error', 'Metode pembayaran tidak valid.');
-                }
-
-                // Request snap token dari Midtrans
-                $snapToken = Snap::getSnapToken($params);
-                $redirectUrl = Snap::createTransaction($params)->redirect_url;
-
-                $deposit->snap_token = $snapToken;
-                $deposit->redirect_url = $redirectUrl;
-                $deposit->payment_expiry = now()->addDays(1);
-                $deposit->save();
-
-                return redirect()->away($redirectUrl);
-            } else if ($request->typepayment == 0) {
+                $this->processMidtrans($request, $deposit, $user);
+            } else {
                 return redirect()->route('deposit.invoice', $deposit->topup_id)->with('success', 'Request Payment Success.');
             }
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal memproses pembayaran. Silahkan coba lagi.');
         }
+    }
+
+    /**
+     * Proses pembayaran melalui Midtrans
+     */
+    private function processMidtrans(Request $request, $deposit, $user)
+    {
+        $params = [
+            'transaction_details' => [
+                'order_id' => $deposit->topup_id,
+                'gross_amount' => $deposit->total_transfer,
+            ],
+            'customer_details' => [
+                'first_name' => $user->fullname,
+                'email' => $user->email,
+                'phone' => $user->number,
+            ],
+            'callbacks' => [
+                'finish' => route('deposit.invoice', ['topup_id' => $deposit->topup_id]),
+            ],
+        ];
+
+        // Atur metode pembayaran
+        $enabledPayments = match ($request->methodpayment) {
+            'bni_va', 'bri_va', 'mandiri_va', 'cimb_va', 'permata_va', 'bca_va' => ["$request->methodpayment"],
+            'gopay' => ['gopay'],
+            'shopeepay' => ['shopeepay'],
+            'qris' => ['other_qris'],
+            default => throw new \Exception('Metode pembayaran tidak valid.'),
+        };
+
+        $params['enabled_payments'] = $enabledPayments;
+        $params['payment_type'] = $enabledPayments[0];
+
+        // Request snap token
+        $snapToken = Snap::getSnapToken($params);
+        $redirectUrl = Snap::createTransaction($params)->redirect_url;
+
+        // Update data deposit dengan informasi pembayaran
+        $deposit->update([
+            'snap_token' => $snapToken,
+            'redirect_url' => $redirectUrl,
+            'payment_expiry' => now()->addDay(),
+        ]);
+
+        return redirect()->away($redirectUrl);
     }
 
     public function invoice($topup_id)
@@ -246,8 +279,8 @@ class DepositController extends Controller
         $user = User::where('id', $deposit->member_id)->first();
 
         $amount = nominal($deposit->amount);
-        $target = "$user->number|$user->name|$amount|$deposit->payment_method|Canceled";
-        $sendWa = WhatsApp::sendMessage($target, formatNotif('deposit_wa')->value);
+        $target = "$user->number|$user->name|$deposit->topup_id|Bank $deposit->payment_method|$amount|CANCELED";
+        $sendWa = WhatsApp::sendMessage($target, formatNotif('create_deposit_wa')->value);
 
         if ($sendWa['success'] == false) {
             return redirect()->back()->with('error', __($sendWa['message']));
@@ -263,6 +296,28 @@ class DepositController extends Controller
             return redirect()->route('deposit.new')->with('success', 'Deposit has been declined');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred while cancelling the deposit: ' . $e->getMessage());
+        }
+    }
+
+    public function depositCancelMidtrans($topup_id)
+    {
+        $baseUrl = "https://api.sandbox.midtrans.com/v2/$topup_id/cancel";
+        $serverKey = config('midtrans.server_key');
+        $encodedKey = base64_encode($serverKey . ':');
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Basic ' . $encodedKey,
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json'
+        ])->post($baseUrl);
+
+        $responseBody = json_decode($response->body());
+
+        if ($response->successful() && $responseBody->status_code == 200) {
+            return redirect()->route('deposit.new')->with('success', $responseBody->status_message);
+        } else {
+            $errorMessage = $responseBody->status_message ?? 'Something went wrong';
+            return redirect()->back()->with('error', $errorMessage);
         }
     }
 

@@ -92,7 +92,6 @@ class DigiFlazzController extends Controller
         return $responseData ?? null;
     }
 
-
     protected function generateSignature(string $refId): string
     {
         return md5($this->username . $this->key . $refId);

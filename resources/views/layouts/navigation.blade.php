@@ -161,7 +161,7 @@
                                     <img src="{{ asset('storage') }}/images/avatars/06.png" alt=""
                                         class="rounded-circle" width="54" height="54">
                                     <div class="">
-                                        <h6 class="mb-0 dropdown-user-name">{{ Auth::user()->name }}</h6>
+                                        <h6 class="mb-0 dropdown-user-name">{{ Auth::user()->fullname }}</h6>
                                         <small
                                             class="mb-0 dropdown-user-designation text-secondary">{{ Auth::user()->role }}</small>
                                     </div>

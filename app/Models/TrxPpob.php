@@ -22,6 +22,6 @@ class TrxPpob extends Model
     // Relasi ke tabel products_ppob
     public function product(): BelongsTo
     {
-        return $this->belongsTo(ProductPpob::class, 'product_id');
+        return $this->belongsTo(ProductPpob::class, 'code', 'code');
     }
 }

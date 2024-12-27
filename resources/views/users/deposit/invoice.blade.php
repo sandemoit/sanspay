@@ -12,6 +12,8 @@
                         <button class="btn btn-danger me-2">Canceled</button>
                     @elseif ($deposit->status == 'settlement')
                         <button class="btn btn-success me-2">Paid</button>
+                    @elseif ($deposit->status == 'expired')
+                        <button class="btn btn-danger me-2">Expired</button>
                     @endif
                     <a href="javascript:;" onclick="printInvoice()" class="btn btn-secondary"><ion-icon
                             name="print-sharp"></ion-icon>Print</a>
@@ -52,7 +54,7 @@
                 <div class="col col-auto me-auto p-4">
                     <p class="mb-0">{{ __('FEE SERVICE') }}</p>
                     <h4 class="mb-0">
-                        @if ($deposit->depositMethod->xfee)
+                        @if ($deposit->depositMethod->xfee == '%')
                             {{ $deposit->depositMethod->fee }}{{ $deposit->depositMethod->xfee }}
                         @else
                             {{ nominal($deposit->depositMethod->fee) }}
@@ -87,17 +89,18 @@
                         ]))
                         <a href="https://wa.me/{{ configWeb('whatsapp_url')->value }}?text=Confirmation+Deposit+{{ nominal($deposit->amount) }}+{{ $deposit->topup_id }}"
                             class="btn btn-primary btn-sm mb-2" target="_blank">{{ __('Confirmation Deposit') }}</a>
+                        <a href="{{ route('deposit.cancel', $deposit->topup_id) }}"
+                            class="btn btn-danger btn-sm mb-2">{{ __('Cancel Deposit') }}</a><br>
                     @else
                         {{-- <button type="button" data-token="{{ $deposit->snap_token }}" id="pay-button"
                         class="btn btn-primary btn-sm mb-2">{{ __('Pay Now') }}</button> --}}
                         <a href="{{ $deposit->redirect_url }}"
                             class="btn btn-primary btn-sm mb-2">{{ __('Pay Now') }}</a>
+                        <a href="{{ route('deposit.cancelMidtrans', $deposit->topup_id) }}"
+                            class="btn btn-danger btn-sm mb-2">{{ __('Cancel Deposit') }}</a><br>
                     @endif
-                    <a href="{{ route('deposit.cancel', $deposit->topup_id) }}"
-                        class="btn btn-danger btn-sm mb-2">Cancel
                 @endif
 
-                Deposit</a><br>
                 * Payment is due within 30 days<br>
                 * If you have any questions concerning this invoice, contact [Name, Phone Number, Email]
             </div>

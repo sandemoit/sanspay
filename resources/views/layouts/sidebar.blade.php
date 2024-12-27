@@ -138,7 +138,7 @@
                     <div class="menu-title">{{ __('Format Notification') }}</div>
                 </a>
             </li>
-        @elseif (in_array(Auth::user()->role, ['customer', 'admin']) && segment(1) != 'admin')
+        @elseif (in_array(Auth::user()->role, ['customer', 'admin', 'mitra']) && segment(1) != 'admin')
             <li>
                 <a href="{{ route('dashboard') }}">
                     <div class="parent-icon">
@@ -158,7 +158,7 @@
                 </a>
                 <ul>
                     <li>
-                        <a href="#">
+                        <a href="{{ route('deposit') }}">
                             <ion-icon name="ellipse-outline"></ion-icon>{{ __('History Deposit') }}
                         </a>
                     </li>
@@ -169,8 +169,8 @@
                     </li>
                 </ul>
             </li>
-        @elseif (Auth::user()->role == 'agent' && segment(1) != 'admin')
-            <p>Agent</p>
+        @elseif (Auth::user()->role == 'mitra' && segment(1) != 'admin')
+            <p>Mitra</p>
         @endif
 
         {{-- Menu Additional --}}

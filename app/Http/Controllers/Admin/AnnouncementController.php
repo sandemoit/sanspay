@@ -36,7 +36,7 @@ class AnnouncementController extends Controller
         try {
             $validate = request()->validate([
                 'title' => 'required|string|max:255',
-                'viewer' => 'required|in:all,admin,agent,customer',
+                'viewer' => 'required|in:all,admin,mitra,customer',
                 'type' => 'required|in:static,banner',
                 'description' => 'required|string',
             ]);

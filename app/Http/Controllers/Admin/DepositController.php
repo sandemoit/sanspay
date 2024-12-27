@@ -45,9 +45,11 @@ class DepositController extends Controller
                     case 'settlement':
                         return '<span class="badge bg-success">Paid</span>';
                     case 'cancel':
-                    case 'deny':
-                    case 'expire':
                         return '<span class="badge bg-danger">Canceled</span>';
+                    case 'deny':
+                        return '<span class="badge bg-danger">Deny</span>';
+                    case 'expired':
+                        return '<span class="badge bg-danger">Expired</span>';
                     case 'pending';
                         if (in_array($row->depositmethod->type_payment, ['va', 'gopay', 'shopeepay', 'qris'])) {
                             return '<span class="badge bg-warning">Pending</span>';
@@ -71,6 +73,9 @@ class DepositController extends Controller
         $deposit = Deposit::find($id);
         $user = User::where('id', $deposit->member_id)->first();
 
+        // parameter notif whatsapp
+        $amount = nominal($deposit->amount);
+
         if ($action == 'accept') {
             $deposit->update(['status' => 'settlement']);
 
@@ -81,15 +86,9 @@ class DepositController extends Controller
                 'note' => 'Deposit :: ' . uniqid(6),
             ]);
 
+            $this->notifWhatsApp($user, $amount, $deposit, 'SUCCESS');
+
             $isuser = $user->update(['saldo' => $user->saldo + $deposit->total_transfer]);
-
-            $amount = nominal($deposit->amount);
-            $target = "$user->number|$user->name|$amount|$deposit->payment_method|Accepted|$user->saldo";
-            $sendWa = WhatsApp::sendMessage($target, formatNotif('deposit_wa')->value);
-
-            if ($sendWa['success'] == false) {
-                return redirect()->back()->with('error', __($sendWa['message']));
-            }
 
             if ($isuser) {
                 return response()->json([
@@ -103,7 +102,10 @@ class DepositController extends Controller
                 ]);
             }
         } elseif ($action == 'decline') {
-            $deposit->update(['status' => 'cancel']);
+            $deposit->update(['status' => 'deny']);
+
+            $this->notifWhatsApp($user, $amount, $deposit, 'DITOLAK');
+
             return response()->json([
                 'result' => true,
                 'message' => 'Deposit has been declined'
@@ -114,6 +116,21 @@ class DepositController extends Controller
             'result' => false,
             'message' => 'Invalid action'
         ], 400);
+    }
+
+    private function notifWhatsApp($user, $amount, $deposit, $status)
+    {
+        $target = "$user->number|$user->name|$deposit->topup_id|Bank $deposit->payment_method|$amount|$status";
+
+        if ($status == 'SUCCESS') {
+            $sendWa = WhatsApp::sendMessage($target, formatNotif('done_deposit_wa')->value);
+        } else {
+            $sendWa = WhatsApp::sendMessage($target, formatNotif('create_deposit_wa')->value);
+        }
+
+        if ($sendWa['success'] == false) {
+            return redirect()->back()->with('error', __($sendWa['message']));
+        }
     }
 
     public function methodDeposit()

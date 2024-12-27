@@ -74,14 +74,14 @@
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <!--plugins-->
         <script src="{{ asset('/') }}plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-        <script src="{{ asset('/') }}js/index.js"></script>
+        {{-- <script src="{{ asset('/') }}js/index.js"></script> --}}
         <!-- Main JS-->
         <script src="{{ asset('/') }}js/main.js"></script>
         <script src="{{ asset('/') }}js/theme.js"></script>
 
-        <script src="{{ asset('/') }}js/message-alert.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="{{ asset('/') }}js/message-alert.js"></script>
 
         <script>
             @if (Session::has('error'))
@@ -92,7 +92,6 @@
         </script>
 
         @stack('custom-js')
-
 </body>
 
 </html>

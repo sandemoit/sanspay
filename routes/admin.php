@@ -13,7 +13,6 @@ use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Middleware\HasRoleAdmin;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified', HasRoleAdmin::class])->group(function () {

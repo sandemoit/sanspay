@@ -13,18 +13,18 @@
                             <div class="row col-12 mt-3">
                                 <div class="row mt-3">
                                     <div class="col-lg-6 col-md-12 col-sm-12">
-                                        <label class="form-label">{{ __('Deposit WhatsApp') }}</label>
-                                        <textarea name="deposit_wa" id="deposit_wa" class="form-control @error('deposit_wa') is-invalid @enderror"
-                                            cols="30" rows="8">{{ @old('deposit_wa', $deposit_wa->value) }}</textarea>
-                                        @error('deposit_wa')
+                                        <label class="form-label">{{ __('Create Deposit WhatsApp') }}</label>
+                                        <textarea name="create_deposit_wa" id="create_deposit_wa"
+                                            class="form-control @error('create_deposit_wa') is-invalid @enderror" cols="30" rows="8">{{ @old('create_deposit_wa', $create_deposit_wa->value) }}</textarea>
+                                        @error('create_deposit_wa')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="col-lg-6 col-md-12 col-sm-12">
-                                        <label class="form-label">{{ __('Deposit Email') }}</label>
-                                        <textarea name="deposit_email" id="deposit_email" class="form-control @error('deposit_email') is-invalid @enderror"
-                                            cols="30" rows="8">{{ @old('deposit_email', $deposit_email->value) }}</textarea>
-                                        @error('deposit_email')
+                                        <label class="form-label">{{ __('Done Deposit WhatsApp') }}</label>
+                                        <textarea name="done_deposit_wa" id="done_deposit_wa"
+                                            class="form-control @error('done_deposit_wa') is-invalid @enderror" cols="30" rows="8">{{ @old('done_deposit_wa', $done_deposit_wa->value) }}</textarea>
+                                        @error('done_deposit_wa')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>

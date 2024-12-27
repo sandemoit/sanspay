@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('slug');
             $table->string('type');
             $table->text('description');
-            $table->enum('viewer', ['all', 'admin', 'agent', 'customer']);
+            $table->enum('viewer', ['all', 'admin', 'mitra', 'customer']);
             $table->string('image')->nullable();
             $table->timestamps();
         });

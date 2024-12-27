@@ -12,22 +12,49 @@
     @method('patch')
     <div class="row g-3">
         <div class="col-6">
-            <label class="form-label">{{ __('Name') }}</label>
-            <input type="text" class="form-control @error('name') is-invalid @enderror"
-                value="{{ old('name', $user->name) }}" name="name" id="name" required autofocus
-                autocomplete="name">
-            @error('name')
+            <label class="form-label">{{ __('Full Name') }}</label>
+            <input type="text" class="form-control @error('fullname') is-invalid @enderror"
+                value="{{ old('fullname', $user->fullname) }}" name="fullname" id="fullname" required autofocus
+                autocomplete="fullname">
+            @error('fullname')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
         <div class="col-6">
-            <label class="form-label">{{ __('Email') }}</label>
+            <label class="form-label">{{ __('Email') }} <ion-icon name="shield-checkmark-outline"
+                    class="text-success"></ion-icon></label>
             <input type="email" class="form-control @error('email') is-invalid @enderror"
                 value="{{ old('email', $user->email) }}" name="email" id="email" required autofocus
                 autocomplete="email">
             @error('email')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+        </div>
+        <div class="col-6">
+            <label class="form-label">{{ __('Username') }}</label>
+            <input type="text" class="form-control" value="{{ $user->name }}" disabled>
+        </div>
+        <div class="col-6">
+            <label class="form-label">{{ __('WhatsApp') }} <ion-icon name="shield-checkmark-outline"
+                    class="text-success"></ion-icon></label>
+            <input type="text" class="form-control" value="{{ $user->number }}" disabled>
+        </div>
+        <div class="col-6">
+            <label class="form-label">{{ __('Saldo') }}</label>
+            <input type="text" class="form-control" value="{{ $user->saldo }}" disabled>
+        </div>
+        <div class="col-6">
+            <label class="form-label">{{ __('Point') }}</label>
+            <input type="text" class="form-control" value="{{ $user->point }}" disabled>
+        </div>
+        <div class="col-6">
+            <label class="form-label">{{ __('Kode Referral') }}</label>
+            <input type="text" class="form-control" style="cursor: pointer" id="referral"
+                onclick="copyToClipboard(this)" value="{{ $user->code_referral }}" readonly>
+        </div>
+        <div class="col-6">
+            <label class="form-label">{{ __('Date Register') }}</label>
+            <input type="text" class="form-control" value="{{ tanggal($user->created_at) }}" disabled>
         </div>
 
         @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())

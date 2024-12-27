@@ -16,6 +16,11 @@ trait HasRoles
         return $this->HasRole('customer');
     }
 
+    public function isMitra(): bool
+    {
+        return $this->HasRole('mitra');
+    }
+
     public function HasRole(string $role): bool
     {
         return $this->role === $role;

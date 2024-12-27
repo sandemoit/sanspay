@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Announcement;
 use App\Models\Config;
 use App\Models\Notification;
 use App\Models\Profit;
@@ -90,7 +91,7 @@ if (!function_exists('profit')) {
         static $profits;
 
         if (is_null($profits)) {
-            $profits = Profit::whereIn('key', ['admin', 'customer', 'agent'])->get()->keyBy('key');
+            $profits = Profit::whereIn('key', ['admin', 'customer', 'mitra'])->get()->keyBy('key');
         }
 
         if ($value) {
@@ -128,7 +129,7 @@ if (!function_exists('configWeb')) {
         static $web;
 
         if (is_null($web)) {
-            $web = Notification::whereIn('key', ['deposit_wa', 'deposit_email', 'transaction_wa', 'transaction_email'])->get()->keyBy('key');
+            $web = Notification::whereIn('key', ['create_deposit_wa', 'done_deposit_wa', 'deposit_email', 'transaction_wa', 'transaction_email'])->get()->keyBy('key');
         }
 
         if ($value) {
@@ -144,5 +145,51 @@ if (!function_exists('segment')) {
     function segment($segment)
     {
         return request()->segment($segment);
+    }
+}
+
+// buatkan function untuk announcement mengambil parameter dari field table announcement
+function announcement()
+{
+    return Announcement::orderBy('updated_at', 'desc')->get();
+}
+
+if (!function_exists('normalizePhoneNumber')) {
+    function normalizePhoneNumber($phone)
+    {
+        $phone = preg_replace('/[^0-9]/', '', $phone);
+
+        if (str_starts_with($phone, '+62')) {
+            return '0' . substr($phone, 3);
+        } elseif (str_starts_with($phone, '62')) {
+            return '0' . substr($phone, 2);
+        }
+
+        return $phone;
+    }
+}
+
+if (!function_exists('detectProvider')) {
+    function detectProvider($phone)
+    {
+        $prefixes = [
+            'telkomsel' => ['0811', '0812', '0813', '0821', '0822', '0823', '0852', '0853'],
+            'indosat'   => ['0814', '0815', '0816', '0855', '0856', '0857', '0858'],
+            'xl'        => ['0817', '0818', '0819', '0859', '0877', '0878'],
+            'axis'      => ['0832', '0833', '0838'],
+            'three'     => ['0895', '0896', '0897', '0898', '0899'],
+            'smartfren' => ['0881', '0882', '0883', '0884', '0885', '0886', '0887', '0888', '0889'],
+            'by.u'      => ['0851']
+        ];
+
+        foreach ($prefixes as $provider => $prefixList) {
+            foreach ($prefixList as $prefix) {
+                if (strpos($phone, $prefix) === 0) {
+                    return $provider;
+                }
+            }
+        }
+
+        return null; // Provider tidak ditemukan
     }
 }

@@ -11,12 +11,12 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        $notification = Notification::whereIn('key', ['deposit_wa', 'deposit_email', 'transaction_wa', 'transaction_email'])->get()->keyBy('key');
+        $notification = Notification::whereIn('key', ['create_deposit_wa', 'done_deposit_wa', 'transaction_wa', 'transaction_email'])->get()->keyBy('key');
 
         $data = [
             'title' => 'Notification',
-            'deposit_wa' => $notification->get('deposit_wa'),
-            'deposit_email' => $notification->get('deposit_email'),
+            'create_deposit_wa' => $notification->get('create_deposit_wa'),
+            'done_deposit_wa' => $notification->get('done_deposit_wa'),
             'transaction_wa' => $notification->get('transaction_wa'),
             'transaction_email' => $notification->get('transaction_email'),
         ];
@@ -28,8 +28,8 @@ class NotificationController extends Controller
     {
         try {
             $validated = $request->validate([
-                'deposit_wa' => 'required|string',
-                'deposit_email' => 'required|string',
+                'create_deposit_wa' => 'required|string',
+                'done_deposit_wa' => 'required|string',
                 'transaction_wa' => 'required|string',
                 'transaction_email' => 'required|string',
             ]);

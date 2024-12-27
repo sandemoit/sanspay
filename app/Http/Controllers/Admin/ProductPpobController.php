@@ -53,7 +53,7 @@ class ProductPpobController extends Controller
             ->addColumn('product_price', function ($row) {
                 return '<td class="focus">
                 <li class="mt-1">Rp. ' . nominal($row->price, 'IDR') . ' [Source]</li>
-                <li>Rp. ' . nominal($row->agent_price, 'IDR') . ' [Agent]</li>
+                <li>Rp. ' . nominal($row->mitra_price, 'IDR') . ' [Mitra]</li>
                 <li>Rp. ' . nominal($row->cust_price, 'IDR') . ' [Customer]</li>
                 </td>';
             })
@@ -100,9 +100,9 @@ class ProductPpobController extends Controller
             'status' => 'required|string|in:empty,available',
         ]);
 
-        $profits = Profit::whereIn('key', ['customer', 'agent'])->pluck('value', 'key');
+        $profits = Profit::whereIn('key', ['customer', 'agemitrant'])->pluck('value', 'key');
 
-        $priceAgentMargin = $validatedData['price'] * (1 + $profits['agent'] / 100);
+        $priceMitraMargin = $validatedData['price'] * (1 + $profits['mitra'] / 100);
         $priceBasicMargin = $validatedData['price'] * (1 + $profits['customer'] / 100);
 
         // Buat produk baru di database
@@ -114,7 +114,7 @@ class ProductPpobController extends Controller
             'name' => $validatedData['name'],
             'note' => $validatedData['note'],
             'price' => $validatedData['price'],
-            'agent_price' => $priceAgentMargin,
+            'mitra_price' => $priceMitraMargin,
             'cust_price' => $priceBasicMargin,
             'status' => $validatedData['status'],
         ]);
@@ -156,9 +156,9 @@ class ProductPpobController extends Controller
         // Cari produk berdasarkan ID
         $product = ProductPpob::findOrFail($decodedId);
 
-        $profits = Profit::whereIn('key', ['customer', 'agent'])->pluck('value', 'key');
+        $profits = Profit::whereIn('key', ['customer', 'mitra'])->pluck('value', 'key');
 
-        $priceAgentMargin = $validatedData['price'] * (1 + $profits['agent'] / 100);
+        $priceMitraMargin = $validatedData['price'] * (1 + $profits['mitra'] / 100);
         $priceBasicMargin = $validatedData['price'] * (1 + $profits['customer'] / 100);
 
         // Update produk di database
@@ -170,7 +170,7 @@ class ProductPpobController extends Controller
             'name' => $validatedData['name'],
             'note' => $validatedData['note'],
             'price' => $validatedData['price'],
-            'agent_price' => $priceAgentMargin,
+            'mitra_price' => $priceMitraMargin,
             'cust_price' => $priceBasicMargin,
             'status' => $validatedData['status'],
         ]);

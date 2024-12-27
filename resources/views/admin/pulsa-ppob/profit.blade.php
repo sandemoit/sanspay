@@ -20,11 +20,11 @@
                                 @enderror
                             </div>
                             <div class="col-12">
-                                <label class="form-label">{{ __('Agent') }}</label>
-                                <input type="text" name="agent" id="agent"
-                                    class="form-control @error('agent') is-invalid @enderror"
-                                    value="{{ @old('agent', $agent->value) }}">
-                                @error('agent')
+                                <label class="form-label">{{ __('Mitra') }}</label>
+                                <input type="text" name="mitra" id="mitra"
+                                    class="form-control @error('mitra') is-invalid @enderror"
+                                    value="{{ @old('mitra', $mitra->value) }}">
+                                @error('mitra')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

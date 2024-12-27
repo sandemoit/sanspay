@@ -3,7 +3,7 @@
         <link href="{{ asset('/') }}plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     @endpush
 
-    <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-4">
+    <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3">
         <div class="col mb-3">
             <div class="card radius-10">
                 <div class="card-body">
@@ -18,25 +18,6 @@
                     <div class="d-flex align-items-center mt-3">
                         <div>
                             <h4 class="mb-0">{{ $statuses['success'] }}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-3">
-            <div class="card radius-10">
-                <div class="card-body">
-                    <div class="d-flex align-items-start gap-2">
-                        <div>
-                            <p class="mb-0 fs-6">{{ __('Transaction in Process') }}</p>
-                        </div>
-                        <div class="ms-auto widget-icon-small text-white bg-gradient-info">
-                            <ion-icon name="hourglass-outline"></ion-icon>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center mt-3">
-                        <div>
-                            <h4 class="mb-0">{{ $statuses['in_process'] }}</h4>
                         </div>
                     </div>
                 </div>
@@ -66,7 +47,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-start gap-2">
                         <div>
-                            <p class="mb-0 fs-6">{{ __('Transaction Canceled') }}</p>
+                            <p class="mb-0 fs-6">{{ __('Transaction Error') }}</p>
                         </div>
                         <div class="ms-auto widget-icon-small text-white bg-gradient-danger">
                             <ion-icon name="close-outline"></ion-icon>
@@ -92,9 +73,10 @@
                             <th>{{ __('Date') }}</th>
                             <th>{{ __('Username ') }}</th>
                             <th>{{ __('Product') }}</th>
+                            <th>{{ __('Trxid') }}</th>
                             <th>{{ __('Target') }}</th>
-                            <th>{{ __('Total Payment') }}</th>
-                            <th>{{ __('Status') }}</th>
+                            <th>{{ __('Harga') }}</th>
+                            <th>{{ __('Action') }}</th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">

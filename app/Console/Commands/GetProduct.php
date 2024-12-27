@@ -36,9 +36,9 @@ class GetProduct extends Command
             $priceList = $priceListResponse['data'];
             // Loop through the price list and insert/update products
             foreach ($priceList as $product) {
-                $profits = Profit::whereIn('key', ['customer', 'agent'])->pluck('value', 'key');
+                $profits = Profit::whereIn('key', ['customer', 'mitra'])->pluck('value', 'key');
 
-                $priceAgentMargin = $product['price'] * (1 + $profits['agent'] / 100);
+                $priceMitraMargin = $product['price'] * (1 + $profits['mitra'] / 100);
                 $priceBasicMargin = $product['price'] * (1 + $profits['customer'] / 100);
                 $status = $product['status'] ? 'available' : 'empty';
 
@@ -57,7 +57,7 @@ class GetProduct extends Command
                     // Update data produk jika ada perubahan
                     $changes = [];
                     if (
-                        $existingProduct->agent_price != $priceAgentMargin ||
+                        $existingProduct->mitra_price != $priceMitraMargin ||
                         $existingProduct->cust_price != $priceBasicMargin ||
                         $existingProduct->price != $product['price'] ||
                         $existingProduct->name != $product['name'] ||
@@ -72,7 +72,7 @@ class GetProduct extends Command
                             'note' => $product['note'],
                             'brand' => $product['brand'],
                             'price' => $product['price'],
-                            'agent_price' => $priceAgentMargin,
+                            'mitra_price' => $priceMitraMargin,
                             'cust_price' => $priceBasicMargin,
                             'status' => $status,
                             'type' => $product['type'],
@@ -85,7 +85,7 @@ class GetProduct extends Command
                         print "Type: {$product['type']}<br>";
                         print "Status: {$existingProduct->status} -> {$status}<br>";
                         print "Harga Pusat: {Rp. " . nominal($existingProduct->price, 'IDR') . "} -> {Rp. " . nominal($product['price'], 'IDR') . "}<br>";
-                        print "Harga Agent: {Rp. " . nominal($existingProduct->agent_price, 'IDR') . "} -> Rp. " . nominal($priceAgentMargin, 'IDR') . "<br>";
+                        print "Harga Mitra: {Rp. " . nominal($existingProduct->mitra_price, 'IDR') . "} -> Rp. " . nominal($priceMitraMargin, 'IDR') . "<br>";
                         print "Harga Customer: {Rp. " . nominal($existingProduct->cust_price, 'IDR') . "} -> Rp. " . nominal($priceBasicMargin, 'IDR') . "<br>";
                         print '</pre></font><hr>';
                     } else {
@@ -102,7 +102,7 @@ class GetProduct extends Command
                         'note' => $product['note'],
                         'brand' => $product['brand'],
                         'price' => $product['price'],
-                        'agent_price' => $priceAgentMargin,
+                        'mitra_price' => $priceMitraMargin,
                         'cust_price' => $priceBasicMargin,
                         'status' => $status,
                         'type' => $product['type'],

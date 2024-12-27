@@ -12,12 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['admin', 'customer', 'mitra'])->after('email');
-            $table->string('status')->default('active')->after('email');
-            $table->string('image')->nullable()->after('email');
-            $table->string('number')->nullable()->after('email');
-            $table->integer('saldo')->default(0)->after('email');
-            $table->integer('point')->default(0)->after('saldo');
+            $table->integer('from_referral')->nullable()->after('saldo');
+            $table->string('code_referral')->default('SP1234')->after('saldo');
         });
     }
 
