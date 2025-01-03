@@ -55,7 +55,7 @@
                     </div>
                     <div class="d-flex align-items-center mt-3">
                         <div>
-                            <h4 class="mb-0">{{ $statuses['canceled'] }}</h4>
+                            <h4 class="mb-0">{{ $statuses['cancel'] }}</h4>
                         </div>
                     </div>
                 </div>

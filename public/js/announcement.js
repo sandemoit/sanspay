@@ -19,7 +19,7 @@ $(document).ready(function() {
             {
                 data: 'image',
                 render: function(data) {
-                    return `<img src="/${data}" width="100" alt="Image">`
+                    return `<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-src="/${data}" width="100" alt="Image" class="lazyload">`;
                 },
                 orderable: true,
             },
@@ -41,6 +41,19 @@ $(document).ready(function() {
                 orderable: true,
             },
         ]
+    });
+
+    // Lazy loading gambar
+    table.on('draw.dt', function() {
+        var images = table.$('img.lazyload');
+        images.each(function() {
+            var img = $(this);
+            if (!img.attr('src').includes('data:image/png;base64')) {
+                return;
+            }
+            img.attr('src', img.attr('data-src'));
+            img.removeClass('lazyload');
+        });
     });
     
     tinymce.init({
@@ -85,7 +98,7 @@ $(document).on('click', '.delete-btn', function (e) {
                 type: 'GET',
                 success: function (response) {
                     // Tampilkan pesan berhasil
-                    toastr.error(response.success, {timeOut: 2000})
+                    toastr.success(response.success, {timeOut: 2000})
                     
                     // Refresh DataTable atau hapus baris secara manual
                     $('#announcement-table').DataTable().ajax.reload();

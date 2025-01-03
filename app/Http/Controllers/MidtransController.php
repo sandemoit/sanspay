@@ -38,35 +38,29 @@ class MidtransController extends Controller
         }
 
         switch ($transactionStatus) {
-            case 'capture':
-                if ($request->payment_type == 'credit_card') {
-                    if ($request->fraud_status == 'challenge') {
-                        $order->update(['status' => 'pending']);
-                    } else {
-                        $order->update(['status' => 'settlement']);
-                        $this->saveMutationAndBalance($order);
-                    }
-                }
-                break;
             case 'settlement':
                 $order->update(['status' => 'settlement']);
-                // $this->saveMutationAndBalance($order);
+                $this->saveMutationAndBalance($order);
                 $this->sendNotifCallback($order, 'SUCCESS');
                 break;
             case 'pending':
                 $order->update(['status' => 'pending']);
+                $this->saveMutationAndBalance($order);
                 break;
             case 'deny':
                 $order->update(['status' => 'deny']);
+                $this->saveMutationAndBalance($order);
                 $this->sendNotifCallback($order, 'DENY');
                 break;
             case 'expire':
                 $order->update(['status' => 'expired']);
+                $this->saveMutationAndBalance($order);
                 $this->sendNotifCallback($order, 'EXPIRED');
                 break;
             case 'cancel':
-                $order->update(['status' => 'canceled']);
-                $this->sendNotifCallback($order, 'CANCELED');
+                $order->update(['status' => 'cancel']);
+                $this->saveMutationAndBalance($order);
+                $this->sendNotifCallback($order, 'CANCEL');
                 break;
             default:
                 $order->update(['status' => 'unknown']);
@@ -81,7 +75,6 @@ class MidtransController extends Controller
         $user = $order->user;
         $method = $order->depositmethod;
         $amount = nominal($order->amount);
-        $saldo = nominal($user->saldo);
 
         $target = "$user->number|$user->name|$order->topup_id|$method->name|$amount|$status";
         $sendWa = WhatsApp::sendMessage($target, formatNotif('done_deposit_wa')->value);
@@ -104,7 +97,7 @@ class MidtransController extends Controller
             'username' => $user->name,
             'type' => '+',
             'amount' => $order->amount,
-            'note' => 'Deposit :: ' . uniqid(),
+            'note' => 'Deposit :: ' . $order->topup_id,
         ]);
 
         // Update saldo user

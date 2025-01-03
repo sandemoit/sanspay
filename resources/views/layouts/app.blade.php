@@ -13,8 +13,8 @@
     <link rel="icon" type="image/x-icon" href="{{ asset(configWeb('favicon')->value) }}" />
 
     <!-- loader-->
-    <link href="{{ asset('/') }}css/pace.min.css" rel="stylesheet" />
-    <script src="{{ asset('/') }}js/pace.min.js"></script>
+    {{-- <link href="{{ asset('/') }}css/pace.min.css" rel="stylesheet" />
+    <script src="{{ asset('/') }}js/pace.min.js"></script> --}}
 
     <!--plugins-->
     <link href="{{ asset('/') }}plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />

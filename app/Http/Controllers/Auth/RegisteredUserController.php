@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Referrals;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -40,7 +41,7 @@ class RegisteredUserController extends Controller
         ]);
 
         if ($request->kode_referral) {
-            $referral = User::where('code_referral', $request->kode_referral)->first();
+            $userReferral = User::where('code_referral', $request->kode_referral)->first();
         }
 
         $user = User::create([
@@ -53,8 +54,18 @@ class RegisteredUserController extends Controller
             'number' => $request->number,
             'status' => 'active',
             'code_referral' => 'SP' . substr(str_shuffle('0123456789'), 0, 4),
-            'from_referral' => $referral ? $referral->id : null
         ]);
+
+        if ($userReferral) {
+            Referrals::create([
+                'username_from' => $userReferral->name,
+                'username_to' => $user->name,
+                'point' => 15000,
+                'status' => 'active'
+            ]);
+
+            $userReferral->increment('point', 15000);
+        }
 
         event(new Registered($user));
 

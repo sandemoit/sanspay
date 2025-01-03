@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('fullname')->after('name');
+            $table->enum('gender', ['Laki - laki', 'Perempuan'])->nullable()->after('email');
+            $table->string('full_address')->nullable()->after('image');
+            $table->string('selfie_ktp')->nullable()->after('image');
+            $table->string('no_ktp')->nullable()->after('image');
         });
     }
 

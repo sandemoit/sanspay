@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Helpers\WhatsApp;
 use App\Models\Deposit;
 use App\Models\DepositMethod;
-use App\Models\DepositPayment;
+use App\Models\Mutation;
+use App\Models\TransferSaldo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Midtrans\Snap;
 use Midtrans\Config;
@@ -40,9 +44,12 @@ class DepositController extends Controller
                 return '<a href="' . route('deposit.invoice', ['topup_id' => $row->topup_id]) . '">#' . $row->topup_id . '</a><br>' . tanggal($row->created_at);
             })
             ->addColumn('Method', function ($row) {
-                return $row->depositmethod->name;
+                return $row->depositmethod->name ?? $row->payment_method;
             })
             ->addColumn('TotalTransfer', function ($row) {
+                if ($row->payment_method === 'point_exchange') {
+                    return $row->total_transfer . ' Point';
+                }
                 return 'Rp. ' . nominal($row->total_transfer);
             })
             ->addColumn('Amount', function ($row) {
@@ -192,59 +199,51 @@ class DepositController extends Controller
 
             // Proses pembayaran jika typepayment adalah Midtrans
             if ($request->typepayment == 1) {
-                $this->processMidtrans($request, $deposit, $user);
+                $params = [
+                    'transaction_details' => [
+                        'order_id' => $deposit->topup_id,
+                        'gross_amount' => $deposit->total_transfer,
+                    ],
+                    'customer_details' => [
+                        'first_name' => $user->fullname,
+                        'email' => $user->email,
+                        'phone' => $user->number,
+                    ],
+                    'callbacks' => [
+                        'finish' => route('deposit.invoice', ['topup_id' => $deposit->topup_id]),
+                    ],
+                ];
+
+                // Atur metode pembayaran
+                $enabledPayments = match ($request->methodpayment) {
+                    'bni_va', 'bri_va', 'mandiri_va', 'cimb_va', 'permata_va', 'bca_va' => ["$request->methodpayment"],
+                    'gopay' => ['gopay'],
+                    'shopeepay' => ['shopeepay'],
+                    'qris' => ['other_qris'],
+                    default => throw new \Exception('Metode pembayaran tidak valid.'),
+                };
+
+                $params['enabled_payments'] = $enabledPayments;
+                $params['payment_type'] = $enabledPayments[0];
+
+                // Request snap token
+                $snapToken = Snap::getSnapToken($params);
+                $redirectUrl = Snap::createTransaction($params)->redirect_url;
+
+                // Update data deposit dengan informasi pembayaran
+                $deposit->update([
+                    'snap_token' => $snapToken,
+                    'redirect_url' => $redirectUrl,
+                    'payment_expiry' => now()->addDay(),
+                ]);
+
+                return redirect()->away($redirectUrl);
             } else {
                 return redirect()->route('deposit.invoice', $deposit->topup_id)->with('success', 'Request Payment Success.');
             }
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal memproses pembayaran. Silahkan coba lagi.');
         }
-    }
-
-    /**
-     * Proses pembayaran melalui Midtrans
-     */
-    private function processMidtrans(Request $request, $deposit, $user)
-    {
-        $params = [
-            'transaction_details' => [
-                'order_id' => $deposit->topup_id,
-                'gross_amount' => $deposit->total_transfer,
-            ],
-            'customer_details' => [
-                'first_name' => $user->fullname,
-                'email' => $user->email,
-                'phone' => $user->number,
-            ],
-            'callbacks' => [
-                'finish' => route('deposit.invoice', ['topup_id' => $deposit->topup_id]),
-            ],
-        ];
-
-        // Atur metode pembayaran
-        $enabledPayments = match ($request->methodpayment) {
-            'bni_va', 'bri_va', 'mandiri_va', 'cimb_va', 'permata_va', 'bca_va' => ["$request->methodpayment"],
-            'gopay' => ['gopay'],
-            'shopeepay' => ['shopeepay'],
-            'qris' => ['other_qris'],
-            default => throw new \Exception('Metode pembayaran tidak valid.'),
-        };
-
-        $params['enabled_payments'] = $enabledPayments;
-        $params['payment_type'] = $enabledPayments[0];
-
-        // Request snap token
-        $snapToken = Snap::getSnapToken($params);
-        $redirectUrl = Snap::createTransaction($params)->redirect_url;
-
-        // Update data deposit dengan informasi pembayaran
-        $deposit->update([
-            'snap_token' => $snapToken,
-            'redirect_url' => $redirectUrl,
-            'payment_expiry' => now()->addDay(),
-        ]);
-
-        return redirect()->away($redirectUrl);
     }
 
     public function invoice($topup_id)
@@ -260,6 +259,10 @@ class DepositController extends Controller
 
         // Ambil detail nomor rekening dari tabel DepositMethod
         $method = DepositMethod::where('code', $deposit->payment_method)->first();
+
+        if ($deposit->payment_method == 'point_exchange') {
+            return redirect()->back()->with('error', 'Tukar Point tidak ada invoice.');
+        }
 
         if (!$method) {
             return redirect()->back()->with('error', 'Metode pembayaran tidak valid.');
@@ -301,6 +304,8 @@ class DepositController extends Controller
 
     public function depositCancelMidtrans($topup_id)
     {
+        Deposit::where('topup_id', $topup_id)->update(['status' => 'cancel']);
+
         $baseUrl = "https://api.sandbox.midtrans.com/v2/$topup_id/cancel";
         $serverKey = config('midtrans.server_key');
         $encodedKey = base64_encode($serverKey . ':');
@@ -308,11 +313,11 @@ class DepositController extends Controller
         $response = Http::withHeaders([
             'Authorization' => 'Basic ' . $encodedKey,
             'Accept' => 'application/json',
-            'Content-Type' => 'application/json'
         ])->post($baseUrl);
 
         $responseBody = json_decode($response->body());
 
+        // Batalkan transaksi menggunakan Midtrans API
         if ($response->successful() && $responseBody->status_code == 200) {
             return redirect()->route('deposit.new')->with('success', $responseBody->status_message);
         } else {
@@ -334,5 +339,172 @@ class DepositController extends Controller
         ])->post($baseUrl);
 
         return $response->getBody();
+    }
+
+    public function sendSaldo()
+    {
+        $title = 'Kirim Saldo Antar Mitra';
+        return view('users.deposit.send-saldo', compact('title'));
+    }
+
+    public function sendSaldoStore(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|exists:users,name',
+            'nominal' => 'required|numeric|min:1',
+            'pin' => 'required',
+        ]);
+
+        $sender = Auth::user();
+        $receiver = User::where('name', $request->username)->first();
+        $saldo = (int) str_replace('.', '', $request->nominal);
+
+        // validasi receiver
+        if (!$receiver) {
+            return redirect()->back()->with('error', 'Username tidak ditemukan');
+        }
+
+        // Validasi PIN menggunakan Hash
+        if (!Hash::check($request->pin, $sender->pin)) {
+            return redirect()->back()->with('error', 'PIN yang dimasukkan salah');
+        }
+
+        // Cek apakah saldo mencukupi
+        if ($sender->saldo < $saldo) {
+            return redirect()->back()->with('error', 'Saldo tidak mencukupi');
+        }
+
+        DB::beginTransaction();
+        try {
+            // Kurangi saldo pengirim
+            User::where('id', $sender->id)->decrement('saldo', $saldo);
+
+            // Tambah saldo penerima
+            User::where('id', $receiver->id)->increment('saldo', $saldo);
+
+            // Catat mutasi saldo untuk pengirim
+            Mutation::create([
+                'username' => $sender->name,
+                'type' => '-',
+                'amount' => $saldo,
+                'note' => 'Kirim Saldo ke ' . $receiver->fullname,
+            ]);
+
+            // Catat mutasi saldo untuk penerima
+            Mutation::create([
+                'username' => $receiver->name,
+                'type' => '+',
+                'amount' => $saldo,
+                'note' => 'Terima Saldo dari ' . $sender->fullname,
+            ]);
+
+            TransferSaldo::create([
+                'id_uniq' => substr(str_shuffle('0123456789'), 0, 12),
+                'sender' => $sender->fullname,
+                'reciver' => $receiver->fullname,
+                'nominal' => $saldo,
+                'status' => 'success',
+            ]);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Saldo berhasil dikirim');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function getKirimSaldo()
+    {
+        $transfer = TransferSaldo::get();
+
+        return DataTables::of($transfer)
+            ->addColumn('nominal_transfer', function ($row) {
+                return 'Rp' . nominal($row->nominal);
+            })
+            ->addColumn('date', function ($row) {
+                return tanggal($row->created_at);
+            })
+            ->addColumn('status_transfer', function ($row) {
+                switch ($row->status) {
+                    case 'success':
+                        return '<span class="badge bg-success">Berhasil</span>';
+                }
+            })
+
+            ->rawColumns(['status_transfer'])
+            ->make(true);
+    }
+
+    public function tukarPoint(Request $request)
+    {
+        $id = Auth::id();
+        $user = User::find($id);
+
+        $validator = Validator::make($request->all(), [
+            'point' => 'required|integer|min:1',
+            'pin' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $point = strip_tags($request->point);
+        $pin = strip_tags($request->pin);
+
+        // Validasi PIN
+        if (!Hash::check($pin, $user->pin)) {
+            return redirect()->back()->with(['error' => 'PIN transaksi tidak valid.'])->withInput();
+        }
+
+        // Validasi jumlah point
+        if ($user->point < $point) {
+            return redirect()->back()->with(['error' => 'Jumlah point tidak mencukupi.'])->withInput();
+        }
+
+        // Update point dan saldo user
+        $user->decrement('point', $point);
+        $user->increment('saldo', $point);
+
+        // Mulai transaksi
+        DB::beginTransaction();
+
+        try {
+            // Buat entri deposit
+            Deposit::create([
+                'topup_id' => 'INV' . time(),
+                'member_id' => $user->id,
+                'payment_method' => 'point_exchange',
+                'amount' => $point,
+                'total_transfer' => $point,
+                'status' => 'settlement',
+                'snap_token' => null,
+                'redirect_url' => null,
+                'payment_expiry' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            // Buat entri mutation
+            Mutation::create([
+                'username' => $user->name,
+                'type' => 'point_exchange',
+                'amount' => $point,
+                'note' => 'Pertukaran point ke saldo',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            // Commit transaksi
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Pertukaran point ke saldo berhasil.');
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi error
+            DB::rollback();
+
+            return redirect()->back()->with(['error' => $e->getMessage()])->withInput();
+        }
     }
 }

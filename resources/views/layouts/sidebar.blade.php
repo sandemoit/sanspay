@@ -115,11 +115,28 @@
                 </ul>
             </li>
             <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon">
+                        <ion-icon name="people-outline"></ion-icon>
+                    </div>
+                    <div class="menu-title">{{ __('User Management') }}</div>
+                </a>
+                <ul>
+                    <li> <a href="{{ route('admin.upgrade-mitra') }}">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('Upgrade Mitra') }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
                 <a href="{{ route('admin.ticket') }}">
                     <div class="parent-icon">
                         <ion-icon name="chatbubbles-outline"></ion-icon>
                     </div>
                     <div class="menu-title">{{ __('Ticket Helpdesk') }}</div>
+                    @if ($openTicketsCount > 0)
+                        <span class="badge bg-danger ms-auto">{{ $openTicketsCount }}</span>
+                    @endif
                 </a>
             </li>
             <li>
@@ -167,8 +184,39 @@
                             <ion-icon name="ellipse-outline"></ion-icon>{{ __('Request Deposit') }}
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('send.saldo') }}">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('Kirim Antar Mitra') }}
+                        </a>
+                    </li>
                 </ul>
             </li>
+            <li>
+                <a href="{{ route('program.referral') }}">
+                    <div class="parent-icon">
+                        <ion-icon name="gift-outline"></ion-icon>
+                    </div>
+                    <div class="menu-title">{{ __('Program Referral') }}</div>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('ticket') }}">
+                    <div class="parent-icon">
+                        <ion-icon name="chatbubbles-outline"></ion-icon>
+                    </div>
+                    <div class="menu-title">{{ __('Tiket Bantuan') }}</div>
+                </a>
+            </li>
+            @if (Auth::user()->role == 'customer')
+                <li>
+                    <a href="{{ route('upgrade.mitra') }}">
+                        <div class="parent-icon">
+                            <ion-icon name="star-outline"></ion-icon>
+                        </div>
+                        <div class="menu-title">{{ __('Upgrade Mitra') }}</div>
+                    </a>
+                </li>
+            @endif
         @elseif (Auth::user()->role == 'mitra' && segment(1) != 'admin')
             <p>Mitra</p>
         @endif

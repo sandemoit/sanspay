@@ -154,5 +154,8 @@
     "Reset": "Atur Ulang",
     "Pay": "Bayar",
     "Confirmation Deposit": "Konfirmasi Deposit",
-    "Cancel Deposit": "Batalkan Deposit"
+    "Cancel Deposit": "Batalkan Deposit",
+    "Request Deposit": "Deposit Saldo",
+    "Update PIN Transaction": "Perbarui PIN Transaksi",
+    "Make sure your transactions use a hard-to-guess PIN to stay safe.": "Pastikan transaksi Anda menggunakan PIN yang sulit ditebak untuk menjaga keamanan Anda."
 }

@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('from_referral')->nullable()->after('saldo');
             $table->string('code_referral')->default('SP1234')->after('saldo');
         });
     }

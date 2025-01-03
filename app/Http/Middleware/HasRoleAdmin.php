@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HasRoleAdmin
 {
-
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->user()->isAdmin()) {

@@ -12,7 +12,9 @@ use App\Http\Controllers\Admin\ProviderController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\UsermanagementController;
 use App\Http\Middleware\HasRoleAdmin;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified', HasRoleAdmin::class])->group(function () {
@@ -73,6 +75,7 @@ Route::middleware(['auth', 'verified', HasRoleAdmin::class])->group(function () 
     Route::get('/admin/ticket', [TicketController::class, 'index'])->name('admin.ticket');
     Route::get('/admin/ticket/get', [TicketController::class, 'getData'])->name('admin.ticket.get');
     Route::get('/admin/ticket/{id}', [TicketController::class, 'detail'])->name('admin.ticket.detail');
+    Route::put('/ticket/{id}', [TicketController::class, 'update'])->name('admin.ticket.update');
 
     // configuration
     Route::get('/admin/configure/website', [ConfigController::class, 'website'])->name('admin.configure.website');
@@ -94,4 +97,10 @@ Route::middleware(['auth', 'verified', HasRoleAdmin::class])->group(function () 
     // format notification
     Route::get('/admin/notification', [NotificationController::class, 'index'])->name('admin.notification');
     Route::put('/admin/notification', [NotificationController::class, 'updateNotification'])->name('admin.notification');
+
+    // management user
+    Route::get('/admin/upgrade-mitra', [UsermanagementController::class, 'upgradeMitra'])->name('admin.upgrade-mitra');
+    Route::get('/getUpgradeMitra', [UsermanagementController::class, 'getUpgradeMitra'])->name('getUpgradeMitra');
+    Route::get('/pengajuan/detail/{id}', [UsermanagementController::class, 'getDetailUpgrade'])->name('pengajuan.detail');
+    Route::put('/pengajuan/update-status/{id}', [UsermanagementController::class, 'updateStatusUpgrade'])->name('pengajuan.update-status');
 });

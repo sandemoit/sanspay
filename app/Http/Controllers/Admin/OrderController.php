@@ -18,7 +18,7 @@ class OrderController extends Controller
             'pending' => TrxPpob::where('status', 'Pending')->count(),
             'in_process' => TrxPpob::where('status', 'in_process')->count(),
             'success' => TrxPpob::where('status', 'Sukses')->count(),
-            'canceled' => TrxPpob::where('status', 'Gagal')->count(),
+            'cancel' => TrxPpob::where('status', 'Gagal')->count(),
         ];
 
         return view('admin.order', compact('statuses'));

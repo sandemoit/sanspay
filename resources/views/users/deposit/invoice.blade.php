@@ -24,8 +24,8 @@
             <div class="row row-cols-1 row-cols-lg-3">
                 <div class="col">
                     <div class="">
-                        <small>{{ __('Invoice') }} / {{ $deposit->created_at->format('F') }} period</small>
-                        <div class=""><b>{{ $deposit->created_at->format('M d, Y') }}</b></div>
+                        <small>{{ __('Invoice') }} / {{ $deposit->created_at->format('F') }} periode</small>
+                        <div class=""><b>{{ tanggal($deposit->created_at) }}</b></div>
                         <div class="invoice-detail">
                             #{{ $deposit->topup_id }}<br>
                             {{ __('Topup Sans Pay') }}
@@ -46,7 +46,7 @@
         </div>
         <div class="card-body">
 
-            <div class="row bg-light align-items-center m-0">
+            <div class="row bg-light align-items-center m-0 rounded-start">
                 <div class="col col-auto p-4">
                     <p class="mb-0">{{ __('SUBTOTAL') }}</p>
                     <h4 class="mb-0">{{ nominal($deposit->amount) }}</h4>
@@ -65,7 +65,7 @@
                     <p class="mb-0">{{ __('CODE UNIQUE') }}</p>
                     <h4 class="mb-0">{{ substr($deposit->total_transfer, -3) }}</h4>
                 </div>
-                <div class="col bg-primary col-auto p-4">
+                <div class="col bg-primary col-auto p-4 rounded-end">
                     <p class="mb-0 text-white">{{ __('TOTAL TRANSFER') }}</p>
                     <h4 class="mb-0 text-white">Rp. {{ nominal($deposit->total_transfer) }}</h4>
                 </div>
@@ -101,13 +101,13 @@
                     @endif
                 @endif
 
-                * Payment is due within 30 days<br>
+                * Payment is due within 1 days<br>
                 * If you have any questions concerning this invoice, contact [Name, Phone Number, Email]
             </div>
             <!-- end invoice-note -->
         </div>
 
-        <div class="card-footer py-3 bg-transparent">
+        {{-- <div class="card-footer py-3 bg-transparent">
             <p class="text-center mb-2">
                 THANK YOU FOR YOUR BUSINESS
             </p>
@@ -116,7 +116,7 @@
                 <span class=""><i class="bi bi-telephone-fill"></i> T:+11-0462879</span>
                 <span class=""><i class="bi bi-envelope-fill"></i> info@example.com</span>
             </p>
-        </div>
+        </div> --}}
     </div>
 
     @push('custom-js')

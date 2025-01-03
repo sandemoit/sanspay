@@ -1,6 +1,8 @@
 <x-app-layout>
     @push('custom-css')
         <link href="{{ asset('/') }}plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.css"
+            integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
     @endpush
 
     <div class="card">
@@ -87,6 +89,9 @@
         <script src="{{ asset('/') }}js/table-datatable.js"></script>
         <script src="https://cdn.tiny.cloud/1/esu5z25uowjyn5k82a5wt5d72d8cnaj99cywlqyny4km65wi/tinymce/7/tinymce.min.js"
             referrerpolicy="origin"></script>
+        <!-- Lazysizes JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" integrity="sha512-..."
+            crossorigin="anonymous" defer></script>
         <script type="text/javascript" src="{{ asset('/') }}js/announcement.js"></script>
     @endpush
 </x-app-layout>

@@ -26,7 +26,7 @@ class DepositController extends Controller
 
         return DataTables::of($product)
             ->addColumn('name', function ($row) {
-                return $row->user->name;
+                return $row->user->fullname;
             })
             ->addColumn('amount', function ($row) {
                 return 'Rp. ' . nominal($row->amount);
@@ -35,7 +35,7 @@ class DepositController extends Controller
                 return 'Rp. ' . nominal($row->total_transfer);
             })
             ->addColumn('payment_method', function ($row) {
-                return $row->depositmethod->name;
+                return $row->depositmethod->name ?? $row->payment_method;
             })
             ->addColumn('tanggal', function ($row) {
                 return tanggal($row->created_at);

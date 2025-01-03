@@ -49,7 +49,7 @@ class AnnouncementController extends Controller
                 'slug' => $slug,
                 'viewer' => $validate['viewer'],
                 'type' => $validate['type'],
-                'description' => $validate['description'],
+                'description' => strip_tags($validate['description']),
             ]);
 
             if (request()->hasFile('image')) {
@@ -66,18 +66,22 @@ class AnnouncementController extends Controller
 
     public function destroy($id)
     {
-        $id = base64_decode($id);
-        $announcement = Announcement::find($id);
-        if ($announcement) {
-            if ($announcement->image) {
-                $imagePath = public_path($announcement->image);
-                if (file_exists($imagePath)) {
-                    unlink($imagePath);
+        try {
+            $id = base64_decode($id);
+            $announcement = Announcement::find($id);
+            if ($announcement) {
+                if ($announcement->image) {
+                    $imagePath = public_path('storage/images/announcement/' . $announcement->image);
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
                 }
+                $announcement->delete();
+                return response()->json(['success' => __('Data deleted successfully')]);
             }
-            $announcement->delete();
-            return redirect()->back()->with('success', __('Data deleted successfully'));
+            return response()->json(['error' => __('Data not found')]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => __($e->getMessage())]);
         }
-        return redirect()->back()->with('error', __('Data not found'));
     }
 }

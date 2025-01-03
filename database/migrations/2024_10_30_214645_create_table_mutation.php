@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mutation', function (Blueprint $table) {
             $table->id();
             $table->string('username');
-            $table->enum('type', ['+', '-']);
+            $table->enum('type', ['+', '-', 'point_exchange']);
             $table->string('amount');
             $table->string('note');
             $table->timestamps();

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Ticket;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,5 +30,6 @@ class AppServiceProvider extends ServiceProvider
                 ->action('Confirm My Account', $url)
                 ->line('If you did not create an account, no further action is required.');
         });
+        View::share('openTicketsCount', Ticket::whereNull('parent_id')->where('status', 'open')->count());
     }
 }

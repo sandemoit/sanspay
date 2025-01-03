@@ -24,7 +24,7 @@ var options = {
             left: 14,
             blur: 4,
             opacity: .12,
-            color: "#0156ed"
+            color: "#00d1ff"
         },
         sparkline: {
             enabled: !0
@@ -32,7 +32,7 @@ var options = {
     },
     markers: {
         size: 0,
-        colors: ["#0156ed"],
+        colors: ["#00d1ff"],
         strokeColors: "#fff",
         strokeWidth: 2,
         hover: {
@@ -1168,7 +1168,7 @@ var options = {
             left: 14,
             blur: 4,
             opacity: .12,
-            color: "#0156ed"
+            color: "#00d1ff"
         },
         sparkline: {
             enabled: !1
@@ -1176,7 +1176,7 @@ var options = {
     },
     markers: {
         size: 0,
-        colors: ["#0156ed"],
+        colors: ["#00d1ff"],
         strokeColors: "#fff",
         strokeWidth: 2,
         hover: {

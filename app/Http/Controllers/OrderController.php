@@ -242,7 +242,7 @@ class OrderController extends Controller
             Mutation::create([
                 'username' => $user->name,
                 'type' => '-',
-                'amount' => $price,
+                'amount' => strip_tags($price),
                 'note' => "Trx :: $ref_id",
             ]);
 
@@ -253,7 +253,7 @@ class OrderController extends Controller
                 'code' => $product->code,
                 'name' => $product->name,
                 'data' => $request->target,
-                'price' => $price,
+                'price' => strip_tags($price),
                 'point' => ($user->role === 'customer') ? 0 : $point,
                 'refund' => '0',
                 'note' => 'Transaksi Berhasil Dibuat',

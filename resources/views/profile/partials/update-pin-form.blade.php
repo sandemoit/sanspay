@@ -1,6 +1,6 @@
-<h5 class="mb-0 mt-4">{{ __('Update PIN Security') }}</h5>
+<h5 class="mb-0 mt-4">{{ __('Update PIN Transaction') }}</h5>
 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-    {{ __('Ensure your account is using a long, random password to stay secure.') }}
+    {{ __('Make sure your transactions use a hard-to-guess PIN to stay safe.') }}
 </p>
 <hr>
 <form method="post" action="{{ route('pin.update') }}">

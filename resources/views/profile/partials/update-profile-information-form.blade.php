@@ -21,8 +21,12 @@
             @enderror
         </div>
         <div class="col-6">
-            <label class="form-label">{{ __('Email') }} <ion-icon name="shield-checkmark-outline"
-                    class="text-success"></ion-icon></label>
+            <label class="form-label">
+                {{ __('Email') }}
+                @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && $user->hasVerifiedEmail())
+                    <ion-icon name="shield-checkmark-outline" class="text-success"></ion-icon>
+                @endif
+            </label>
             <input type="email" class="form-control @error('email') is-invalid @enderror"
                 value="{{ old('email', $user->email) }}" name="email" id="email" required autofocus
                 autocomplete="email">

@@ -11,4 +11,19 @@ class Ticket extends Model
 
     protected $table = 'ticket';
     protected $guarded = [];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Ticket::class, 'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Ticket::class, 'parent_id');
+    }
 }
