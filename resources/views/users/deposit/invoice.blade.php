@@ -63,7 +63,13 @@
                 </div>
                 <div class="col me-auto p-4">
                     <p class="mb-0">{{ __('CODE UNIQUE') }}</p>
-                    <h4 class="mb-0">{{ substr($deposit->total_transfer, -3) }}</h4>
+                    <h4 class="mb-0">
+                        @if ($deposit->snap_token)
+                            {{ '-' }}
+                        @else
+                            {{ substr($deposit->total_transfer, -3) }}
+                        @endif
+                    </h4>
                 </div>
                 <div class="col bg-primary col-auto p-4 rounded-end">
                     <p class="mb-0 text-white">{{ __('TOTAL TRANSFER') }}</p>
@@ -81,11 +87,14 @@
                             'bca_va',
                             'bri_va',
                             'cimb_va',
-                            'mandiri_va',
+                            'echannel',
                             'permata_va',
                             'gopay',
                             'shopeepay',
                             'qris',
+                            'akulaku',
+                            'alfamart',
+                            'indomaret',
                         ]))
                         <a href="https://wa.me/{{ configWeb('whatsapp_url')->value }}?text=Confirmation+Deposit+{{ nominal($deposit->amount) }}+{{ $deposit->topup_id }}"
                             class="btn btn-primary btn-sm mb-2" target="_blank">{{ __('Confirmation Deposit') }}</a>

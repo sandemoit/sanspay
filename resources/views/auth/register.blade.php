@@ -6,7 +6,7 @@
         <img src="{{ asset('/') }}web/images/shape-17.svg" alt="Shape" class="h n o" />
         <img src="{{ asset('/') }}web/images/shape-18.svg" alt="Shape" class="h p q" />
 
-        <div class="animate_top bb af i va sg hh sm vk xm yi _n jp hi ao kp">
+        <div class="animate_top bb af i va sg hh sm vk xm yi _n jp hi ao">
             <!-- Bg Border -->
             <span class="rc h r s zd/2 od zg gh"></span>
             <span class="rc h r q zd/2 od xg mh"></span>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="col-12">
                     <label for="pin" class="form-label">{{ __('PIN Transaksi') }}</label>
-                    <input type="text" class="form-control @error('pin') is-invalid @enderror" id="number"
+                    <input type="password" class="form-control @error('pin') is-invalid @enderror" id="number"
                         name="pin" value="{{ old('pin') }}" required autofocus autocomplete="pin">
                     @error('pin')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -77,7 +77,7 @@
                 </div>
                 <div class="col-12">
                     <label for="kode_referral" class="form-label">{{ __('Kode Referral (Isi jika ada)') }}</label>
-                    <input type="password" class="form-control @error('kode_referral') is-invalid @enderror"
+                    <input type="text" class="form-control @error('kode_referral') is-invalid @enderror"
                         id="kode_referral" name="kode_referral" autofocus autocomplete="new-password">
                     @error('kode_referral')
                         <div class="invalid-feedback">{{ $message }}</div>

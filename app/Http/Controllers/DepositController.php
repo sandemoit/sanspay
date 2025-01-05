@@ -49,6 +49,8 @@ class DepositController extends Controller
             ->addColumn('TotalTransfer', function ($row) {
                 if ($row->payment_method === 'point_exchange') {
                     return $row->total_transfer . ' Point';
+                } elseif ($row->payment_method === 'transfer') {
+                    return 'Rp. ' . nominal($row->total_transfer);
                 }
                 return 'Rp. ' . nominal($row->total_transfer);
             })
@@ -66,7 +68,7 @@ class DepositController extends Controller
                     case 'expired':
                         return '<span class="badge bg-danger">Expired</span>';
                     case 'pending';
-                        if (in_array($row->depositmethod->type_payment, ['va', 'gopay', 'shopeepay', 'qris'])) {
+                        if (in_array($row->depositmethod->type_payment, ['va', 'gopay', 'shopeepay', 'qris', 'cstore', 'akulaku', 'kredivo', 'alfamart', 'indomaret'])) {
                             return '<a class="btn btn-sm btn-warning accept-btn" href="' . $row->redirect_url . '"><ion-icon name="cash-outline"></ion-icon>Pay</a>';
                         } else {
                             return '
@@ -103,7 +105,7 @@ class DepositController extends Controller
         $type = request('type'); // Mendapatkan nilai 'type' dari request
 
         // Daftar kode yang hanya ditampilkan jika type == 1
-        $autoCodes = ['bni_va', 'bri_va', 'shopeepay', 'gopay', 'alfamart', 'indomaret', 'permata_va', 'cimb_va', 'mandiri_va', 'qris'];
+        $autoCodes = ['bni_va', 'bri_va', 'shopeepay', 'gopay', 'alfamart', 'indomaret', 'permata_va', 'cimb_va', 'echannel', 'qris', 'akulaku'];
 
         // Query untuk mendapatkan metode deposit berdasarkan kondisi
         $methods = DepositMethod::when($type == 1, function ($query) use ($autoCodes) {
@@ -167,15 +169,31 @@ class DepositController extends Controller
         // Validasi input dan metode pembayaran
         $method = DepositMethod::where('code', $request->methodpayment)->firstOrFail(); // Fail jika metode tidak ditemukan
 
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'typepayment' => 'required|in:0,1',
             'methodpayment' => 'required',
-            'nominalDeposit' => 'required|numeric|min:' . $method->minimum,
+            'nominalDeposit' => ['required', 'numeric', 'min:' . $method->minimum, function ($attribute, $value, $fail) use ($method) {
+                if ($value < $method->minimum) {
+                    $fail('Minimal deposit untuk metode ' . $method->name . ' adalah Rp. ' . nominal($method->minimum) . '.');
+                }
+            }],
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         // Generate data untuk deposit
-        $total_transfer = (int)str_replace('.', '', $request->total_transfer) + rand(100, 999);
         $amount = (int)str_replace('.', '', $request->saldo_recived);
+
+        if ((int)$request->typepayment === 0) {
+            $total_transfer = (int)strip_tags(str_replace('.', '', $request->total_transfer)) + rand(100, 999);
+        } else {
+            $total_transfer = (int)strip_tags(str_replace('.', '', $request->total_transfer));
+        }
+
+        // Mulai transaksi
+        DB::beginTransaction();
 
         try {
             // Simpan data deposit
@@ -194,6 +212,7 @@ class DepositController extends Controller
 
             $sendWa = WhatsApp::sendMessage($target, formatNotif('create_deposit_wa')->value);
             if (!$sendWa['success']) {
+                DB::rollback();
                 return redirect()->back()->with('error', __($sendWa['message']));
             }
 
@@ -216,10 +235,8 @@ class DepositController extends Controller
 
                 // Atur metode pembayaran
                 $enabledPayments = match ($request->methodpayment) {
-                    'bni_va', 'bri_va', 'mandiri_va', 'cimb_va', 'permata_va', 'bca_va' => ["$request->methodpayment"],
-                    'gopay' => ['gopay'],
-                    'shopeepay' => ['shopeepay'],
-                    'qris' => ['other_qris'],
+                    'bni_va', 'bri_va', 'echannel', 'cimb_va', 'permata_va', 'bca_va' => [$request->methodpayment],
+                    'gopay', 'shopeepay', 'qris', 'akulaku', 'kredivo', 'alfamart', 'indomaret' => [$request->methodpayment],
                     default => throw new \Exception('Metode pembayaran tidak valid.'),
                 };
 
@@ -237,12 +254,16 @@ class DepositController extends Controller
                     'payment_expiry' => now()->addDay(),
                 ]);
 
+                DB::commit();
                 return redirect()->away($redirectUrl);
             } else {
+                DB::commit();
                 return redirect()->route('deposit.invoice', $deposit->topup_id)->with('success', 'Request Payment Success.');
             }
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal memproses pembayaran. Silahkan coba lagi.');
+            DB::rollback();
+            Log::error('Error processing deposit: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal memproses pembayaran. Silahkan coba lagi.');
         }
     }
 
@@ -260,8 +281,8 @@ class DepositController extends Controller
         // Ambil detail nomor rekening dari tabel DepositMethod
         $method = DepositMethod::where('code', $deposit->payment_method)->first();
 
-        if ($deposit->payment_method == 'point_exchange') {
-            return redirect()->back()->with('error', 'Tukar Point tidak ada invoice.');
+        if (in_array($deposit->payment_method, ['point_exchange', 'transfer'])) {
+            return redirect()->back()->with('error', 'Tukar Point atau Transfer tidak ada invoice.');
         }
 
         if (!$method) {
@@ -278,11 +299,12 @@ class DepositController extends Controller
 
     public function depositCancel($topup_id)
     {
-        $deposit = Deposit::where('topup_id', $topup_id)->first();
+        $deposit = Deposit::with('depositmethod')->where('topup_id', $topup_id)->first();
         $user = User::where('id', $deposit->member_id)->first();
 
         $amount = nominal($deposit->amount);
-        $target = "$user->number|$user->name|$deposit->topup_id|Bank $deposit->payment_method|$amount|CANCELED";
+        $nameBank = $deposit->depositmethod->name;
+        $target = "$user->number|$user->name|$deposit->topup_id|$nameBank|$amount|CANCELED";
         $sendWa = WhatsApp::sendMessage($target, formatNotif('create_deposit_wa')->value);
 
         if ($sendWa['success'] == false) {
@@ -326,21 +348,6 @@ class DepositController extends Controller
         }
     }
 
-    private function qrisMethod($nominalDeposit, $orderId)
-    {
-        $baseUrl = 'https://api.sandbox.midtrans.com/v2/charge';
-
-        $response = Http::withHeaders([
-            'body' => '{"payment_type":"qris","transaction_details":{"order_id":"' . $orderId . '","gross_amount":' . $nominalDeposit . '}}',
-            'headers' => [
-                'accept' => 'application/json',
-                'content-type' => 'application/json',
-            ],
-        ])->post($baseUrl);
-
-        return $response->getBody();
-    }
-
     public function sendSaldo()
     {
         $title = 'Kirim Saldo Antar Mitra';
@@ -352,7 +359,7 @@ class DepositController extends Controller
         $request->validate([
             'username' => 'required|exists:users,name',
             'nominal' => 'required|numeric|min:1',
-            'pin' => 'required',
+            'pin' => 'required|digits:6',
         ]);
 
         $sender = Auth::user();
@@ -398,12 +405,23 @@ class DepositController extends Controller
                 'note' => 'Terima Saldo dari ' . $sender->fullname,
             ]);
 
+            // Catat transaksi penerima
             TransferSaldo::create([
                 'id_uniq' => substr(str_shuffle('0123456789'), 0, 12),
                 'sender' => $sender->fullname,
                 'reciver' => $receiver->fullname,
                 'nominal' => $saldo,
                 'status' => 'success',
+            ]);
+
+            Deposit::create([
+                'topup_id' => 'INV' . time(),
+                'member_id' => $receiver->id,
+                'amount' => $saldo,
+                'total_transfer' => $saldo,
+                'payment_method' => 'transfer',
+                'status' => 'settlement',
+                'payment_expiry' => now(),
             ]);
 
             DB::commit();
@@ -479,11 +497,6 @@ class DepositController extends Controller
                 'amount' => $point,
                 'total_transfer' => $point,
                 'status' => 'settlement',
-                'snap_token' => null,
-                'redirect_url' => null,
-                'payment_expiry' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
 
             // Buat entri mutation
@@ -492,8 +505,6 @@ class DepositController extends Controller
                 'type' => 'point_exchange',
                 'amount' => $point,
                 'note' => 'Pertukaran point ke saldo',
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
 
             // Commit transaksi

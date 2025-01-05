@@ -19,6 +19,6 @@ class HasRoleCustomer
             return $next($request);
         }
 
-        abort(401);
+        return redirect()->back()->with('error', 'You do not have permission to access this page.');
     }
 }

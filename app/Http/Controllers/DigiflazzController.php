@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TrxPpob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class WebhookController extends Controller
+class DigiflazzController extends Controller
 {
     public function handle(Request $request)
     {
-        $secret = 'somesecretvalue'; // Ganti dengan secret dari DigiFlazz
+        Log::info('Webhook Received');
+        $secret = 'sanspaysecret'; // Ganti dengan secret dari DigiFlazz
 
         // Mendapatkan data mentah dari request
         $post_data = file_get_contents('php://input');
@@ -26,6 +28,7 @@ class WebhookController extends Controller
 
             // Lakukan proses sesuai event
             // Contoh: Simpan data transaksi atau update status transaksi
+            // TrxPpob::updated();
             return response()->json(['message' => 'Webhook processed successfully'], 200);
         } else {
             // Tanda tangan tidak valid

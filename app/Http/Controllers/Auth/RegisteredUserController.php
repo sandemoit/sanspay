@@ -40,10 +40,6 @@ class RegisteredUserController extends Controller
             'terms' => ['required', 'accepted'],
         ]);
 
-        if ($request->kode_referral) {
-            $userReferral = User::where('code_referral', $request->kode_referral)->first();
-        }
-
         $user = User::create([
             'fullname' => $request->fullname,
             'name' => $request->name,
@@ -56,15 +52,17 @@ class RegisteredUserController extends Controller
             'code_referral' => 'SP' . substr(str_shuffle('0123456789'), 0, 4),
         ]);
 
-        if ($userReferral) {
+        if ($request->kode_referral) {
+            $userReferral = User::where('code_referral', $request->kode_referral)->first();
+
             Referrals::create([
                 'username_from' => $userReferral->name,
                 'username_to' => $user->name,
-                'point' => 15000,
+                'point' => 2500,
                 'status' => 'active'
             ]);
 
-            $userReferral->increment('point', 15000);
+            $userReferral->increment('point', 2500);
         }
 
         event(new Registered($user));

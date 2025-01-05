@@ -11,7 +11,7 @@
                         <tr>
                             <th>No</th>
                             <th>{{ __('INV & Date') }}</th>
-                            <th>{{ __('Method') }}</th>
+                            <th>{{ __('Method Payment') }}</th>
                             <th>{{ __('Total Transfer') }}</th>
                             <th>{{ __('Saldo Recived') }}</th>
                             <th>{{ __('Status') }}</th>

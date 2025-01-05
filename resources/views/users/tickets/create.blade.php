@@ -6,7 +6,7 @@
                     <h4 class="text-uppercase">{{ $title }}</h4>
                     <form action="{{ route('ticket.store') }}" method="POST" class="row">
                         @csrf
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="subject" class="form-label">Subjek</label>
                             <select name="subject" id="subject"
                                 class="form-control @error('subject') is-invalid @enderror">
@@ -25,7 +25,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="message" class="form-label">Pesan</label>
-                            <textarea name="message" id="message" class="form-control @error('message') is-invalid @enderror">{{ old('message') }}</textarea>
+                            <textarea rows="4" name="message" id="message" class="form-control @error('message') is-invalid @enderror">{{ old('message') }}</textarea>
                             @error('message')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class HasRoleMitra
+class NotCustomerAccess
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,7 @@ class HasRoleMitra
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()->isMitra()) {
+        if ($request->user()->notCustomer()) {
             return $next($request);
         }
 

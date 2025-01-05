@@ -45,21 +45,17 @@ class MidtransController extends Controller
                 break;
             case 'pending':
                 $order->update(['status' => 'pending']);
-                $this->saveMutationAndBalance($order);
                 break;
             case 'deny':
                 $order->update(['status' => 'deny']);
-                $this->saveMutationAndBalance($order);
                 $this->sendNotifCallback($order, 'DENY');
                 break;
             case 'expire':
                 $order->update(['status' => 'expired']);
-                $this->saveMutationAndBalance($order);
                 $this->sendNotifCallback($order, 'EXPIRED');
                 break;
             case 'cancel':
                 $order->update(['status' => 'cancel']);
-                $this->saveMutationAndBalance($order);
                 $this->sendNotifCallback($order, 'CANCEL');
                 break;
             default:

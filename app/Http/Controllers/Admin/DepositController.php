@@ -51,7 +51,7 @@ class DepositController extends Controller
                     case 'expired':
                         return '<span class="badge bg-danger">Expired</span>';
                     case 'pending';
-                        if (in_array($row->depositmethod->type_payment, ['va', 'gopay', 'shopeepay', 'qris'])) {
+                        if (in_array($row->depositmethod->type_payment, ['va', 'gopay', 'shopeepay', 'qris', 'cstore', 'akulaku', 'kredivo', 'alfamart', 'indomaret'])) {
                             return '<span class="badge bg-warning">Pending</span>';
                         } else {
                             return '

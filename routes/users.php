@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\TicketController;
 use App\Http\Middleware\HasRoleCustomer;
+use App\Http\Middleware\NotCustomerAccess;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -21,8 +22,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/deposit/new/calculate-fee', [DepositController::class, 'calculateFee']);
     Route::get('/deposit/cancel/{topup_id}', [DepositController::class, 'depositCancel'])->name('deposit.cancel');
     Route::get('/deposit/cancelMidtrans/{topup_id}', [DepositController::class, 'depositCancelMidtrans'])->name('deposit.cancelMidtrans');
-    Route::get('/deposit/send-saldo', [DepositController::class, 'sendSaldo'])->name('send.saldo');
-    Route::post('/deposit/send-saldo', [DepositController::class, 'sendSaldoStore'])->name('send.saldo');
+    Route::middleware(NotCustomerAccess::class)->group(function () {
+        Route::get('/deposit/send-saldo', [DepositController::class, 'sendSaldo'])->name('send.saldo');
+        Route::post('/deposit/send-saldo', [DepositController::class, 'sendSaldoStore'])->name('send.saldo');
+    });
     Route::get('/getDataKirimSaldo', [DepositController::class, 'getKirimSaldo'])->name('getDataKirimSaldo');
     Route::post('/profile/tukar-point', [DepositController::class, 'tukarPoint'])->name('profile.tukarPoint');
 

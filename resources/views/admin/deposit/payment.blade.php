@@ -52,9 +52,12 @@
                             <label for="type" class="form-label">{{ __('Type Payment') }}</label>
                             <select class="form-select" id="type" name="type">
                                 <option value="va">Virtual Account</option>
+                                <option value="cstore">Ritel</option>
                                 <option value="gopay">Gopay</option>
                                 <option value="qris">Qris</option>
                                 <option value="shopeepay">Shopee Pay</option>
+                                <option value="kredivo">Kredivo</option>
+                                <option value="akulaku">Akulaku</option>
                                 <option value="bank">Bank (Manual)</option>
                             </select>
                         </div>

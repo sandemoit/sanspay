@@ -18,10 +18,12 @@ class DepositSeeder extends Seeder
             ['code' => 'cimb_va', 'name' => 'Virtual Account Bank CIMB', 'type' => 'va'],
             ['code' => 'bni_va', 'name' => 'Virtual Account Bank BNI', 'type' => 'va'],
             ['code' => 'bri_va', 'name' => 'Virtual Account Bank BRI', 'type' => 'va'],
-            ['code' => 'mandiri_va', 'name' => 'Virtual Account Bank Mandiri', 'type' => 'va'],
+            ['code' => 'echannel', 'name' => 'Virtual Account Bank Mandiri', 'type' => 'va'],
             ['code' => 'permata_va', 'name' => 'Virtual Account Bank Permata', 'type' => 'va'],
             ['code' => 'gopay', 'name' => 'GoPay & Qris', 'type' => 'gopay'],
             ['code' => 'shopeepay', 'name' => 'Shopeepay & Qris', 'type' => 'shopeepay'],
+            ['code' => 'akulaku', 'name' => 'Akulaku', 'type' => 'akulaku'],
+            ['code' => 'cstore', 'name' => 'Ritel', 'type' => 'cstore'],
         ]);
     }
 }
