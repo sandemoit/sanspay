@@ -29,10 +29,6 @@ class DigiflazzController extends Controller
                 // Lakukan update data di sini
                 Log::info('Update data: ', $payload);
             }
-
-            // Lakukan proses sesuai event
-            // Contoh: Simpan data transaksi atau update status transaksi
-            // TrxPpob::updated();
         } else {
             // Tanda tangan tidak valid
             Log::warning('Invalid Webhook Signature');

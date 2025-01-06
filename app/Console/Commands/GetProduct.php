@@ -44,10 +44,11 @@ class GetProduct extends Command
 
                 // Cek dan tambahkan kategori jika belum ada
                 $category = Category::firstOrCreate([
-                    'code' => $product['brand'],
+                    'brand' => $product['brand'],
                     'name' => $product['brand'],
-                    'type' => $product['type'],
-                    'order' => strtolower($product['prepost'])
+                    'type' => $product['otype'],
+                    'order' => strtolower($product['prepost']),
+                    'real' => $product['category']
                 ]);
 
                 // Cek apakah produk sudah ada di database

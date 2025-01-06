@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Orders;
 
 use App\Helpers\DigiFlazz;
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Mutation;
 use App\Models\Point;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class OrderController extends Controller
+class OrderHpController extends Controller
 {
     private const VALID_TYPES = ['pulsa-reguler', 'pulsa-transfer', 'paket-internet', 'paket-telepon'];
     private const CACHE_DURATION = 300; // 5 minutes
@@ -70,9 +71,6 @@ class OrderController extends Controller
 
     public function checkProvider(Request $request)
     {
-        // Log request details
-        Log::info('PPOB Request:', $request->all());
-
         $phone = normalizePhoneNumber($request->input('phone'));
         $type = $request->input('type');
 
@@ -86,12 +84,6 @@ class OrderController extends Controller
         }
 
         $provider = detectProvider($phone);
-
-        // Log provider detection
-        Log::info('Provider Detection:', [
-            'phone' => $phone,
-            'provider' => $provider
-        ]);
 
         if (!$provider) {
             return response()->json([
@@ -114,6 +106,13 @@ class OrderController extends Controller
                     ->get();
             });
 
+            $groupedProducts = $products->groupBy('label');
+
+            // Sort group agar label "Umum" selalu di atas
+            $sortedGroupedProducts = $groupedProducts->sortBy(function ($group, $label) {
+                return $label === 'Umum' ? 0 : 1; // Prioritaskan "Umum"
+            });
+
             if ($products->isEmpty()) {
                 return response()->json([
                     'success' => false,
@@ -122,8 +121,8 @@ class OrderController extends Controller
                     'timestamp' => now()->toDateTimeString(),
                 ]);
             }
-            // dd($products[0]->price);
-            $html = view('layouts.sim-cards', compact('products'))->render();
+
+            $html = view('layouts.list-price', compact('sortedGroupedProducts'))->render();
 
             return response()->json([
                 'success' => true,
@@ -148,7 +147,12 @@ class OrderController extends Controller
 
     public function confirmOrder($code)
     {
-        $product = ProductPpob::where('code', $code)->first();
+        $product = ProductPpob::select('id', 'name', 'code', 'note') // Pilih kolom penting
+            ->where('code', $code)
+            ->first();
+        $productPrice = ProductPpob::select('id', 'price', 'mitra_price', 'cust_price', 'code') // Pilih kolom penting
+            ->where('code', $code)
+            ->first();
 
         if (!$product) {
             return response()->json([
@@ -163,21 +167,24 @@ class OrderController extends Controller
             'mitra' => 'mitra_price',
             'customer' => 'cust_price',
         };
-
         $userSaldo = Auth::user()->saldo;
 
-        if ($product->$priceField > $userSaldo) {
+        if ($productPrice->$priceField > $userSaldo) {
             return response()->json([
                 'success' => false,
                 'message' => 'Saldo tidak cukup untuk melakukan transaksi. Rp' . nominal($userSaldo),
             ]);
         }
 
+        // Generate token dinamis
+        $token = hash_hmac('sha256', $product->code . $productPrice->$priceField, env('APP_KEY'));
+
         return response()->json([
             'success' => true,
             'product' => $product,
-            'price' => nominal($product->$priceField),
+            'price' => nominal($productPrice->$priceField),
             'userSaldo' => nominal($userSaldo),
+            'token' => $token,
         ]);
     }
 
@@ -187,7 +194,8 @@ class OrderController extends Controller
             'pin' => 'required',
         ]);
 
-        $ref_id = substr(str_shuffle('0123456789'), 0, 12);
+        $ref_id = substr(str_shuffle('0123456789'), 0, 6);
+        // $ref_id = '123456';
 
         $prepaidData = $this->makeRequest('/transaction', [
             'username' => $this->username,
@@ -195,14 +203,12 @@ class OrderController extends Controller
             'customer_no' => $request->target,
             'ref_id' => $ref_id,
             'sign' => $this->generateSignature($ref_id),
+            'testing' => true,
         ]);
 
         // Validasi respons dari API
         if (!isset($prepaidData['data'])) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal memproses transaksi. Cek koneksi atau API Anda.',
-            ]);
+            Log::info('Failed to retrieve prepaid data: ' . json_encode($prepaidData));
         }
 
         // Ambil data user yang login
@@ -225,6 +231,16 @@ class OrderController extends Controller
             'customer' => $product->cust_price,
         };
 
+        // Validasi token
+        $serverToken = hash_hmac('sha256', $product->code . $price, env('APP_KEY'));
+        if ($serverToken !== $request->token) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token tidak valid. Request ini ditolak.',
+                'token' => $serverToken,
+            ]);
+        }
+
         // Hitung point
         $point = $this->calculatePoint($user->point);
 
@@ -237,36 +253,56 @@ class OrderController extends Controller
                 ]);
             }
 
-            // Kurangi saldo dan mutasi
-            User::updateOrCreate(['id' => $user->id], ['saldo' => $user->saldo - $price, 'point' => $point]);
-            Mutation::create([
-                'username' => $user->name,
-                'type' => '-',
-                'amount' => strip_tags($price),
-                'note' => "Trx :: $ref_id",
-            ]);
+            // Proses transaksi berdasarkan RC
+            $rc = $prepaidData['data']['rc']; // Ambil RC dari data transaksi
 
-            // Simpan data transaksi ke database
-            TrxPpob::create([
-                'id_order' => $ref_id,
-                'user_id' => $user->id,
-                'code' => $product->code,
-                'name' => $product->name,
-                'data' => $request->target,
-                'price' => strip_tags($price),
-                'point' => ($user->role === 'customer') ? 0 : $point,
-                'refund' => '0',
-                'note' => 'Transaksi Berhasil Dibuat',
-                'status' => $prepaidData['data']['status'] ?? 'Unknown',
-                'from' => request()->ip(),
-                'type' => 'prepaid',
-                'sn' => $prepaidData['data']['sn'] ?? '',
-            ]);
+            switch ($rc) {
+                case '00': // Transaksi Sukses
+                case '03': // Transaksi Pending
+                    // Kurangi saldo dan mutasi
+                    User::updateOrCreate(['id' => $user->id], ['saldo' => $user->saldo - $price, 'point' => $point]);
+                    Mutation::create([
+                        'username' => $user->name,
+                        'type' => '-',
+                        'amount' => strip_tags($price),
+                        'note' => "Trx :: $ref_id",
+                    ]);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Transaksi berhasil diproses.',
-            ]);
+                    // Simpan data transaksi ke database
+                    TrxPpob::create([
+                        'id_order' => $ref_id,
+                        'user_id' => $user->id,
+                        'code' => $product->code,
+                        'name' => $product->name,
+                        'data' => $request->target,
+                        'price' => strip_tags($price),
+                        'point' => ($user->role === 'customer') ? 0 : $point,
+                        'refund' => '0',
+                        'note' => $prepaidData['data']['message'] ?? 'Unknown',
+                        'status' => $prepaidData['data']['status'] ?? 'Unknown',
+                        'from' => request()->ip(),
+                        'type' => 'prepaid',
+                        'sn' => $prepaidData['data']['sn'] ?? '',
+                    ]);
+
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Transaksi berhasil diproses.',
+                    ]);
+
+                case '01': // Timeout
+                case '02': // Transaksi Gagal
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Transaksi tidak berhasil. Status: ' . $prepaidData['data']['message'],
+                    ]);
+
+                default: // RC lainnya
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Terjadi kesalahan: ' . $prepaidData['data']['message'],
+                    ]);
+            }
         } else {
             return response()->json([
                 'success' => false,
@@ -305,11 +341,5 @@ class OrderController extends Controller
     protected function generateSignature(string $refId): string
     {
         return md5($this->username . $this->key . $refId);
-    }
-
-    public function historyTransaksi()
-    {
-        $title = 'History Transaksi';
-        return view('users.orders.history', compact('title'));
     }
 }

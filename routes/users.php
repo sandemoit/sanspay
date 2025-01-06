@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepositController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\HistoryOrderController;
+use App\Http\Controllers\Orders\EmoneyController;
+use App\Http\Controllers\Orders\OrderHpController;
 use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\TicketController;
 use App\Http\Middleware\HasRoleCustomer;
@@ -29,17 +31,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/getDataKirimSaldo', [DepositController::class, 'getKirimSaldo'])->name('getDataKirimSaldo');
     Route::post('/profile/tukar-point', [DepositController::class, 'tukarPoint'])->name('profile.tukarPoint');
 
-    // order Page
-    Route::get('/order/paket-telepon', [OrderController::class, 'newOrder'])->name('order.paket-telepon');
-    Route::get('/order/pulsa-reguler', [OrderController::class, 'newOrder'])->name('order.pulsa-reguler');
-    Route::get('/order/paket-internet', [OrderController::class, 'newOrder'])->name('order.paket-internet');
-    Route::get('/order/pulsa-transfer', [OrderController::class, 'newOrder'])->name('order.pulsa-transfer');
-    Route::post('/filter-products', [OrderController::class, 'filterProducts'])->name('filter.products');
+    Route::get('/order/history', [HistoryOrderController::class, 'historyTransaksi'])->name('order.history');
 
-    Route::post('/check-provider', [OrderController::class, 'checkProvider'])->name('order.checkProvider');
-    Route::get('/confirm/{code}', [OrderController::class, 'confirmOrder'])->name('order.confirm');
-    Route::post('/order/new', [OrderController::class, 'prosesTransaksi'])->name('order.new');
-    Route::get('/order/history', [OrderController::class, 'historyTransaksi'])->name('order.history');
+    // order pulsa, paket, kuota, transfer Page
+    Route::get('/order/paket-telepon', [OrderHpController::class, 'newOrder'])->name('order.paket-telepon');
+    Route::get('/order/pulsa-reguler', [OrderHpController::class, 'newOrder'])->name('order.pulsa-reguler');
+    Route::get('/order/paket-internet', [OrderHpController::class, 'newOrder'])->name('order.paket-internet');
+    Route::get('/order/pulsa-transfer', [OrderHpController::class, 'newOrder'])->name('order.pulsa-transfer');
+    Route::post('/order/proses', [OrderHpController::class, 'prosesTransaksi'])->name('order.proses');
+    Route::post('/filter-products', [OrderHpController::class, 'filterProducts'])->name('filter.products');
+    Route::post('/check-provider', [OrderHpController::class, 'checkProvider'])->name('order.checkProvider');
+    Route::get('/confirm/{code}', [OrderHpController::class, 'confirmOrder'])->name('order.confirm');
+
+    // order emoney
+    Route::get('/order/emonney', [EmoneyController::class, 'index'])->name('order.emonney');
+    Route::post('/order/priceEmoney', [EmoneyController::class, 'priceEmoney'])->name('priceEmoney');
+    Route::post('/order/orderEmoney', [EmoneyController::class, 'orderEmoney'])->name('orderEmoney');
+    Route::post('/order/orderEmoney', [EmoneyController::class, 'prosesTransaksi'])->name('orderEmoney');
 
     Route::middleware(HasRoleCustomer::class)->group(function () {
         Route::get('/upgrade', [DashboardController::class, 'upgradeMitra'])->name('upgrade.mitra');

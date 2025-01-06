@@ -5,7 +5,7 @@ $(document).ready(function() {
         serverSide: true,
         ajax: '/admin/pulsa-ppob/get-category',
         columns: [
-            { data: 'code', name: 'code', orderable: true, searchable: true  },
+            { data: 'brand', name: 'brand', orderable: true, searchable: true  },
             { data: 'name', name: 'name', orderable: true, searchable: true  },
             { data: 'type_category', name: 'type_category', orderable: true, searchable: true  },
             { data: 'action', name: 'action', orderable: false, searchable: false }

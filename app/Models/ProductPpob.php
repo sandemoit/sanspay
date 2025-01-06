@@ -20,6 +20,6 @@ class ProductPpob extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'type', 'type');
+        return $this->belongsTo(Category::class, 'brand', 'brand');
     }
 }

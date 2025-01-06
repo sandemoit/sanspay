@@ -11,62 +11,6 @@
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
 
-            .sc-axis {
-                background-image: url('../storage/images/cards/axis.png');
-                background-color: white;
-                background-repeat: no-repeat;
-                background-size: auto 26px;
-                background-position: 98% 50%;
-            }
-
-            .sc-by.u {
-                background-image: url('../storage/images/cards/byu.svg');
-                background-color: white;
-                background-repeat: no-repeat;
-                background-size: auto 26px;
-                background-position: 98% 50%;
-            }
-
-            .sc-indosat {
-                background-image: url('../storage/images/cards/indosat.png');
-                background-color: white;
-                background-repeat: no-repeat;
-                background-size: auto 26px;
-                background-position: 98% 50%;
-            }
-
-            .sc-smartfren {
-                background-image: url('../storage/images/cards/smartfren.png');
-                background-color: white;
-                background-repeat: no-repeat;
-                background-size: auto 26px;
-                background-position: 98% 50%;
-            }
-
-            .sc-telkomsel {
-                background-image: url('../storage/images/cards/telkomsel.png');
-                background-color: white;
-                background-repeat: no-repeat;
-                background-size: auto 26px;
-                background-position: 98% 50%;
-            }
-
-            .sc-three {
-                background-image: url('../storage/images/cards/three.png');
-                background-color: white;
-                background-repeat: no-repeat;
-                background-size: auto 26px;
-                background-position: 98% 50%;
-            }
-
-            .sc-xl {
-                background-image: url('../storage/images/cards/xl-axiata.png');
-                background-color: white;
-                background-repeat: no-repeat;
-                background-size: auto 26px;
-                background-position: 98% 50%;
-            }
-
             /*operator end*/
 
             /* Sembunyikan tampilan desktop pada mobile */
@@ -96,6 +40,15 @@
                     <form method="POST" class="row g-3" id="orderForm">
                         @csrf
                         <div class="col-12">
+                            <label class="form-label">{{ __('Kategori') }}</label>
+                            <select class="form-select" id="categoryBrand" name="categoryBrand">
+                                <option disabled selected>Pilih Kategori</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->brand }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-12">
                             <label class="form-label">{{ __('Nomor Tujuan') }}</label>
                             <input type="text" name="phone" id="phone" class="form-control"
                                 placeholder="Masukan nomor tujuan">
@@ -104,7 +57,7 @@
                         <div class="col-12">
                             <div id="productList">
                                 <div class="alert alert-danger" role="alert">
-                                    Silahkan Masukkan Nomor Tujuan!
+                                    Silahkan Pilih Kategori!
                                 </div>
                             </div>
                         </div>
@@ -137,37 +90,30 @@
     @push('custom-js')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const phoneInput = document.getElementById('phone');
+                const categoryBrand = document.getElementById('categoryBrand');
                 const productList = document.getElementById('productList');
-                let typingTimer;
-                const doneTypingInterval = 1000;
 
-                phoneInput.addEventListener('input', function() {
-                    const phone = this.value;
+                categoryBrand.addEventListener('change', function() {
+                    const brand = this.value;
 
-                    clearTimeout(typingTimer);
-
-                    if (phone.length >= 4) {
+                    if (brand) {
                         productList.innerHTML = '<div class="alert alert-info">Mencari produk...</div>';
-                        typingTimer = setTimeout(() => checkNumber(phone), doneTypingInterval);
+                        checkCategory(brand);
                     } else {
                         productList.innerHTML =
                             '<div class="alert alert-danger">Silahkan Masukkan Nomor Tujuan!</div>';
                     }
                 });
 
-                function checkNumber(phone) {
-                    // Debug: Log request attempt
-
+                function checkCategory(brand) {
                     const formData = new FormData();
-                    formData.append('phone', phone);
-                    formData.append('type', '{{ $type }}');
+                    formData.append('categoryBrand', brand);
                     formData.append('_token', '{{ csrf_token() }}');
 
                     // Use jQuery AJAX if available
                     if (typeof $ !== 'undefined') {
                         $.ajax({
-                            url: '{{ route('order.checkProvider') }}',
+                            url: '{{ route('priceEmoney') }}',
                             type: 'POST',
                             data: formData,
                             processData: false,
@@ -187,10 +133,8 @@
                     `;
                             }
                         });
-                    }
-                    // Fallback to fetch if jQuery is not available
-                    else {
-                        fetch('{{ route('order.checkProvider') }}', {
+                    } else {
+                        fetch('{{ route('priceEmoney') }}', {
                                 method: 'POST',
                                 body: formData,
                                 headers: {
@@ -212,23 +156,21 @@
                 }
 
                 function handleResponse(data) {
-                    // Remove existing provider classes
-                    const providerClasses = ['sc-telkomsel', 'sc-indosat', 'sc-xl', 'sc-axis',
-                        'sc-three', 'sc-smartfren', 'sc-byu'
-                    ];
-                    phoneInput.classList.remove(...providerClasses);
-
-                    // Update UI
                     productList.innerHTML = data.service;
-                    if (data.class) {
-                        phoneInput.classList.add(data.class);
-                    }
                 }
             });
         </script>
 
         <script>
             function prepaid(url) {
+                const phone = document.getElementById('phone').value;
+                if (!phone) {
+                    toastr.error('Nomor tujuan tidak boleh kosong!', {
+                        timeOut: 1000
+                    });
+                    return;
+                }
+
                 fetch(url, {
                         method: 'GET', // Menggunakan GET karena mengambil data
                         headers: {
@@ -245,11 +187,11 @@
                             modalContent.innerHTML = `
                                 <div class="form-group mb-3">
                                     <label for="order-target">Tujuan</label>
-                                    <input type="text" data-code="${data.product.code}" class="form-control" id="order-target" name="order-target" value="${targetPhone}" readonly>
+                                    <input type="text" class="form-control" id="order-target" name="order-target" value="${targetPhone}" readonly>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="product-name">Nama Produk</label>
-                                    <input type="text" class="form-control" id="product-name" value="${data.product.name}" readonly>
+                                    <input type="text" data-code="${data.product.code}" class="form-control" id="product-name" value="${data.product.name}" readonly>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="product-info">Informasi Produk</label>
@@ -293,11 +235,12 @@
                 const confirmButton = document.getElementById('confirmButton');
 
                 confirmButton.addEventListener('click', function() {
+                    const productList = document.getElementById('productList');
                     const pinInput = document.getElementById('transaction-pin');
                     const apaajalah = document.getElementById('apaajalah').value;
                     const targetPhone = document.getElementById('phone').value;
-                    const orderTarget = document.getElementById('order-target');
-                    const code = orderTarget.getAttribute('data-code');
+                    const productName = document.getElementById('product-name');
+                    const code = productName.getAttribute('data-code');
                     const pin = pinInput.value;
 
                     if (!pin) {
@@ -311,7 +254,7 @@
                     confirmButton.disabled = true;
 
                     // Kirim request ke server
-                    fetch('{{ route('order.proses') }}', {
+                    fetch('{{ route('orderEmoney') }}', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -332,6 +275,9 @@
 
                             if (data.success) {
                                 $('#phone').trigger('reset');
+                                $('#categoryBrand').trigger('reset');
+                                productList.innerHTML = '';
+
                                 const modal = bootstrap.Modal.getInstance(document.getElementById(
                                     'confirmModal'));
                                 modal.hide();
@@ -340,9 +286,9 @@
                                     timeOut: 1500
                                 });
 
-                                setTimeout(function() {
-                                    window.location.href = "{{ route('order.history') }}";
-                                }, 1000);
+                                // setTimeout(function() {
+                                //     window.location.href = "{{ route('order.emonney') }}";
+                                // }, 1000);
                             } else {
                                 toastr.error(data.message || 'Gagal memproses transaksi.', {
                                     timeOut: 1000

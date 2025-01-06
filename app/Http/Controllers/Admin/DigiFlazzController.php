@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DigiFlazz;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -31,11 +32,11 @@ class DigiFlazzController extends Controller
             ]);
 
             // Get postpaid data
-            // $postpaidData = $this->makeRequest('/price-list', [
-            //     'cmd' => 'pasca',
-            //     'username' => $this->username,
-            //     'sign' => $this->generateSignature('pricelist')
-            // ]);
+            $postpaidData = $this->makeRequest('/price-list', [
+                'cmd' => 'pasca',
+                'username' => $this->username,
+                'sign' => $this->generateSignature('pricelist')
+            ]);
 
             // Check for errors in prepaid data
             if (!is_array($prepaidData) || !isset($prepaidData['data'])) {
@@ -47,23 +48,23 @@ class DigiFlazzController extends Controller
             }
 
             // Check for errors in postpaid data
-            // if (!is_array($postpaidData) || $postpaidData['data'] === null) {
-            //     Log::warning('Postpaid data retrieval failed or response structure is invalid.', [
-            //         'postpaidData' => $postpaidData
-            //     ]);
+            if (!is_array($postpaidData) || $postpaidData['data'] === null) {
+                Log::warning('Postpaid data retrieval failed or response structure is invalid.', [
+                    'postpaidData' => $postpaidData
+                ]);
 
-            //     // You can choose to continue without postpaid data or return an error
-            //     return [
-            //         'result' => false,
-            //         'data' => null,
-            //         'message' => 'Error on postpaid: No data available or request denied by API.'
-            //     ];
-            // }
+                // You can choose to continue without postpaid data or return an error
+                return [
+                    'result' => false,
+                    'data' => null,
+                    'message' => 'Error on postpaid: No data available or request denied by API.'
+                ];
+            }
 
             // Process the data if all responses are valid
             $processedData = array_merge(
                 $this->processData($prepaidData['data'], 'Prepaid'),
-                // $this->processData($postpaidData['data'], 'Postpaid')
+                $this->processData($postpaidData['data'], 'Postpaid')
             );
 
             return [
@@ -103,18 +104,19 @@ class DigiFlazzController extends Controller
         foreach ($data as $item) {
             $output[] = [
                 'brand' => $item['brand'],
-                'category' => $item['brand'],
-                'otype' => $item['category'],
+                'category' => $item['category'],
+                'otype' => $item['type'] ?? $item['category'],
                 'type' => $this->filterType($item['category'], $item['product_name']),
                 'name' => $this->space($item['product_name']),
-                'note' => $this->space($item['desc'] ?? ''),
-                'code' => str_replace(['&', '*'], '', $item['buyer_sku_code']),
-                'price' => $item['price'],
-                'status' => $this->stock($item['buyer_product_status']),
+                'note' => $this->space($item['desc'] ?? '-'),
+                'code' => str_replace(['&', '*'], '-', $item['buyer_sku_code']),
+                'price' => $item['price'] ?? $item['admin'],
+                'status' => $this->stock($item['seller_product_status']),
                 'prepost' => strtolower($prepost),
-                'label' => $item['type']
+                'label' => $item['type'] ?? Null,
             ];
         }
+
         return $output;
     }
 

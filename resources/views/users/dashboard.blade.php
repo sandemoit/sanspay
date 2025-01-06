@@ -134,7 +134,7 @@
                                     </a>
                                 </div>
                                 <div class="col-4 mb-3">
-                                    <a href="{{ route('order.pulsa-reguler') }}">
+                                    <a href="{{ route('order.emonney') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="wallet-outline"
                                                 style="font-size: 30px;color: #00d1ff;"></ion-icon>

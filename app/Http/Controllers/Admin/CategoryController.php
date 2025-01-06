@@ -25,26 +25,10 @@ class CategoryController extends Controller
 
         return DataTables::of($category)
             ->addColumn('type_category', function ($row) {
-                $types = [
-                    'pulsa-reguler'       => 'Pulsa Reguler',
-                    'pulsa-transfer'       => 'Pulsa Transfer',
-                    'voucher-game'        => 'Voucher Game',
-                    'pulsa-internasional' => 'Pulsa Internasional',
-                    'streaming-tv'        => 'Streaming & TV',
-                    'aktivasi-voucher'    => 'Aktivasi Voucher',
-                    'aktivasi-perdana'    => 'Aktivasi Perdana',
-                    'paket-internet'      => 'Paket Internet',
-                    'saldo-emoney'        => 'Saldo E-Money',
-                    'paket-telepon'       => 'Paket Telepon dan SMS',
-                    'paket-lainnya'       => 'Kategori Lainnya',
-                    'token-pln'           => 'Token Listrik (PLN)',
-                    'pascabayar'          => 'Pascabayar',
-                    'masa-aktif'          => 'Masa Aktif',
-                ];
 
-                $type = $types[$row->type] ?? 'Unknown';
+                $type = $row->type ?? 'Unknown';
 
-                return Str::of($type)->append(" [{$row->type}]");
+                return Str::of($type)->append(" [{$row->real}]");
             })
 
             ->addColumn('action', function ($row) {
