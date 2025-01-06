@@ -96,9 +96,6 @@ class EmoneyController extends Controller
             'sign' => $this->generateSignature($ref_id),
         ]);
 
-        return response()->json($prepaidData);
-        die;
-
 
         // Validasi respons dari API
         if (!isset($prepaidData['data'])) {
