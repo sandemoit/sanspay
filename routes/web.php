@@ -16,7 +16,7 @@ Route::middleware(XSS::class)->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-    Route::post('/webhook', [DigiflazzController::class, 'handle']);
+    Route::post('/webhook', [DigiflazzController::class, 'handle'])->name('webhook');
 
     require __DIR__ . '/auth.php';
     require __DIR__ . '/admin.php';

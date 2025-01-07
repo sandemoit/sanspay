@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class EmoneyController extends Controller
+class TokenController extends Controller
 {
     protected string $baseUrl;
     protected string $username;
@@ -31,18 +31,18 @@ class EmoneyController extends Controller
 
     public function index()
     {
-        $title = 'Emoney';
+        $title = 'Token PLN';
 
-        // Ambil kategori dengan type 'saldo-emoney'
-        $categories = Category::where('real', 'E-Money')
+        // Ambil kategori dengan type 'TOKEN PLN'
+        $categories = Category::where('real', 'PLN')
             ->distinct()
             ->get(['brand', 'name']);
 
 
-        return view('users.orders.emoney', compact('title', 'categories'));
+        return view('users.orders.token-pln', compact('title', 'categories'));
     }
 
-    public function priceEmoney(Request $request)
+    public function priceToken(Request $request)
     {
         $categoryBrand = $request->categoryBrand;
 
@@ -55,7 +55,7 @@ class EmoneyController extends Controller
         // Ambil produk dengan relasi ke category
         $products = ProductPpob::with('category')
             ->where('brand', $categoryBrand)
-            ->where('type', 'saldo-emoney')
+            ->where('type', 'token-pln')
             ->orderBy('price', 'asc')
             ->get();
 

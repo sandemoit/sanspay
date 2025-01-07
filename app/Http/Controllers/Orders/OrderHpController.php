@@ -19,9 +19,6 @@ use Illuminate\Support\Facades\Log;
 class OrderHpController extends Controller
 {
     private const VALID_TYPES = ['pulsa-reguler', 'pulsa-transfer', 'paket-internet', 'paket-telepon'];
-    private const CACHE_DURATION = 300; // 5 minutes
-    private const MAX_ATTEMPTS = 5;
-    private const THROTTLE_DURATION = 300; // 5 minutes
 
     protected string $baseUrl;
     protected string $username;
@@ -96,15 +93,13 @@ class OrderHpController extends Controller
         try {
             $cacheKey = "products_{$type}_{$provider}";
 
-            $products = cache()->remember($cacheKey, now()->addMinutes(self::CACHE_DURATION), function () use ($type, $provider) {
-                return ProductPpob::where([
-                    'type' => $type,
-                    'brand' => $provider,
-                    'provider' => 'DigiFlazz',
-                    'status' => 'available'
-                ])->orderBy('price', 'asc')
-                    ->get();
-            });
+            $products = ProductPpob::where([
+                'type' => $type,
+                'brand' => $provider,
+                'provider' => 'DigiFlazz',
+                'status' => 'available'
+            ])->orderBy('price', 'asc')
+                ->get();
 
             $groupedProducts = $products->groupBy('label');
 

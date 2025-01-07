@@ -5,6 +5,7 @@ use App\Http\Controllers\DepositController;
 use App\Http\Controllers\HistoryOrderController;
 use App\Http\Controllers\Orders\EmoneyController;
 use App\Http\Controllers\Orders\OrderHpController;
+use App\Http\Controllers\Orders\TokenController;
 use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\TicketController;
 use App\Http\Middleware\HasRoleCustomer;
@@ -47,6 +48,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/order/emonney', [EmoneyController::class, 'index'])->name('order.emonney');
     Route::post('/order/priceEmoney', [EmoneyController::class, 'priceEmoney'])->name('priceEmoney');
     Route::post('/order/orderEmoney', [EmoneyController::class, 'prosesTransaksi'])->name('orderEmoney');
+
+    // order token-pln
+    Route::get('/order/token-pln', [TokenController::class, 'index'])->name('order.token-pln');
+    Route::post('/order/priceToken', [TokenController::class, 'priceToken'])->name('priceToken');
+    Route::post('/order/orderToken', [TokenController::class, 'prosesTransaksi'])->name('orderToken');
 
     Route::middleware(HasRoleCustomer::class)->group(function () {
         Route::get('/upgrade', [DashboardController::class, 'upgradeMitra'])->name('upgrade.mitra');
