@@ -4,6 +4,25 @@
             .product-card {
                 cursor: pointer;
                 transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .product-card .status-label {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                background-color: red;
+                color: white;
+                font-size: 0.7rem;
+                padding: 0.3rem 0.5rem;
+                border-radius: 8px 0 5px 0;
+                font-weight: bold;
+            }
+
+            .disabled-card {
+                cursor: not-allowed;
+                opacity: 0.5;
             }
 
             .product-card:hover {

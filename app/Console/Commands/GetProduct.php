@@ -40,7 +40,6 @@ class GetProduct extends Command
 
                 $priceMitraMargin = $product['price'] * (1 + $profits['mitra'] / 100);
                 $priceBasicMargin = $product['price'] * (1 + $profits['customer'] / 100);
-                $status = $product['status'] ? 'available' : 'empty';
 
                 // Cek dan tambahkan kategori jika belum ada
                 $category = Category::firstOrCreate([
@@ -65,7 +64,7 @@ class GetProduct extends Command
                         $existingProduct->code != $product['code'] ||
                         $existingProduct->type != $product['type'] ||
                         $existingProduct->brand != $product['brand'] ||
-                        $existingProduct->status != $status
+                        $existingProduct->status != $product['status']
                     ) {
                         $existingProduct->update([
                             'name' => $product['name'],
@@ -75,16 +74,17 @@ class GetProduct extends Command
                             'price' => $product['price'],
                             'mitra_price' => $priceMitraMargin,
                             'cust_price' => $priceBasicMargin,
-                            'status' => $status,
+                            'status' => $product['status'],
                             'type' => $product['type'],
                             'provider' => 'DigiFlazz',
                             'label' => $product['label'],
+                            'healthy' => $product['buyer_product_status'],
                         ]);
 
                         print '<font color="green"><pre>';
                         print "[+] {$product['name']} {Berhasil diupdate}<br>";
                         print "Type: {$product['type']}<br>";
-                        print "Status: {$existingProduct->status} -> {$status}<br>";
+                        print "Status: {$existingProduct->status} -> {$product['status']}<br>";
                         print "Harga Pusat: {Rp. " . nominal($existingProduct->price, 'IDR') . "} -> {Rp. " . nominal($product['price'], 'IDR') . "}<br>";
                         print "Harga Mitra: {Rp. " . nominal($existingProduct->mitra_price, 'IDR') . "} -> Rp. " . nominal($priceMitraMargin, 'IDR') . "<br>";
                         print "Harga Customer: {Rp. " . nominal($existingProduct->cust_price, 'IDR') . "} -> Rp. " . nominal($priceBasicMargin, 'IDR') . "<br>";
@@ -96,7 +96,6 @@ class GetProduct extends Command
                     }
                 } else {
                     // Jika produk tidak ada, tambahkan data produk baru
-                    $status = $product['status'] == true ? 'available' : 'empty';;
                     $newProduct = ProductPpob::create([
                         'name' => $product['name'],
                         'code' => $product['code'],
@@ -105,10 +104,11 @@ class GetProduct extends Command
                         'price' => $product['price'],
                         'mitra_price' => $priceMitraMargin,
                         'cust_price' => $priceBasicMargin,
-                        'status' => $status,
+                        'status' => $product['status'],
                         'type' => $product['type'],
                         'provider' => 'DigiFlazz',
                         'label' => $product['label'],
+                        'healthy' => $product['healthy'],
                     ]);
 
                     print '<font color="green"><pre>';

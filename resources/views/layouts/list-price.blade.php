@@ -7,7 +7,11 @@
         <div class="row g-3">
             @foreach ($products as $product)
                 <div class="col-md-6">
-                    <div class="card product-card" onclick="prepaid('{{ route('order.confirm', $product->code) }}')">
+                    <div class="card product-card {{ $product->healthy == 0 ? 'disabled-card' : '' }}"
+                        onclick="prepaid('{{ route('order.confirm', $product->code) }}')">
+                        @if ($product->healthy == 0)
+                            <div class="status-label">Gangguan</div>
+                        @endif
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="product-name" style="font-size: 0.8rem;">
@@ -41,7 +45,8 @@
         <div class="row g-3">
             @foreach ($products as $product)
                 <div class="col-6">
-                    <div class="card product-card" onclick="prepaid('{{ route('order.confirm', $product->code) }}')">
+                    <div class="card product-card" {{ $product->healthy == 0 ? 'disabled-card' : '' }}
+                        onclick="prepaid('{{ route('order.confirm', $product->code) }}')">
                         <div class="card-body text-center">
                             <div class="product-name" style="font-size: 0.8rem;">
                                 {{ $product->name }}

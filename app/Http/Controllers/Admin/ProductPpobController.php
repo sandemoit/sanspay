@@ -48,7 +48,8 @@ class ProductPpobController extends Controller
         return DataTables::of($product)
             ->addColumn('product_name', function ($row) {
                 $statusLabel = $row->status != 'empty' ? '<font class="text-success">[available]</font>' : '<font class="text-danger">[empty]</font>';
-                return $row->brand . '<br>' . '<small class="text-primary">' . $row->name . '<br>' . $statusLabel . '</small>';
+                $isHealthy = $row->healthy == 1 ? '<font class="text-success">[active]</font>' : '<font class="text-danger">[disruption]</font>';
+                return $row->brand . '<br>' . '<small class="text-primary">' . $row->name . '<br>' . $statusLabel . '<br>' . $isHealthy . '</small>';
             })
             ->addColumn('product_price', function ($row) {
                 return '<td class="focus">

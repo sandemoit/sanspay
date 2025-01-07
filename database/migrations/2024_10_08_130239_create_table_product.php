@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('provider');
             $table->string('type');
             $table->string('label');
-            $table->string('token');
+            $table->boolean('healthy')->default(false);
             $table->timestamps();
         });
     }
