@@ -31,7 +31,7 @@ class OrderHpController extends Controller
     {
         $this->baseUrl = 'https://api.digiflazz.com/v1';
         $this->username = DigiFlazz::ProvDigi()->username;
-        $this->key = DigiFlazz::ProvDigi()->development_api_key;
+        $this->key = DigiFlazz::ProvDigi()->product_api_key;
     }
 
     public function newOrder(Request $request)
