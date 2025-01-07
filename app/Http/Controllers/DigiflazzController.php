@@ -13,15 +13,11 @@ class DigiflazzController extends Controller
 {
     public function handle(Request $request)
     {
-        Log::info('Request: ', $request->all());
-        $secret = 'sanspaysecret'; // Ganti dengan secret dari DigiFlazz  
-
         // Mendapatkan data mentah dari request  
+
+        $secret = config('services.digiflazz_secret');
         $post_data = file_get_contents('php://input');
         $signature = hash_hmac('sha1', $post_data, $secret);
-
-        // Logging signature untuk debugging  
-        Log::info('Generated Signature: ' . $signature);
 
         // Validasi tanda tangan (signature)  
         if ($request->header('X-Hub-Signature') !== 'sha1=' . $signature) {
@@ -48,20 +44,38 @@ class DigiflazzController extends Controller
             return response()->json(['success' => false, 'message' => 'Invalid JSON Payload'], 400);
         }
 
-        // Logging payload untuk debugging  
-        Log::info('Payload: ', $payload);
+        $data = $payload['data'] ?? [];
+        $status = $data['status'] ?? 'Unknown';
+        $ref_id = $data['ref_id'] ?? null;
+        $amount = $data['price'] ?? 0;
+        $message = $data['message'] ?? null;
+        $sn = $data['sn'] ?? '-';
 
-        // Memeriksa status transaksi  
-        $status = $payload['data']['status'] ?? null;
+        // Validasi ID order
+        if (!$ref_id) {
+            Log::error('Ref ID missing in webhook payload');
+            return response()->json(['success' => false, 'message' => 'Missing Ref ID'], 400);
+        }
 
-        if ($status === 'Gagal') {
-            // Status transaksi gagal, buat entri Mutation  
-            $username = Auth::user()->name ?? 'System'; // Gunakan nama pengguna yang login atau 'System' jika tidak ada  
-            $type = '+';
-            $amount = $payload['data']['amount'] ?? 0;
-            $note = 'Refund :: ' . $payload['data']['ref_id'];
+        // Ambil data transaksi
+        $trxPpob = TrxPpob::with('user')->where(
+            'id_order',
+            $ref_id
+        )->first();
 
-            // Buat entri Mutation  
+        if (!$trxPpob || !$trxPpob->user) {
+            Log::error('Transaction or User not found for Ref ID: ' . $ref_id);
+            return response()->json(['success' => false, 'message' => 'Transaction or User not found'], 404);
+        }
+
+        $username = $trxPpob->user->name;
+
+        // Proses sesuai status
+        if (in_array($status, ['Gagal', 'Sukses'])) {
+            $type = $status === 'Gagal' ? '+' : '-';
+            $note = $status === 'Gagal' ? 'Refund :: ' . $ref_id : 'Transaction Success :: ' . $ref_id . ' :: ' . $sn;
+
+            // Buat mutasi
             Mutation::create([
                 'username' => $username,
                 'type' => $type,
@@ -69,16 +83,22 @@ class DigiflazzController extends Controller
                 'note' => $note,
             ]);
 
-            // Increment saldo user  
-            $user = User::where('name', $username)->first();
-            $user->increment('saldo', $amount);
+            // Update saldo jika gagal
+            if ($status === 'Gagal') {
+                $user = $trxPpob->user;
+                $user->increment('saldo', $amount);
+            }
 
-            return response()->json(['success' => true, 'message' => 'Refund successfully'], 200);
+            // Update status transaksi
+            $trxPpob->update([
+                'status' => $status,
+                'note' => $message,
+                'sn' => $sn,
+            ]);
+
+            Log::info('Transaction updated successfully for Ref ID: ' . $ref_id);
+        } else {
+            Log::info('Unhandled transaction status: ' . $status);
         }
-
-        // Jika status transaksi bukan 'Gagal', lakukan proses lainnya jika diperlukan  
-        Log::info('Transaction status is not "Gagal": ' . $status);
-
-        return response()->json(['success' => true, 'message' => 'Transaction processed'], 200);
     }
 }

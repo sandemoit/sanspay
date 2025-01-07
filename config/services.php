@@ -35,4 +35,6 @@ return [
         ],
     ],
 
+    'digiflazz_secret' => env('DIGIFLAZZ_SECRET'),
+
 ];
