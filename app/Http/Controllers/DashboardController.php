@@ -74,7 +74,7 @@ class DashboardController extends Controller
             $data = [
                 'subject' => 'Pengajuan Upgrade Mitra | ' . $user->fullname,
                 'title' => 'Pengajuan Upgrade Mitra',
-                'body' => 'Pengajuan upgrade mitra telah berhasil diajukan oleh, mohon tunggu konfirmasi dari admin kami 1x24 JAM.',
+                'body' => 'Pengajuan upgrade mitra telah berhasil diajukan, mohon tunggu konfirmasi dari admin kami 1x24 JAM.',
             ];
 
             Mail::to($user->email)->send(new SendEmail($data));

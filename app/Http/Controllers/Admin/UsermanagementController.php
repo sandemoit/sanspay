@@ -25,7 +25,7 @@ class UsermanagementController extends Controller
     {
         // Jika user adalah admin, ambil semua data orders tanpa filter
         $orders = Upgrade::with('user')->get();
-
+        dd($orders);
         return DataTables::of($orders)
             ->addColumn('date', function ($row) {
                 return tanggal($row->created_at);
