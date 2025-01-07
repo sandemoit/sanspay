@@ -286,14 +286,11 @@
                                     <input type="hidden" id="apaajalah" value="${data.token}">
                                 </div>
                             `;
-
-                            // Tampilkan modal
-                            const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
-                            modal.show();
                         } else {
                             toastr.error(data.message || 'Gagal mendapatkan data produk.', {
                                 timeOut: 1000
                             });
+                            modal.hide();
                         }
                     })
                     .catch(error => {
