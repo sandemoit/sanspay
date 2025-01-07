@@ -232,6 +232,19 @@
 
         <script>
             function prepaid(url) {
+                // Tampilkan modal loading terlebih dahulu
+                const modalContent = document.getElementById('modalContent');
+                modalContent.innerHTML = `
+                    <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                `;
+
+                const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+                modal.show();
+
                 fetch(url, {
                         method: 'GET', // Menggunakan GET karena mengambil data
                         headers: {
@@ -241,10 +254,9 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            // Render data ke modal atau elemen lain
-                            const modalContent = document.getElementById('modalContent');
                             const targetPhone = document.getElementById('phone').value;
 
+                            // Render data ke modal atau elemen lain
                             modalContent.innerHTML = `
                                 <div class="form-group mb-3">
                                     <label for="order-target">Tujuan</label>

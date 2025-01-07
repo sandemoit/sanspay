@@ -203,34 +203,34 @@
 
                             // Render konten ke dalam modal
                             modalContent.innerHTML = `
-                    <div class="form-group mb-3">
-                        <label for="order-target">Tujuan</label>
-                        <input type="text" class="form-control" id="order-target" name="order-target" value="${targetPhone}" readonly>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="product-name">Nama Produk</label>
-                        <input type="text" data-code="${data.product.code}" class="form-control" id="product-name" value="${data.product.name}" readonly>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="product-info">Informasi Produk</label>
-                        <textarea class="form-control" id="product-info" rows="2" readonly>${data.product.note}</textarea>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="form-group col-md-6 mb-3">
-                            <label for="price">Harga</label>
-                            <input type="text" class="form-control" id="price" value="Rp ${data.price}" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="balance">Sisa Saldo</label>
-                            <input type="text" class="form-control" id="balance" value="Rp ${data.userSaldo}" readonly>
-                        </div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="transaction-pin">PIN Transaksi Anda <span class="text-danger">*</span></label>
-                        <input type="password" class="form-control" id="transaction-pin" name="transaction-pin" required>
-                        <input type="hidden" id="apaajalah" value="${data.token}">
-                    </div>
-                `;
+                            <div class="form-group mb-3">
+                                <label for="order-target">Tujuan</label>
+                                <input type="text" class="form-control" id="order-target" name="order-target" value="${targetPhone}" readonly>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="product-name">Nama Produk</label>
+                                <input type="text" data-code="${data.product.code}" class="form-control" id="product-name" value="${data.product.name}" readonly>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="product-info">Informasi Produk</label>
+                                <textarea class="form-control" id="product-info" rows="2" readonly>${data.product.note}</textarea>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="form-group col-md-6 mb-3">
+                                    <label for="price">Harga</label>
+                                    <input type="text" class="form-control" id="price" value="Rp ${data.price}" readonly>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="balance">Sisa Saldo</label>
+                                    <input type="text" class="form-control" id="balance" value="Rp ${data.userSaldo}" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="transaction-pin">PIN Transaksi Anda <span class="text-danger">*</span></label>
+                                <input type="password" class="form-control" id="transaction-pin" name="transaction-pin" required>
+                                <input type="hidden" id="apaajalah" value="${data.token}">
+                            </div>
+                        `;
                         } else {
                             toastr.error(data.message || 'Gagal mendapatkan data produk.', {
                                 timeOut: 1000
