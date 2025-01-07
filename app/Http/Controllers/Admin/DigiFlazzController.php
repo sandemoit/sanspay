@@ -111,7 +111,7 @@ class DigiFlazzController extends Controller
                 'note' => $this->space($item['desc'] ?? '-'),
                 'code' => str_replace(['&', '*'], '-', $item['buyer_sku_code']),
                 'price' => $item['price'] ?? $item['admin'],
-                'status' => $this->stock($item['seller_product_status']),
+                'status' => $this->stock($item['buyer_product_status']),
                 'prepost' => strtolower($prepost),
                 'label' => $item['type'] ?? Null,
             ];
