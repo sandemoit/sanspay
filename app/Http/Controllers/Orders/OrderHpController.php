@@ -190,117 +190,133 @@ class OrderHpController extends Controller
 
     public function prosesTransaksi(Request $request)
     {
-        $request->validate([
-            'pin' => 'required',
-        ]);
-
-        $ref_id = substr(str_shuffle('0123456789'), 0, 6);
-        // $ref_id = '123456';
-
-        $prepaidData = $this->makeRequest('/transaction', [
-            'username' => $this->username,
-            'buyer_sku_code' => $request->code,
-            'customer_no' => $request->target,
-            'ref_id' => $ref_id,
-            'sign' => $this->generateSignature($ref_id),
-            'testing' => true,
-        ]);
-
-        // Validasi respons dari API
-        if (!isset($prepaidData['data'])) {
-            Log::info('Failed to retrieve prepaid data: ' . json_encode($prepaidData));
-        }
-
-        // Ambil data user yang login
-        $user = Auth::user();
-        $storedPin = $user->pin;
-
-        // Ambil data produk
-        $product = ProductPpob::where('code', $request->code)->first();
-        if (!$product) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Produk tidak ditemukan.',
+        try {
+            $request->validate([
+                'pin' => 'required',
             ]);
-        }
 
-        // Tentukan harga berdasarkan role user
-        $price = match ($user->role) {
-            'admin' => $product->price,
-            'mitra' => $product->mitra_price,
-            'customer' => $product->cust_price,
-        };
+            $ref_id = substr(str_shuffle('0123456789'), 0, 6);
 
-        // Validasi token
-        $serverToken = hash_hmac('sha256', $product->code . $price, env('APP_KEY'));
-        if ($serverToken !== $request->token) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Token tidak valid. Request ini ditolak.',
-                'token' => $serverToken,
+            $prepaidData = $this->makeRequest('/transaction', [
+                'username' => $this->username,
+                'buyer_sku_code' => $request->code,
+                'customer_no' => $request->target,
+                'ref_id' => $ref_id,
+                'sign' => $this->generateSignature($ref_id),
             ]);
-        }
 
-        // Hitung point
-        $point = $this->calculatePoint($user->point);
-
-        if (Hash::check($request->pin, $storedPin)) {
-            // Cek apakah saldo cukup
-            if ($user->saldo < $price) {
+            // Validasi respons dari API  
+            if (!isset($prepaidData['data'])) {
+                Log::info('Failed to retrieve prepaid data: ' . json_encode($prepaidData));
                 return response()->json([
                     'success' => false,
-                    'message' => 'Saldo Anda tidak mencukupi untuk transaksi ini.',
+                    'message' => 'Gagal mengambil data transaksi.',
                 ]);
             }
 
-            // Proses transaksi berdasarkan RC
-            $rc = $prepaidData['data']['rc']; // Ambil RC dari data transaksi
+            // Ambil data user yang login  
+            $user = Auth::user();
+            $storedPin = $user->pin;
 
-            switch ($rc) {
-                case '00': // Transaksi Sukses
-                case '03': // Transaksi Pending
-                    // Kurangi saldo dan mutasi
-                    User::updateOrCreate(['id' => $user->id], ['saldo' => $user->saldo - $price, 'point' => $point]);
-                    Mutation::create([
-                        'username' => $user->name,
-                        'type' => '-',
-                        'amount' => strip_tags($price),
-                        'note' => "Trx :: $ref_id",
-                    ]);
+            // Ambil data produk  
+            $product = ProductPpob::where('code', $request->code)->first();
+            if (!$product) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Produk tidak ditemukan.',
+                ]);
+            }
 
-                    // Simpan data transaksi ke database
-                    TrxPpob::create([
-                        'id_order' => $ref_id,
-                        'user_id' => $user->id,
-                        'code' => $product->code,
-                        'name' => $product->name,
-                        'data' => $request->target,
-                        'price' => strip_tags($price),
-                        'point' => ($user->role === 'customer') ? 0 : $point,
-                        'refund' => '0',
-                        'note' => $prepaidData['data']['message'] ?? 'Unknown',
-                        'status' => $prepaidData['data']['status'] ?? 'Unknown',
-                        'from' => request()->ip(),
-                        'type' => 'prepaid',
-                        'sn' => $prepaidData['data']['sn'] ?? '',
-                    ]);
+            // Tentukan harga berdasarkan role user  
+            $price = match ($user->role) {
+                'admin' => $product->price,
+                'mitra' => $product->mitra_price,
+                'customer' => $product->cust_price,
+            };
 
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'Transaksi berhasil diproses.',
-                    ]);
+            // Validasi token  
+            $serverToken = hash_hmac('sha256', $product->code . $price, env('APP_KEY'));
+            if ($serverToken !== $request->token) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Token tidak valid. Request ini ditolak.',
+                    'token' => $serverToken,
+                ]);
+            }
 
-                case '01': // Timeout
-                case '02': // Transaksi Gagal
+            // Hitung point  
+            $point = $this->calculatePoint($user->point);
+
+            if (Hash::check($request->pin, $storedPin)) {
+                // Cek apakah saldo cukup  
+                if ($user->saldo < $price) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Transaksi tidak berhasil. Status: ' . $prepaidData['data']['message'],
+                        'message' => 'Saldo Anda tidak mencukupi untuk transaksi ini.',
                     ]);
+                }
+
+                // Proses transaksi berdasarkan RC  
+                $rc = $prepaidData['data']['rc']; // Ambil RC dari data transaksi  
+
+                switch ($rc) {
+                    case '00': // Transaksi Sukses  
+                    case '03': // Transaksi Pending  
+                        // Kurangi saldo dan mutasi  
+                        User::updateOrCreate(['id' => $user->id], ['saldo' => $user->saldo - $price, 'point' => $point]);
+                        Mutation::create([
+                            'username' => $user->name,
+                            'type' => '-',
+                            'amount' => strip_tags($price),
+                            'note' => "Trx :: $ref_id",
+                        ]);
+
+                        // Simpan data transaksi ke database  
+                        TrxPpob::create([
+                            'id_order' => $ref_id,
+                            'user_id' => $user->id,
+                            'code' => $product->code,
+                            'name' => $product->name,
+                            'data' => $request->target,
+                            'price' => strip_tags($price),
+                            'point' => ($user->role === 'customer') ? 0 : $point,
+                            'refund' => '0',
+                            'note' => $prepaidData['data']['message'] ?? 'Unknown',
+                            'status' => $prepaidData['data']['status'] ?? 'Unknown',
+                            'from' => request()->ip(),
+                            'type' => 'prepaid',
+                            'sn' => $prepaidData['data']['sn'] ?? '',
+                        ]);
+
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Transaksi berhasil diproses.',
+                        ]);
+
+                    case '01': // Timeout  
+                    case '02': // Transaksi Gagal  
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Transaksi tidak berhasil. Status: ' . $prepaidData['data']['message'],
+                        ]);
+
+                    default: // RC lainnya  
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Terjadi kesalahan: ' . $prepaidData['data']['message'],
+                        ]);
+                }
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'PIN yang Anda masukkan salah.',
+                ]);
             }
-        } else {
+        } catch (\Exception $e) {
+            Log::error('Error processing transaction: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'PIN yang Anda masukkan salah.',
+                'message' => 'Terjadi kesalahan saat memproses transaksi: ' . $e->getMessage(),
             ]);
         }
     }

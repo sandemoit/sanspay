@@ -381,10 +381,10 @@
                             }
                         })
                         .catch(error => {
-                            console.error('Error:', error);
+                            console.log('Error:', error);
                             confirmButton.innerHTML = 'Konfirmasi';
                             confirmButton.disabled = false;
-                            toastr.error('Terjadi kesalahan saat memproses transaksi.', {
+                            toastr.error(error, {
                                 timeOut: 1000
                             });
                         });
