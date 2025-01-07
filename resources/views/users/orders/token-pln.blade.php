@@ -125,61 +125,40 @@
                     }
                 });
 
+                // Fungsi untuk mendapatkan data kategori
                 function checkCategory(brand) {
                     const formData = new FormData();
                     formData.append('categoryBrand', brand);
 
-                    // Use jQuery AJAX if available
-                    if (typeof $ !== 'undefined') {
-                        $.ajax({
-                            url: '{{ secure_url(route('priceToken')) }}',
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
+                    fetch('{{ secure_url(route('priceToken')) }}', {
+                            method: 'POST',
+                            body: formData,
                             headers: {
-                                'X-Requested-With': 'XMLHttpRequest',
                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
                                     'content'),
-                            },
-                            success: function(response) {
-                                handleResponse(response);
-                            },
-                            error: function(xhr, status, error) {
-                                console.error('Error:', error);
-                                productList.innerHTML = `
-                        <div class="alert alert-danger">
-                            Terjadi kesalahan: ${error}
-                        </div>
-                    `;
                             }
-                        });
+                        })
+                        .then(response => response.json())
+                        .then(data => handleCategoryResponse(data))
+                        .catch(error => handleError(productList, error));
+                }
+
+                // Fungsi untuk menangani respons kategori
+                function handleCategoryResponse(data) {
+                    if (data.success) {
+                        productList.innerHTML = data.service;
                     } else {
-                        fetch('{{ route('priceToken') }}', {
-                                method: 'POST',
-                                body: formData,
-                                headers: {
-                                    'X-Requested-With': 'XMLHttpRequest',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                        'content'),
-                                },
-                                credentials: 'same-origin'
-                            })
-                            .then(response => response.json())
-                            .then(data => handleResponse(data))
-                            .catch(error => {
-                                console.error('Fetch Error:', error);
-                                productList.innerHTML = `
-                                    <div class="alert alert-danger">
-                                        Terjadi kesalahan: ${error.message || 'Kesalahan tidak diketahui'}
-                                    </div>
-                                `;
-                            });
+                        productList.innerHTML = `<div class="alert alert-danger">Gagal mengambil data kategori.</div>`;
                     }
                 }
 
-                function handleResponse(data) {
-                    productList.innerHTML = data.service;
+                // Fungsi untuk menangani error
+                function handleError(element, error) {
+                    console.error('Error:', error);
+                    element.innerHTML = `
+                <div class="alert alert-danger">
+                    Terjadi kesalahan: ${error.message || 'Kesalahan tidak diketahui'}
+                </div>`;
                 }
             });
         </script>
@@ -189,7 +168,7 @@
             function prepaid(url) {
                 const phone = document.getElementById('phone').value;
                 if (!phone) {
-                    toastr.error('Nomor tujuan tidak boleh kosong!', {
+                    toastr.error('Nomor/ID tujuan tidak boleh kosong!', {
                         timeOut: 1000
                     });
                     return;

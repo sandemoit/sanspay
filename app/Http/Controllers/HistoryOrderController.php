@@ -2,13 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\TrxPpob;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class HistoryOrderController extends Controller
 {
     public function historyTransaksi()
     {
+        $currentId = Auth::id();
+        $statuses = [
+            'pending' => TrxPpob::where('status', 'Pending')->where('user_id', $currentId)->count(),
+            'success' => TrxPpob::where('status', 'Sukses')->where('user_id', $currentId)->count(),
+            'cancel' => TrxPpob::where('status', 'Gagal')->where('user_id', $currentId)->count(),
+            'total_price' => TrxPpob::where('user_id', $currentId)->sum('price'),
+        ];
+
         $title = 'History Transaksi';
-        return view('users.orders.history', compact('title'));
+        return view('users.orders.history', compact('title', 'statuses'));
+    }
+
+    public function getData()
+    {
+        $currentId = Auth::id();
+        $transaksiPpob = TrxPpob::select(['id', 'id_order', 'user_id', 'status', 'updated_at', 'name', 'sn', 'price', 'note', 'refund', 'data'])->where('user_id', $currentId)->get();
+
+        return DataTables::of($transaksiPpob)
+            ->addColumn('trx_id', function ($row) {
+                return '<a href="#">' . $row->id_order . ' <ion-icon name="arrow-forward-outline"></ion-icon></a>';
+            })
+            ->addColumn('trx_refund', function ($row) {
+                return $row->refund == 1 ? '<span class="badge bg-danger">Refund</span>' : '<span class="badge bg-success">Tidak Refund</span>';
+            })
+            ->addColumn('trx_price', function ($row) {
+                return 'Rp ' . nominal($row->price);
+            })
+            ->addColumn('status', function ($row) {
+                if ($row->status == 'Pending') {
+                    return '<span class="badge bg-warning">' . ucfirst($row->status) . '</span>';
+                } elseif ($row->status == 'Gagal') {
+                    return '<span class="badge bg-danger">' . ucfirst($row->status) . '</span>';
+                } else {
+                    return '<span class="badge bg-success">' . ucfirst($row->status) . '</span>';
+                }
+            })
+            ->rawColumns(['trx_id', 'trx_refund', 'trx_price', 'status'])
+            ->make(true);
     }
 }

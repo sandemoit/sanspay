@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/profile/tukar-point', [DepositController::class, 'tukarPoint'])->name('profile.tukarPoint');
 
     Route::get('/order/history', [HistoryOrderController::class, 'historyTransaksi'])->name('order.history');
+    Route::get('/order/get-history', [HistoryOrderController::class, 'getData'])->name('order.get-history');
 
     // order pulsa, paket, kuota, transfer Page
     Route::get('/order/paket-telepon', [OrderHpController::class, 'newOrder'])->name('order.paket-telepon');
@@ -53,6 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/order/token-pln', [TokenController::class, 'index'])->name('order.token-pln');
     Route::post('/order/priceToken', [TokenController::class, 'priceToken'])->name('priceToken');
     Route::post('/order/orderToken', [TokenController::class, 'prosesTransaksi'])->name('orderToken');
+    Route::post('/order/cekToken', [TokenController::class, 'cekToken'])->name('cekToken');
 
     Route::middleware(HasRoleCustomer::class)->group(function () {
         Route::get('/upgrade', [DashboardController::class, 'upgradeMitra'])->name('upgrade.mitra');

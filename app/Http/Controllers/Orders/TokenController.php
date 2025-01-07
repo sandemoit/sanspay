@@ -56,6 +56,7 @@ class TokenController extends Controller
         $products = ProductPpob::with('category')
             ->where('brand', $categoryBrand)
             ->where('type', 'token-pln')
+            ->where('code', '!=', 'plncn')
             ->orderBy('price', 'asc')
             ->get();
 
@@ -92,7 +93,6 @@ class TokenController extends Controller
             'ref_id' => $ref_id,
             'sign' => $this->generateSignature($ref_id),
         ]);
-
 
         // Validasi respons dari API
         if (!isset($prepaidData['data'])) {

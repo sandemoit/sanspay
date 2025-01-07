@@ -4,12 +4,14 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         ajax: '/referral/get',
-        columns: [
-            {
-                data: 'no',
+        columns: [{
+                data: null,
                 name: 'no',
                 orderable: true,
                 searchable: false,
+                render: function(data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
             },
             {
                 data: 'date',

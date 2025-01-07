@@ -134,8 +134,8 @@
                         <ion-icon name="chatbubbles-outline"></ion-icon>
                     </div>
                     <div class="menu-title">{{ __('Ticket Helpdesk') }}</div>
-                    @if ($openTicketsCount > 0)
-                        <span class="badge bg-danger ms-auto">{{ $openTicketsCount }}</span>
+                    @if ($openTicketsCount && $answerTicketsCount > 0)
+                        <span class="badge bg-danger ms-auto">{{ $openTicketsCount || $answerTicketsCount }}</span>
                     @endif
                 </a>
             </li>
@@ -165,6 +165,14 @@
                 </a>
             </li>
             <li class="menu-label">{{ __('Main Menu') }}</li>
+            </li>
+            <li>
+                <a href="{{ route('order.history') }}">
+                    <div class="parent-icon">
+                        <ion-icon name="cart-outline"></ion-icon>
+                    </div>
+                    <div class="menu-title">{{ __('Histori Transaksi') }}</div>
+                </a>
             </li>
             <li>
                 <a href="javascript:;" class="has-arrow">

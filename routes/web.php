@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DigiflazzController;
+use App\Http\Controllers\Orders\TokenController;
 use App\Http\Middleware\XSS;
 use Illuminate\Support\Facades\Route;
 

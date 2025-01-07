@@ -30,9 +30,6 @@ class ReferralController extends Controller
         $referrals = Referrals::select(['id', 'username_from', 'username_to', 'point', 'status', 'created_at'])->where('username_from', $currentUser->name)->get();
 
         return DataTables::of($referrals)
-            ->addColumn('no', function ($row) {
-                return $row->id;
-            })
             ->addColumn('status', function ($row) {
                 return '<span class="badge bg-' . ($row->status == 'active' ? 'success' : 'danger') . '">' . ucfirst($row->status) . '</span>';
             })
