@@ -296,12 +296,6 @@ class OrderHpController extends Controller
                         'success' => false,
                         'message' => 'Transaksi tidak berhasil. Status: ' . $prepaidData['data']['message'],
                     ]);
-
-                default: // RC lainnya
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Terjadi kesalahan: ' . $prepaidData['data']['message'],
-                    ]);
             }
         } else {
             return response()->json([

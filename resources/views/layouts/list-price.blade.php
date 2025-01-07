@@ -47,6 +47,9 @@
                 <div class="col-6">
                     <div class="card product-card" {{ $product->healthy == 0 ? 'disabled-card' : '' }}
                         onclick="prepaid('{{ route('order.confirm', $product->code) }}')">
+                        @if ($product->healthy == 0)
+                            <div class="status-label">Gangguan</div>
+                        @endif
                         <div class="card-body text-center">
                             <div class="product-name" style="font-size: 0.8rem;">
                                 {{ $product->name }}
