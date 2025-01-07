@@ -10,6 +10,7 @@ class DigiflazzController extends Controller
 {
     public function handle(Request $request)
     {
+        Log::info('Request: ', $request->all());
         $secret = 'sanspaysecret'; // Ganti dengan secret dari DigiFlazz
 
         // Mendapatkan data mentah dari request

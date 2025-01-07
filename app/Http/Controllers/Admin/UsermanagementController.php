@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\SendEmail;
 use App\Models\Upgrade;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -91,6 +92,13 @@ class UsermanagementController extends Controller
         $pengajuan->update([
             'status' => $request->status,
             'note' => $request->note,
+        ]);
+
+        $pengajuan->user->update([
+            'no_ktp' => $pengajuan->no_ktp,
+            'selfie_ktp' => $pengajuan->selfie_ktp,
+            'gender' => $pengajuan->gender,
+            'full_address' => $pengajuan->full_address,
         ]);
 
         // Update role user jika status diterima
