@@ -88,6 +88,7 @@
     </div>
 
     @push('custom-js')
+        {{-- laod price product --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const categoryBrand = document.getElementById('categoryBrand');
@@ -164,6 +165,7 @@
             });
         </script>
 
+        {{-- load modal --}}
         <script>
             function prepaid(url) {
                 const phone = document.getElementById('phone').value;
@@ -174,8 +176,22 @@
                     return;
                 }
 
+                // Tampilkan modal loading terlebih dahulu
+                const modalContent = document.getElementById('modalContent');
+                modalContent.innerHTML = `
+                    <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                `;
+
+                const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+                modal.show();
+
+                // Fetch data dari server
                 fetch(url, {
-                        method: 'GET', // Menggunakan GET karena mengambil data
+                        method: 'GET',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                         },
@@ -183,56 +199,54 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            // Render data ke modal atau elemen lain
-                            const modalContent = document.getElementById('modalContent');
                             const targetPhone = document.getElementById('phone').value;
 
+                            // Render konten ke dalam modal
                             modalContent.innerHTML = `
-                                <div class="form-group mb-3">
-                                    <label for="order-target">Tujuan</label>
-                                    <input type="text" class="form-control" id="order-target" name="order-target" value="${targetPhone}" readonly>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="product-name">Nama Produk</label>
-                                    <input type="text" data-code="${data.product.code}" class="form-control" id="product-name" value="${data.product.name}" readonly>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="product-info">Informasi Produk</label>
-                                    <textarea class="form-control" id="product-info" rows="2" readonly>${data.product.note}</textarea>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="form-group col-md-6 mb-3">
-                                        <label for="price">Harga</label>
-                                        <input type="text" class="form-control" id="price" value="Rp ${data.price}" readonly>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="balance">Sisa Saldo</label>
-                                        <input type="text" class="form-control" id="balance" value="Rp ${data.userSaldo}" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="transaction-pin">PIN Transaksi Anda <span class="text-danger">*</span></label>
-                                    <input type="password" class="form-control" id="transaction-pin" name="transaction-pin" required>
-                                    <input type="hidden" id="apaajalah" value="${data.token}">
-                                </div>
-                            `;
-
-                            // Tampilkan modal
-                            const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
-                            modal.show();
+                    <div class="form-group mb-3">
+                        <label for="order-target">Tujuan</label>
+                        <input type="text" class="form-control" id="order-target" name="order-target" value="${targetPhone}" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="product-name">Nama Produk</label>
+                        <input type="text" data-code="${data.product.code}" class="form-control" id="product-name" value="${data.product.name}" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="product-info">Informasi Produk</label>
+                        <textarea class="form-control" id="product-info" rows="2" readonly>${data.product.note}</textarea>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="price">Harga</label>
+                            <input type="text" class="form-control" id="price" value="Rp ${data.price}" readonly>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="balance">Sisa Saldo</label>
+                            <input type="text" class="form-control" id="balance" value="Rp ${data.userSaldo}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="transaction-pin">PIN Transaksi Anda <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="transaction-pin" name="transaction-pin" required>
+                        <input type="hidden" id="apaajalah" value="${data.token}">
+                    </div>
+                `;
                         } else {
                             toastr.error(data.message || 'Gagal mendapatkan data produk.', {
                                 timeOut: 1000
                             });
+                            modal.hide();
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
                         alert('Terjadi kesalahan. Silakan coba lagi.');
+                        modal.hide();
                     });
             }
         </script>
 
+        {{-- transaksi --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const confirmButton = document.getElementById('confirmButton');
