@@ -112,13 +112,15 @@
                     // Use jQuery AJAX if available
                     if (typeof $ !== 'undefined') {
                         $.ajax({
-                            url: '{{ route('priceEmoney') }}',
+                            url: '{{ secure_url(route('priceEmoney')) }}',
                             type: 'POST',
                             data: formData,
                             processData: false,
                             contentType: false,
                             headers: {
-                                'X-Requested-With': 'XMLHttpRequest'
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                    'content'),
                             },
                             success: function(response) {
                                 handleResponse(response);

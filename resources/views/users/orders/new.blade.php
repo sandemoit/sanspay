@@ -160,20 +160,21 @@
                     // Debug: Log request attempt
 
                     const formData = new FormData();
-                    formData.append('phone', phone);
                     formData.append('type', '{{ $type }}');
-                    formData.append('_token', '{{ csrf_token() }}');
+                    formData.append('phone', phone);
 
                     // Use jQuery AJAX if available
                     if (typeof $ !== 'undefined') {
                         $.ajax({
-                            url: '{{ route('order.checkProvider') }}',
+                            url: '{{ secure_url(route('order.checkProvider')) }}',
                             type: 'POST',
                             data: formData,
                             processData: false,
                             contentType: false,
                             headers: {
-                                'X-Requested-With': 'XMLHttpRequest'
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                    'content'),
                             },
                             success: function(response) {
                                 handleResponse(response);
