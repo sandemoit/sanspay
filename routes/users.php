@@ -46,7 +46,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // order emoney
     Route::get('/order/emonney', [EmoneyController::class, 'index'])->name('order.emonney');
     Route::post('/order/priceEmoney', [EmoneyController::class, 'priceEmoney'])->name('priceEmoney');
-    Route::post('/order/orderEmoney', [EmoneyController::class, 'orderEmoney'])->name('orderEmoney');
     Route::post('/order/orderEmoney', [EmoneyController::class, 'prosesTransaksi'])->name('orderEmoney');
 
     Route::middleware(HasRoleCustomer::class)->group(function () {

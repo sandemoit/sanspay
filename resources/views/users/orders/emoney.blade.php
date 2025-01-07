@@ -108,7 +108,6 @@
                 function checkCategory(brand) {
                     const formData = new FormData();
                     formData.append('categoryBrand', brand);
-                    formData.append('_token', '{{ csrf_token() }}');
 
                     // Use jQuery AJAX if available
                     if (typeof $ !== 'undefined') {
@@ -138,19 +137,21 @@
                                 method: 'POST',
                                 body: formData,
                                 headers: {
-                                    'X-Requested-With': 'XMLHttpRequest'
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                        'content'),
                                 },
                                 credentials: 'same-origin'
                             })
                             .then(response => response.json())
                             .then(data => handleResponse(data))
                             .catch(error => {
-                                console.error('Error:', error);
+                                console.error('Fetch Error:', error);
                                 productList.innerHTML = `
-                    <div class="alert alert-danger">
-                        Terjadi kesalahan: ${error.message}
-                    </div>
-                `;
+                                    <div class="alert alert-danger">
+                                        Terjadi kesalahan: ${error.message || 'Kesalahan tidak diketahui'}
+                                    </div>
+                                `;
                             });
                     }
                 }
@@ -286,9 +287,9 @@
                                     timeOut: 1500
                                 });
 
-                                // setTimeout(function() {
-                                //     window.location.href = "{{ route('order.emonney') }}";
-                                // }, 1000);
+                                setTimeout(function() {
+                                    window.location.href = "{{ route('order.emonney') }}";
+                                }, 1000);
                             } else {
                                 toastr.error(data.message || 'Gagal memproses transaksi.', {
                                     timeOut: 1000
