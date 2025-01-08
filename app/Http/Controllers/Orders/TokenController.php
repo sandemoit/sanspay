@@ -84,7 +84,7 @@ class TokenController extends Controller
             'pin' => 'required',
         ]);
 
-        $ref_id = substr(str_shuffle('0123456789'), 0, 6);
+        $ref_id = substr(str_shuffle('0123456789'), 0, 12);
 
         $prepaidData = $this->makeRequest('/transaction', [
             'username' => $this->username,

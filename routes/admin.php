@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified', HasRoleAdmin::class])->group(function () 
     // order
     Route::get('/admin/order', [OrderController::class, 'index'])->name('order');
     Route::get('/admin/order/data', [OrderController::class, 'getData'])->name('order.data');
+    Route::get('/admin/order/get-detail-trx/{id}', [OrderController::class, 'getDetailTrx'])->name('getDetailTrx');
 
     // product pulsa ppob
     Route::get('/admin/pulsa-ppob/product', [ProductPpobController::class, 'index'])->name('pulsa-ppob.product');

@@ -56,6 +56,20 @@ if (!function_exists('tanggal')) {
     }
 }
 
+if (!function_exists('tanggalTrx')) {
+    /**
+     * Format tanggal menjadi string.
+     *
+     * @param  \DateTime  $tanggal
+     * @param  string  $format
+     * @return string
+     */
+    function tanggalTrx(\DateTime $tanggal, $format = 'j F Y H:i:s')
+    {
+        return $tanggal->format($format);
+    }
+}
+
 if (!function_exists('provider')) {
     /**
      * Get model setting

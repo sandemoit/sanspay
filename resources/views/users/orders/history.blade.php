@@ -1,6 +1,52 @@
 <x-app-layout>
     @push('custom-css')
         <link href="{{ asset('/') }}plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+        <style>
+            .card-body {
+                padding: 15px;
+                border-radius: 5px;
+            }
+
+            .card.details-card {
+                /* Tambahkan kelas khusus */
+                margin: 20px auto;
+                max-width: 100%;
+                color: white
+            }
+
+            .card-body ul li {
+                display: flex;
+                justify-content: flex-start;
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .card-body ul li .label {
+                width: 150px;
+                /* Lebar tetap untuk label */
+                font-weight: bold;
+            }
+
+            .card-body ul li .value {
+                flex: 1;
+                width: 250px;
+                margin-left: 1rem
+                    /* Isi sisa ruang */
+            }
+
+            .table-container {
+                /* Untuk tabel */
+                margin-top: 20px;
+                overflow-x: auto;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+        </style>
     @endpush
 
     <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-4">
@@ -103,6 +149,43 @@
                         {{-- here to fetch data --}}
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="detailTrxModal" tabindex="-1" aria-labelledby="detailTrxLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailTrxLabel">{{ __('Detail Transaksi') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="card bg-success details-card">
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li><span class="label">Trxid</span> : <span class="value" id="order_id">-</span></li>
+                            <li><span class="label">Pengirim</span> : <span class="value" id="data">-</span></li>
+                            <li><span class="label">Kode</span> : <span class="value" id="code">-</span></li>
+                            <li><span class="label">Detail Produk</span> : <span class="value" id="name">-</span>
+                            </li>
+                            <li><span class="label">Nomor Tujuan</span> : <span class="value" id="data">-</span>
+                            </li>
+                            <li><span class="label">Status</span> : <span class="value" id="status">-</span></li>
+                            <li><span class="label">Note</span> : <span class="value" id="note">-</span></li>
+                            <li><span class="label">SN</span> : <span class="value" id="sn">-</span></li>
+                            <li><span class="label">Harga</span> : <span class="value" id="price">-</span></li>
+                            <li><span class="label">Transaksi</span> : <span class="value" id="created_at">-</span>
+                            </li>
+                            <li><span class="label">Update</span> : <span class="value" id="updated_at">-</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">{{ __('Close') }}</button>
+                </div>
             </div>
         </div>
     </div>

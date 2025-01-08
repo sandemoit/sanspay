@@ -22,9 +22,11 @@ $(document).ready(function() {
             type: 'GET',
             success: function(response) {
                 // Memasukkan data yang diterima dari response ke dalam form modal
-                $('#editModal #name').val(response.name);
-                $('#editModal #code').val(response.code);
-                $('#editModal #type').val(response.type);
+                $('#editModal #name').val(response.category.name);
+                $('#editModal #brand').val(response.category.brand);
+                $('#editModal #type').val(response.category.type);
+                $('#editModal #real').val(response.category.real);
+                $('#editModal #jenis').val(response.category.order);
                 $('#editModal').data('id', id);
             },
             error: function(xhr) {

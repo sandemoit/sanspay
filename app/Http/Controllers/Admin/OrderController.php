@@ -52,9 +52,24 @@ class OrderController extends Controller
                 return $row->name . '<br><small class="text-primary">' . $row->product->provider . '</small>';
             })
             ->addColumn('id_ref', function ($row) {
-                return '<a href="#" class="text-primary">' . $row->id_order . '</a>';
+                return '<a href="javascript:;" id="detailTrx" data-id="' . $row->id . '" class="text-primary" data-bs-toggle="modal" data-bs-target="#detailTrxModal">' . $row->id_order . '</a>';
             })
             ->rawColumns(['product', 'user_name', 'action', 'price_transaction', 'id_ref'])
             ->make(true);
+    }
+
+    public function getDetailTrx($id)
+    {
+        try {
+            // Ambil data kategori berdasarkan ID
+            $trx = TrxPpob::findOrFail($id);
+
+            // Kembalikan data kategori sebagai JSON
+            return response()->json([
+                'trx' => $trx
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        }
     }
 }

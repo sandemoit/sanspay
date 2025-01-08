@@ -76,13 +76,50 @@
                             <th>{{ __('Trxid') }}</th>
                             <th>{{ __('Target') }}</th>
                             <th>{{ __('Harga') }}</th>
-                            <th>{{ __('Action') }}</th>
+                            <th>{{ __('Status') }}</th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">
                         {{-- here to fetch data --}}
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="detailTrxModal" tabindex="-1" aria-labelledby="detailTrxLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailTrxLabel">{{ __('Detail Transaksi') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="date" class="form-label">{{ __('Date') }}</label>
+                        <input type="text" class="form-control" id="date" name="date" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="product" class="form-label">{{ __('Product') }}</label>
+                        <input type="text" class="form-control" id="product" name="product" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="target" class="form-label">{{ __('Target') }}</label>
+                        <input type="text" class="form-control" id="target" name="target" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sn" class="form-label">{{ __('Ket/SN') }}</label>
+                        <textarea rows="3" id="sn" name="sn" class="form-control" readonly></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="note" class="form-label">{{ __('Note') }}</label>
+                        <input type="text" class="form-control" id="note" name="note" readonly>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">{{ __('Close') }}</button>
+                </div>
             </div>
         </div>
     </div>

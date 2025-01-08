@@ -34,6 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/order/history', [HistoryOrderController::class, 'historyTransaksi'])->name('order.history');
     Route::get('/order/get-history', [HistoryOrderController::class, 'getData'])->name('order.get-history');
+    Route::get('/order/get-detail-trx/{id}', [HistoryOrderController::class, 'getDetailTrx'])->name('getDetailTrx');
 
     // order pulsa, paket, kuota, transfer Page
     Route::get('/order/paket-telepon', [OrderHpController::class, 'newOrder'])->name('order.paket-telepon');

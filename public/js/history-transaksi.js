@@ -23,4 +23,31 @@ $(document).ready(function() {
             { data: 'trx_refund', name: 'trx_refund', orderable: true, searchable: true  },
         ]
     });
+
+    // Event untuk tombol edit
+    $('#history-table').on('click', '#detailTrx', function() {
+        var id = $(this).data('id');
+
+        // AJAX untuk mengambil data dari backend
+        $.ajax({
+            url: '/order/get-detail-trx/' + id, // Menggunakan route dengan parameter id
+            type: 'GET',
+            success: function(response) {
+                // Memasukkan data yang diterima dari response ke dalam form modal
+                $('#detailTrxModal #order_id').text(response.order_id);
+                $('#detailTrxModal #code').text(response.code);
+                $('#detailTrxModal #name').text(response.name);
+                $('#detailTrxModal #data').text(response.data);
+                $('#detailTrxModal #status').text(response.status);
+                $('#detailTrxModal #note').text(response.note);
+                $('#detailTrxModal #price').text('Rp'+response.price);
+                $('#detailTrxModal #sn').text(response.sn || '-');
+                $('#detailTrxModal #created_at').text(response.created_at);
+                $('#detailTrxModal #updated_at').text(response.updated_at);
+            },
+            error: function(xhr) {
+                toastr.error("Error: " + xhr.responseText, {timeOut: 2000})
+            }
+        });
+    });
 });

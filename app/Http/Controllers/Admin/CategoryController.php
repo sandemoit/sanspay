@@ -52,9 +52,7 @@ class CategoryController extends Controller
 
             // Kembalikan data kategori sebagai JSON
             return response()->json([
-                'name' => $category->name,
-                'code' => $category->code,
-                'type' => $category->type,
+                'category' => $category
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Data tidak ditemukan'], 404);

@@ -33,8 +33,8 @@
                 <div class="modal-body">
                     <form id="editCategoryForm">
                         <div class="mb-3">
-                            <label for="code" class="form-label">{{ __('Code') }}</label>
-                            <input type="text" class="form-control" id="code" name="code" readonly>
+                            <label for="brand" class="form-label">{{ __('Brand') }}</label>
+                            <input type="text" class="form-control" id="brand" name="brand" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="name" class="form-label">{{ __('Name') }}</label>
@@ -43,6 +43,14 @@
                         <div class="mb-3">
                             <label for="type" class="form-label">{{ __('Type') }}</label>
                             <input type="text" class="form-control" id="type" name="type" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="type" class="form-label">{{ __('Real') }}</label>
+                            <input type="text" class="form-control" id="real" name="real" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="type" class="form-label">{{ __('Jenis') }}</label>
+                            <input type="text" class="form-control" id="jenis" name="jenis" readonly>
                         </div>
                     </form>
                 </div>

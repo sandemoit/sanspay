@@ -55,4 +55,26 @@ $(document).ready(function() {
             }
         ]
     });
+
+    // Event untuk tombol edit
+    $('#orders-table').on('click', '#detailTrx', function() {
+        var id = $(this).data('id');
+
+        // AJAX untuk mengambil data dari backend
+        $.ajax({
+            url: '/admin/order/get-detail-trx/' + id, // Menggunakan route dengan parameter id
+            type: 'GET',
+            success: function(response) {
+                // Memasukkan data yang diterima dari response ke dalam form modal
+                $('#detailTrxModal #date').val(response.trx.updated_at);
+                $('#detailTrxModal #product').val(response.trx.name);
+                $('#detailTrxModal #target').val(response.trx.data);
+                $('#detailTrxModal #sn').val(response.trx.sn);
+                $('#detailTrxModal #note').val(response.trx.note);
+            },
+            error: function(xhr) {
+                toastr.error("Error: " + xhr.responseText, {timeOut: 2000})
+            }
+        });
+    });
 });

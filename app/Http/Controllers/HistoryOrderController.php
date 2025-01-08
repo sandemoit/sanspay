@@ -29,7 +29,7 @@ class HistoryOrderController extends Controller
 
         return DataTables::of($transaksiPpob)
             ->addColumn('trx_id', function ($row) {
-                return '<a href="#">' . $row->id_order . ' <ion-icon name="eye-outline"></ion-icon></a>';
+                return '<a href="javascript:;" id="detailTrx" data-id="' . $row->id . '" data-bs-toggle="modal" data-bs-target="#detailTrxModal">' . $row->id_order . ' <ion-icon name="eye-outline"></ion-icon></a>';
             })
             ->addColumn('trx_refund', function ($row) {
                 return $row->refund == 1 ? '<span class="badge bg-danger">Refund</span>' : '<span class="badge bg-success">Tidak Refund</span>';
@@ -48,5 +48,29 @@ class HistoryOrderController extends Controller
             })
             ->rawColumns(['trx_id', 'trx_refund', 'trx_price', 'status'])
             ->make(true);
+    }
+
+    public function getDetailTrx($id)
+    {
+        try {
+            // Ambil data kategori berdasarkan ID
+            $trx = TrxPpob::findOrFail($id);
+
+            // Kembalikan data kategori sebagai JSON
+            return response()->json([
+                'order_id' => $trx->id_order,
+                'code' => $trx->code,
+                'name' => $trx->name,
+                'data' => $trx->data,
+                'status' => $trx->status,
+                'note' => $trx->note,
+                'sn' => $trx->sn,
+                'price' => nominal($trx->price),
+                'created_at' => tanggalTrx($trx->created_at),
+                'updated_at' => tanggalTrx($trx->updated_at),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        }
     }
 }
