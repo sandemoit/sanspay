@@ -24,7 +24,7 @@
             }
 
             .card-body ul li .label {
-                width: 150px;
+                width: 130px;
                 /* Lebar tetap untuk label */
                 font-weight: bold;
             }
