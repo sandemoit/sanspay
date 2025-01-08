@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
+use function Laravel\Prompts\select;
+
 class UsermanagementController extends Controller
 {
     public function upgradeMitra()
@@ -25,7 +27,9 @@ class UsermanagementController extends Controller
     public function getUpgradeMitra()
     {
         // Jika user adalah admin, ambil semua data orders tanpa filter
-        $orders = Upgrade::with('user')->get();
+        $orders = Upgrade::with(['user' => function ($q) {
+            $q->select('id', 'fullname');
+        }])->select('id', 'user_id', 'no_ktp', 'selfie_ktp', 'gender', 'full_address', 'status')->get();
 
         return DataTables::of($orders)
             ->addColumn('date', function ($row) {

@@ -38,11 +38,6 @@ $(document).ready(function() {
                 orderable: true, 
             },
             {
-                data: 'note',
-                name: 'note',
-                orderable: true, 
-            },
-            {
                 data: 'action',
                 name: 'action',
                 orderable: true, 
@@ -74,10 +69,6 @@ $(document).on('click', '.btn-detail', function () {
                         <option value="accept" ${data.status === 'accept' ? 'selected' : ''}>Approved</option>
                         <option value="decline" ${data.status === 'decline' ? 'selected' : ''}>Rejected</option>
                     </select>
-                </div>
-                <div class="mb-3">
-                    <label for="selfie_ktp" class="form-label">Description</label>
-                    <input type="text" class="form-control" id="note" value="${data.note}" readonly>
                 </div>
             `);
         },

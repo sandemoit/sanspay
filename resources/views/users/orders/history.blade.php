@@ -90,13 +90,13 @@
                         <tr>
                             <th>No</th>
                             <th>{{ __('Order ID') }}</th>
-                            <th>{{ __('Refund') }}</th>
+                            <th>{{ __('Status') }}</th>
                             <th>{{ __('Name') }}</th>
+                            <th>{{ __('Price') }}</th>
                             <th>{{ __('Data') }}</th>
                             <th>{{ __('Keterangan/SN') }}</th>
-                            <th>{{ __('Price') }}</th>
                             <th>{{ __('Note') }}</th>
-                            <th>{{ __('Status') }}</th>
+                            <th>{{ __('Refund') }}</th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">

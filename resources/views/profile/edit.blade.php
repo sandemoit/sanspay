@@ -3,7 +3,7 @@
     @include('layouts.breadcrumbs')
 
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-sm-12 col-md-12">
             <div class="card radius-10">
                 <div class="card-body">
                     @include('profile.partials.update-profile-information-form')
@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-lg-6 col-sm-12 col-md-12">
             <div class="card radius-10">
                 <div class="card-body">
                     @include('profile.partials.update-password-form')

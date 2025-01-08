@@ -29,7 +29,7 @@ class HistoryOrderController extends Controller
 
         return DataTables::of($transaksiPpob)
             ->addColumn('trx_id', function ($row) {
-                return '<a href="#">' . $row->id_order . ' <ion-icon name="arrow-forward-outline"></ion-icon></a>';
+                return '<a href="#">' . $row->id_order . ' <ion-icon name="eye-outline"></ion-icon></a>';
             })
             ->addColumn('trx_refund', function ($row) {
                 return $row->refund == 1 ? '<span class="badge bg-danger">Refund</span>' : '<span class="badge bg-success">Tidak Refund</span>';

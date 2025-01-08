@@ -14,13 +14,13 @@ $(document).ready(function() {
                 }
             },
             { data: 'trx_id', name: 'trx_id', orderable: true, searchable: true  },
-            { data: 'trx_refund', name: 'trx_refund', orderable: true, searchable: true  },
+            { data: 'status', name: 'status', orderable: true, searchable: true  },
             { data: 'name', name: 'name', orderable: true, searchable: true  },
+            { data: 'trx_price', name: 'trx_price', orderable: true, searchable: true  },
             { data: 'data', name: 'data', orderable: true, searchable: true  },
             { data: 'sn', name: 'sn', orderable: true, searchable: true  },
-            { data: 'trx_price', name: 'trx_price', orderable: true, searchable: true  },
             { data: 'note', name: 'note', orderable: true, searchable: true  },
-            { data: 'status', name: 'status', orderable: true, searchable: true  },
+            { data: 'trx_refund', name: 'trx_refund', orderable: true, searchable: true  },
         ]
     });
 });

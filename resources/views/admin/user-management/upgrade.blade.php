@@ -14,7 +14,6 @@
                             <th>{{ __('Address') }}</th>
                             <th>{{ __('Gender') }}</th>
                             <th>{{ __('Status') }}</th>
-                            <th>{{ __('Note') }}</th>
                             <th>{{ __('Action') }}</th>
                         </tr>
                     </thead>
