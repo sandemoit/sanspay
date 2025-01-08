@@ -78,7 +78,7 @@ class GetProduct extends Command
                             'type' => $product['type'],
                             'provider' => 'DigiFlazz',
                             'label' => $product['label'],
-                            'healthy' => $product['buyer_product_status'],
+                            'healthy' => $product['healthy'],
                         ]);
 
                         print '<font color="green"><pre>';

@@ -103,7 +103,7 @@ class DigiFlazzController extends Controller
         $output = [];
         foreach ($data as $item) {
             $output[] = [
-                'brand' => $item['brand'],
+                'brand' => is_array($item) ? $item['brand'] : '',
                 'category' => $item['category'],
                 'otype' => $item['type'] ?? $item['category'],
                 'type' => $this->filterType($item['category'], $item['product_name']),
