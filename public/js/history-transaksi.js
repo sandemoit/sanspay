@@ -36,6 +36,7 @@ $(document).ready(function() {
                 // Memasukkan data yang diterima dari response ke dalam form modal
                 $('#detailTrxModal #order_id').text(response.order_id);
                 $('#detailTrxModal #code').text(response.code);
+                $('#detailTrxModal #pengirim').text(response.pengirim);
                 $('#detailTrxModal #name').text(response.name);
                 $('#detailTrxModal #data').text(response.data);
                 $('#detailTrxModal #status').text(response.status);

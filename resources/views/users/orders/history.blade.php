@@ -164,7 +164,7 @@
                     <div class="card-body">
                         <ul class="list-unstyled mb-0">
                             <li><span class="label">Trxid</span> : <span class="value" id="order_id">-</span></li>
-                            <li><span class="label">Pengirim</span> : <span class="value" id="data">-</span></li>
+                            <li><span class="label">Pengirim</span> : <span class="value" id="pengirim">-</span></li>
                             <li><span class="label">Kode</span> : <span class="value" id="code">-</span></li>
                             <li><span class="label">Detail Produk</span> : <span class="value" id="name">-</span>
                             </li>

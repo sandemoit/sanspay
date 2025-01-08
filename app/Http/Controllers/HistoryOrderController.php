@@ -54,11 +54,12 @@ class HistoryOrderController extends Controller
     {
         try {
             // Ambil data kategori berdasarkan ID
-            $trx = TrxPpob::findOrFail($id);
+            $trx = TrxPpob::with('user')->where('user_id', Auth::id())->findOrFail($id);
 
             // Kembalikan data kategori sebagai JSON
             return response()->json([
                 'order_id' => $trx->id_order,
+                'pengirim' => $trx->user->fullname,
                 'code' => $trx->code,
                 'name' => $trx->name,
                 'data' => $trx->data,
