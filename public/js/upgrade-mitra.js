@@ -57,6 +57,7 @@ $(document).on('click', '.btn-detail', function () {
                 <div class="mb-3">
                     <label for="nik" class="form-label">NIK</label>
                     <input type="text" class="form-control" id="nik" value="${data.no_ktp}" readonly>
+                    <input type="hidden" id="id" data-id="${data.id}">
                 </div>
                 <div class="mb-3">
                     <label for="selfie_ktp" class="form-label">Selfie KTP</label>
@@ -80,7 +81,7 @@ $(document).on('click', '.btn-detail', function () {
 
 $('#detailModal').on('submit', 'form', function (e) {
     e.preventDefault();
-    var id = $('.btn-detail').data('id'); // ID yang sedang diubah
+    var id = $('#id').data('id'); // ID yang sedang diubah
     var status = $('#status').val(); // Ambil status yang dipilih
 
     $.ajax({
@@ -92,13 +93,20 @@ $('#detailModal').on('submit', 'form', function (e) {
         data: {
             status: status
         },
-        success: function (data) {
+        success: function (response) {
             $('#detailModal').modal('hide'); // Tutup modal
-            toastr.success(data.message, {timeOut: 1000});
             $('#upgrade-mitra-table').DataTable().ajax.reload(); // Reload datatable
+            toastr.success(response.message, {timeOut: 1000});
         },
         error: function (xhr) {
-            console.error(xhr.responseText); // Debugging jika error
+            if (xhr.status === 422) {
+                var errors = xhr.responseJSON.errors;
+                var errorText = '';
+                $.each(errors, function (key, value) {
+                    errorText += value + '<br>';
+                });
+                toastr.error(errorText, {timeOut: 1000});
+            }
         }
     });
 });

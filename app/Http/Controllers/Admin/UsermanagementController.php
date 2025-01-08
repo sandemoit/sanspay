@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
-use function Laravel\Prompts\select;
-
 class UsermanagementController extends Controller
 {
     public function upgradeMitra()
@@ -27,9 +25,7 @@ class UsermanagementController extends Controller
     public function getUpgradeMitra()
     {
         // Jika user adalah admin, ambil semua data orders tanpa filter
-        $orders = Upgrade::with(['user' => function ($q) {
-            $q->select('id', 'fullname');
-        }])->select('id', 'user_id', 'no_ktp', 'selfie_ktp', 'gender', 'full_address', 'status')->get();
+        $orders = Upgrade::with('user')->get();
 
         return DataTables::of($orders)
             ->addColumn('date', function ($row) {
@@ -69,45 +65,49 @@ class UsermanagementController extends Controller
             [
                 'no_ktp' => $pengajuan->no_ktp,
                 'selfie_ktp' => asset('storage/' . $pengajuan->selfie_ktp),
-                'status' => $pengajuan->status
+                'status' => $pengajuan->status,
+                'id' => $pengajuan->id
             ]
         );
     }
 
     public function updateStatusUpgrade(Request $request, $id)
     {
-        // Validasi input
         $validator = Validator::make($request->all(), [
             'status' => 'required|in:accept,decline',
-            'note' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['message' => 'Invalid data', 'errors' => $validator->errors()], 422);
         }
 
+        // Jika validasi berhasil
+        $validatedData = $validator->validated();
+
         // Temukan data pengajuan dengan relasi user
-        $pengajuan = Upgrade::with('user')->find($id);
+        $pengajuan = Upgrade::with(['user' => function ($query) {
+            $query->select('id', 'no_ktp', 'selfie_ktp', 'gender', 'full_address', 'role', 'email');
+        }])->select('id', 'status', 'no_ktp', 'selfie_ktp', 'gender', 'full_address', 'user_id', 'level')->find($id);
+
         if (!$pengajuan) {
             return response()->json(['message' => 'Data not found'], 404);
         }
 
         // Update data pengajuan
         $pengajuan->update([
-            'status' => $request->status,
-            'note' => $request->note,
+            'status' => $validatedData['status'],
         ]);
 
-        $pengajuan->user->update([
-            'no_ktp' => $pengajuan->no_ktp,
-            'selfie_ktp' => $pengajuan->selfie_ktp,
-            'gender' => $pengajuan->gender,
-            'full_address' => $pengajuan->full_address,
-        ]);
+        if ($validatedData['status'] === 'accept') {
+            $userUpdate = [
+                'no_ktp' => $pengajuan->no_ktp,
+                'selfie_ktp' => $pengajuan->selfie_ktp,
+                'gender' => $pengajuan->gender,
+                'full_address' => $pengajuan->full_address,
+                'role' => $pengajuan->level,
+            ];
 
-        // Update role user jika status diterima
-        if ($request->status === 'accept') {
-            $pengajuan->user->update(['role' => $pengajuan->level]);
+            User::where('id', $pengajuan->user_id)->update($userUpdate);
         }
 
         // Siapkan data untuk email
@@ -120,7 +120,7 @@ class UsermanagementController extends Controller
             return response()->json(['message' => 'Status updated, but failed to send email', 'error' => $e->getMessage()], 500);
         }
 
-        return response()->json(['message' => 'Status updated successfully']);
+        return response()->json(['message' => 'Status updated successfully', 201]);
     }
 
     private function prepareEmailData($pengajuan)
