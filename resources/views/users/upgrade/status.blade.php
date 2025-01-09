@@ -18,7 +18,9 @@
                                 <p>Data Anda sedang di tinjau oleh Admin, mohon tunggu konfirmasi dari kami.</p>
                             </div>
                             <div>
-                                <p>Jika ada pertanyaan silahkan hubungi <a href="#">Admin</a></p>
+                                <p>Jika ada pertanyaan silahkan hubungi <a
+                                        href="https://api.whatsapp.com/send?phone={{ configWeb('whatsapp_url')->value }}&text=Halo%20min...">Admin</a>
+                                </p>
                             </div>
                         </div>
                     @elseif ($status == '2')

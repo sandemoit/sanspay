@@ -169,7 +169,6 @@
                                         alt="User" />
 
                                     <div>
-                                        <img src="{{ asset('/') }}web/images/icon-quote.svg" alt="Quote" />
                                         <p class="ek ik xj _p kc fb">
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dolor
                                             diam, feugiat quis enim sed, ullamcorper semper ligula. Mauris
@@ -182,9 +181,9 @@
                                                 <span class="rc">Founter @democompany</span>
                                             </div>
 
-                                            <img class="rk"
+                                            {{-- <img class="rk"
                                                 src="{{ asset('/') }}web/images/brand-light-02.svg"
-                                                alt="Brand" />
+                                                alt="Brand" /> --}}
                                         </div>
                                     </div>
                                 </div>

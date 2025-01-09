@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DigiflazzController;;
+use App\Http\Controllers\DigiflazzController;
+use App\Http\Controllers\WebController;;
 
 use App\Http\Middleware\XSS;
 use App\Models\Category;
@@ -9,9 +10,7 @@ use App\Models\ProductPpob;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WebController::class, 'index']);
 
 Route::get('/harga-produk', function () {
     $productsByBrand = Category::select('brand', 'name')->groupBy('brand', 'name')->get();
