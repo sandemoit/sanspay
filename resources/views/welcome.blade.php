@@ -13,7 +13,7 @@
         <!-- Hero Content -->
         <div class="bb ze ki xn 2xl:ud-px-0">
             <div class="tc _o">
-                <div class="animate_left jn/2">
+                <div class=" jn/2">
                     <h1 class="fk vj zp or kk wm wb">Selamat Datang di SansPay!</h1>
                     <p class="fq">
                         Kami adalah solusi terpercaya untuk kebutuhan pulsa dan PPOB Anda. Dengan layanan yang lengkap,
@@ -35,7 +35,7 @@
         <div class="bb ze ki yn 2xl:ud-px-12.5">
             <div class="tc uf zo xf ap zf bp mq">
                 <!-- Small Features Item -->
-                <div class="animate_top step_start kn to/3 tc cg oq">
+                <div class=" step_start kn to/3 tc cg oq">
                     <div class="tc wf xf cf ae cd rg mh">
                         <img src="{{ asset('/') }}web/images/right-to-bracket-solid.svg" alt="Icon" />
                     </div>
@@ -47,7 +47,7 @@
                 </div>
 
                 <!-- Small Features Item -->
-                <div class="animate_top step_start kn to/3 tc cg oq">
+                <div class=" step_start kn to/3 tc cg oq">
                     <div class="tc wf xf cf ae cd rg nh">
                         <img src="{{ asset('/') }}web/images/wallet-solid.svg" alt="Icon" />
                     </div>
@@ -58,7 +58,7 @@
                 </div>
 
                 <!-- Small Features Item -->
-                <div class="animate_top step_start kn to/3 tc cg oq">
+                <div class=" step_start kn to/3 tc cg oq">
                     <div class="tc wf xf cf ae cd rg oh">
                         <img src="{{ asset('/') }}web/images/cart-plus-solid.svg" alt="Icon" />
                     </div>
@@ -78,7 +78,7 @@
 
         <!-- Section Title Start -->
         <div x-data="{ sectionTitle: `Mengapa Memilih SansPay?`, sectionTitleText: `Kami berkomitmen untuk memberikan layanan terbaik dengan fitur yang dirancang khusus untuk memenuhi kebutuhan Anda. Temukan berbagai keunggulan yang membuat SansPay menjadi pilihan utama untuk pulsa dan PPOB.` }">
-            <div class="animate_top bb ze rj ki xn vq">
+            <div class=" bb ze rj ki xn vq">
                 <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
                 </h2>
                 <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
@@ -89,7 +89,7 @@
         <div class="bb ze ki xn yq mb en">
             <div class="wc qf pn xo ng">
                 <!-- Service Item -->
-                <div class="animate_top keunggulan sg oi pi zq ml il am cn _m">
+                <div class=" keunggulan sg oi pi zq ml il am cn _m">
                     <img src="{{ asset('/') }}web/images/icon-01.svg" alt="Icon" />
                     <h4 class="ek zj kk wm nb _b">Layanan 24/7</h4>
                     <p>Dukungan pelanggan yang siap membantu kapan saja, memastikan setiap transaksi berjalan lancar.
@@ -97,35 +97,35 @@
                 </div>
 
                 <!-- Service Item -->
-                <div class="animate_top keunggulan sg oi pi zq ml il am cn _m">
+                <div class=" keunggulan sg oi pi zq ml il am cn _m">
                     <img src="{{ asset('/') }}web/images/cash-register-solid.svg" alt="Icon" />
                     <h4 class="ek zj kk wm nb _b">Transaksi Otomatis</h4>
                     <p>Memudahkan pelanggan dengan sistem transaksi otomatis yang cepat dan efisien.</p>
                 </div>
 
                 <!-- Service Item -->
-                <div class="animate_top keunggulan sg oi pi zq ml il am cn _m">
+                <div class=" keunggulan sg oi pi zq ml il am cn _m">
                     <img src="{{ asset('/') }}web/images/wallet-solid.svg" alt="Icon" />
                     <h4 class="ek zj kk wm nb _b">Deposit Mudah</h4>
                     <p>Proses deposit yang sederhana dan cepat, memudahkan pengguna untuk menambah saldo.</p>
                 </div>
 
                 <!-- Service Item -->
-                <div class="animate_top keunggulan sg oi pi zq ml il am cn _m">
+                <div class=" keunggulan sg oi pi zq ml il am cn _m">
                     <img src="{{ asset('/') }}web/images/user-shield-solid.svg" alt="Icon" />
                     <h4 class="ek zj kk wm nb _b">Keamanan Terjamin</h4>
                     <p>Sistem keamanan yang kuat untuk melindungi data dan transaksi pelanggan.</p>
                 </div>
 
                 <!-- Service Item -->
-                <div class="animate_top keunggulan sg oi pi zq ml il am cn _m">
+                <div class=" keunggulan sg oi pi zq ml il am cn _m">
                     <img src="{{ asset('/') }}web/images/boxes-stacked-solid.svg" alt="Icon" />
                     <h4 class="ek zj kk wm nb _b">Beragam Pilihan Produk</h4>
                     <p>Menyediakan berbagai jenis pulsa dan layanan PPOB, memenuhi semua kebutuhan pelanggan.</p>
                 </div>
 
                 <!-- Service Item -->
-                <div class="animate_top keunggulan sg oi pi zq ml il am cn _m">
+                <div class=" keunggulan sg oi pi zq ml il am cn _m">
                     <img src="{{ asset('/') }}web/images/arrow-up-right-dots-solid.svg" alt="Icon" />
                     <h4 class="ek zj kk wm nb _b">Inovasi Berkelanjutan</h4>
                     <p>Selalu berusaha untuk meningkatkan layanan dan fitur, mengikuti perkembangan teknologi dan
@@ -141,7 +141,7 @@
     <section class="hj rp hr" id="testimoni">
         <!-- Section Title Start -->
         <div x-data="{ sectionTitle: `Client’s Testimonials`, sectionTitleText: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using.` }">
-            <div class="animate_top bb ze rj ki xn vq">
+            <div class=" bb ze rj ki xn vq">
                 <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
                 </h2>
                 <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
@@ -152,7 +152,7 @@
         <!-- Section Title End -->
 
         <div class="bb ze ki xn ar">
-            <div class="animate_top jb cq">
+            <div class=" jb cq">
                 <!-- Slider main container -->
                 <div class="swiper testimonial-01">
                     <!-- Additional required wrapper -->
@@ -225,19 +225,19 @@
 
         <div class="bb ze i va ki xn br">
             <div class="tc uf sn tn xf un gg">
-                <div class="animate_top me/5 ln rj">
+                <div class=" me/5 ln rj">
                     <h2 class="gk vj zp or kk wm hc">1785</h2>
                     <p class="ek bk aq">Pengguna</p>
                 </div>
-                <div class="animate_top me/5 ln rj">
+                <div class=" me/5 ln rj">
                     <h2 class="gk vj zp or kk wm hc">533</h2>
                     <p class="ek bk aq">Layanan</p>
                 </div>
-                <div class="animate_top me/5 ln rj">
+                <div class=" me/5 ln rj">
                     <h2 class="gk vj zp or kk wm hc">2865</h2>
                     <p class="ek bk aq">Transaksi Sukses</p>
                 </div>
-                <div class="animate_top me/5 ln rj">
+                <div class=" me/5 ln rj">
                     <h2 class="gk vj zp or kk wm hc">346</h2>
                     <p class="ek bk aq">Happy Clients</p>
                 </div>
@@ -250,7 +250,7 @@
     <section class="pj vp mr" id="product">
         <!-- Section Title Start -->
         <div x-data="{ sectionTitle: `Produk yang kami sediakan`, sectionTitleText: `Kami menawarkan beragam produk yang dirancang untuk memenuhi kebutuhan Anda.` }">
-            <div class="animate_top bb ze rj ki xn vq">
+            <div class=" bb ze rj ki xn vq">
                 <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
                 </h2>
                 <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
@@ -262,37 +262,37 @@
 
         <div class="bb ze ah ch pm hj xp ki xn 2xl:ud-px-49 bc">
             <div class="wc rf qn zf cp kq xf wf">
-                <a href="#" class="rc animate_top">
+                <a href="#" class="rc ">
                     <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand-light-01.svg"
                         alt="Clients" />
                     <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-01.svg"
                         alt="Clients" />
                 </a>
-                <a href="#" class="rc animate_top">
+                <a href="#" class="rc ">
                     <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-02.svg"
                         alt="Clients" />
                     <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-02.svg"
                         alt="Clients" />
                 </a>
-                <a href="#" class="rc animate_top">
+                <a href="#" class="rc ">
                     <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-03.svg"
                         alt="Clients" />
                     <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-03.svg"
                         alt="Clients" />
                 </a>
-                <a href="#" class="rc animate_top">
+                <a href="#" class="rc ">
                     <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-04.svg"
                         alt="Clients" />
                     <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-04.svg"
                         alt="Clients" />
                 </a>
-                <a href="#" class="rc animate_top">
+                <a href="#" class="rc ">
                     <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-05.svg"
                         alt="Clients" />
                     <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-05.svg"
                         alt="Clients" />
                 </a>
-                <a href="#" class="rc animate_top">
+                <a href="#" class="rc ">
                     <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-06.svg"
                         alt="Clients" />
                     <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-06.svg"
@@ -307,7 +307,7 @@
     <section class="ji gp uq" id="news">
         <!-- Section Title Start -->
         <div x-data="{ sectionTitle: `Latest Blogs & News`, sectionTitleText: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using.` }">
-            <div class="animate_top bb ze rj ki xn vq">
+            <div class=" bb ze rj ki xn vq">
                 <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
                 </h2>
                 <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
@@ -320,7 +320,7 @@
         <div class="bb ye ki xn vq jb jo">
             <div class="wc qf pn xo zf iq">
                 <!-- Blog Item -->
-                <div class="animate_top sg vk rm xm">
+                <div class=" sg vk rm xm">
                     <div class="c rc i z-1 pg">
                         <img class="w-full" src="{{ asset('/') }}web/images/blog-01.png" alt="Blog" />
 
@@ -347,7 +347,7 @@
                 </div>
 
                 <!-- Blog Item -->
-                <div class="animate_top sg vk rm xm">
+                <div class=" sg vk rm xm">
                     <div class="c rc i z-1 pg">
                         <img class="w-full" src="{{ asset('/') }}web/images/blog-02.png" alt="Blog" />
 
@@ -374,7 +374,7 @@
                 </div>
 
                 <!-- Blog Item -->
-                <div class="animate_top sg vk rm xm">
+                <div class=" sg vk rm xm">
                     <div class="c rc i z-1 pg">
                         <img class="w-full" src="{{ asset('/') }}web/images/blog-03.png" alt="Blog" />
 
@@ -412,7 +412,7 @@
 
         <div class="bb ye i z-10 ki xn dr">
             <div class="tc uf sn tn un gg">
-                <div class="animate_left to/2">
+                <div class=" to/2">
                     <h2 class="fk vj zp pr lk ac">
                         Gabung bersama 1000+ mitra maju bersama SansPay
                     </h2>
@@ -421,7 +421,7 @@
                         Bergabunglah dengan kami dan jadilah bagian dari komunitas yang terus berkembang.
                     </p>
                 </div>
-                <div class="animate_right bf">
+                <div class=" bf">
                     <a href="{{ route('register') }}" class="vc ek kk hh rg ol il cm gi hi">
                         Bergabung Sekarang
                     </a>

@@ -6,7 +6,7 @@
         <img src="{{ asset('/') }}web/images/shape-17.svg" alt="Shape" class="h n o" />
         <img src="{{ asset('/') }}web/images/shape-18.svg" alt="Shape" class="h p q" />
 
-        <div class="animate_top bb af i va sg hh sm vk xm yi _n jp hi ao kp">
+        <div class=" bb af i va sg hh sm vk xm yi _n jp hi ao kp">
             <!-- Bg Border -->
             <span class="rc h r s zd/2 od zg gh"></span>
             <span class="rc h r q zd/2 od xg mh"></span>

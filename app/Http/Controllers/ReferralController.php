@@ -27,7 +27,7 @@ class ReferralController extends Controller
     public function getData()
     {
         $currentUser = Auth::user();
-        $referrals = Referrals::select(['id', 'username_from', 'username_to', 'point', 'status', 'created_at'])->where('username_from', $currentUser->name)->get();
+        $referrals = Referrals::select(['id', 'username_from', 'username_to', 'point', 'status', 'created_at'])->where('username_from', $currentUser->name)->where('status', 'active')->get();
 
         return DataTables::of($referrals)
             ->addColumn('status', function ($row) {
