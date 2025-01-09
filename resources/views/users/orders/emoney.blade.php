@@ -323,7 +323,7 @@
                                 });
 
                                 setTimeout(function() {
-                                    window.location.href = "{{ route('order.emonney') }}";
+                                    window.location.href = "{{ route('order.history') }}";
                                 }, 1000);
                             } else {
                                 toastr.error(data.message || 'Gagal memproses transaksi.', {

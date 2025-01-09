@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mutation;
+use App\Models\Referrals;
 use App\Models\TrxPpob;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -83,6 +85,15 @@ class DigiflazzController extends Controller
                 'note' => $message,
                 'sn' => $sn,
             ]);
+
+            // Cari referral yang masih inactive dan ubah statusnya
+            // Serta tambahkan poin ke user yang mereferensi
+            Referrals::where('username_to', $username)
+                ->where('status', 'inactive')
+                ->each(function ($referral) {
+                    $referral->update(['status' => 'active']);
+                    User::where('name', $referral->username_from)->increment('point', $referral->point);
+                });
         } else {
             Log::info('Unhandled transaction status: ' . $status);
         }

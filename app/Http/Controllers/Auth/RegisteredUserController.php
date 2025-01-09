@@ -59,7 +59,7 @@ class RegisteredUserController extends Controller
                 'username_from' => $userReferral->name,
                 'username_to' => $user->name,
                 'point' => 2500,
-                'status' => 'active'
+                'status' => 'inactive'
             ]);
 
             $userReferral->increment('point', 2500);

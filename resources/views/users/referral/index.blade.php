@@ -62,6 +62,16 @@
             </div>
         </div>
     </div>
+    <div class="alert alert-primary" role="alert">
+        <div class="text-left mb-2">
+            <span class="badge bg-primary">🎉 Ayo ajak teman-teman gabung di Sans Pay!</span>
+        </div>
+        <div>
+            Setiap teman yang kamu ajak dan transaksi pertama selesai, kamu akan dapat 2500 poin! ✨ Poin ini bisa
+            langsung ditukar jadi Saldo Transaksi.
+            Semakin banyak teman yang kamu ajak, semakin besar saldo kamu. Yuk, mulai sekarang! 🚀
+        </div>
+    </div>
     <hr />
     <div class="card">
         <div class="card-body">

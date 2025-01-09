@@ -53,7 +53,8 @@
                 <div class="col-12">
                     <label for="pin" class="form-label">{{ __('PIN Transaksi') }}</label>
                     <input type="password" class="form-control @error('pin') is-invalid @enderror" id="number"
-                        name="pin" value="{{ old('pin') }}" required autofocus autocomplete="pin">
+                        name="pin" value="{{ old('pin') }}" required autofocus autocomplete="pin"
+                        placeholder="Masukan 6 Angka Unik">
                     @error('pin')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
