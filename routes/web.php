@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DigiflazzController;;
 
 use App\Http\Middleware\XSS;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,4 +28,11 @@ Route::middleware(XSS::class)->group(function () {
     require __DIR__ . '/admin.php';
     require __DIR__ . '/users.php';
     require __DIR__ . '/job.php';
+});
+
+Route::get('/clear-cache', function () {
+    Artisan::call('view:clear');
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    return "Cache cleared!";
 });
