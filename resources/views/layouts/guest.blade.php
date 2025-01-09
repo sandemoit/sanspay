@@ -8,22 +8,52 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark-theme">
 
 <head>
-    <!-- Required meta tags -->
-    {!! SEOMeta::generate() !!}
-    {!! OpenGraph::generate() !!}
-    {!! Twitter::generate() !!}
-    {!! JsonLd::generate() !!}
+    <title>Sans Pay | Agen Resmi dan Murah di Indonesia - It's Over 9000!</title>
+    <meta name="description"
+        content="Sanspay - Solusi cepat dan mudah untuk kebutuhan pulsa, top-up game, dan pembayaran tagihan pascabayar. Dapatkan layanan terbaik untuk top-up pulsa, voucher game, token PLN, dan lebih banyak lagi di Sanspay. Aman, terpercaya, dan tersedia 24/7.">
+    <meta name="keywords"
+        content="agen pulsa, ppob murah, cepat, aman, pulsa elektrik, transaksi cepat, layanan terpercaya, agen PPOB, pembayaran tagihan, pulsa murah, transaksi aman, pembayaran online, agen pulsa terpercaya, pulsa 24 jam, pembayaran listrik, pembayaran air, agen pulsa dan PPOB, layanan pulsa, pembayaran internet, pulsa semua operator, transaksi mudah, agen resmi, layanan pelanggan, diskon pulsa, pembayaran cepat, agen pulsa online, pembayaran multifungsi, layanan cepat, agen PPOB terbaik, pembayaran praktis, pulsa dan PPOB, transaksi tanpa ribet, agen pulsa terpercaya di Indonesia, layanan pembayaran tagihan, pembayaran aman dan cepat">
+    <link rel="canonical" href="https://sanspay.id">
+    <meta property="og:type" content="article">
+    <meta property="og:description"
+        content="Sanspay - Solusi cepat dan mudah untuk kebutuhan pulsa, top-up game, dan pembayaran tagihan pascabayar. Dapatkan layanan terbaik untuk top-up pulsa, voucher game, token PLN, dan lebih banyak lagi di Sanspay. Aman, terpercaya, dan tersedia 24/7.">
+    <meta property="og:title" content="Sans Pay | Agen Resmi dan Murah di Indonesia">
+    <meta property="og:locale" content="id-ID">
+    <meta property=":locale:alternate" content="id-ID">
+    <meta property=":locale:alternate" content="en-us">
+    <meta property="og:url" content="https://sanspay.id">
+    <meta property="og:image"
+        content="http://localhost:8000/storage/images/announcement/Cae8z7bNjeouCaHs5ps4bYMCrmzPaTvOD8Z09LE3.png">
+    <meta property="og:image:url"
+        content="http://localhost:8000/storage/images/announcement/Cae8z7bNjeouCaHs5ps4bYMCrmzPaTvOD8Z09LE3.png">
+    <meta property="og:image"
+        content="http://localhost:8000/storage/images/announcement/Cae8z7bNjeouCaHs5ps4bYMCrmzPaTvOD8Z09LE3.png">
+    <meta property="og:image:height" content="300">
+    <meta property="og:image:width" content="300">
 
-    {{-- load css --}}
-    <link href="{{ asset('/') }}css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ asset('/') }}css/bootstrap-extended.css" rel="stylesheet">
-    <link rel="icon" href="{{ asset(configWeb('favicon')->value) }}">
-    <link href="{{ asset('/') }}web/style.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('/') }}web/dist/assets/owl.carousel.min.css" />
+    <meta name="twitter:site" content="@sanspay.id">
+    <meta name="twitter:title" content="Homepage">
+    <script ty {{-- load css --}} <link href="{{ asset('/') }}css/bootstrap.min.css" rel="stylesheet">
+        < link href = "{{ asset('/') }}css/bootstrap-extended.css"
+        rel = "stylesheet" >
+            <
+            link rel = "icon"
+        href = "{{ asset(configWeb('favicon')->value) }}" >
+            <
+            link href = "{{ asset('/') }}web/style.css"
+        rel = "stylesheet" >
+            <
+            link href = "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+        rel = "stylesheet" >
+            <
+            link rel = "stylesheet"
+        href = "{{ asset('/') }}web/dist/assets/owl.carousel.min.css" / >
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7J1CR16G83"></script>
+            <
+            !--Google tag(gtag.js) -- >
+            <
+            script async src = "https://www.googletagmanager.com/gtag/js?id=G-7J1CR16G83" >
+    </script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
