@@ -47,11 +47,11 @@ Route::middleware(['auth', 'verified', HasRoleAdmin::class])->group(function () 
 
     // profit pulsa ppob
     Route::get('/admin/pulsa-ppob/profit', [ProfitController::class, 'index'])->name('pulsa-ppob.profit');
-    Route::put('/admin/pulsa-ppob/profit', [ProfitController::class, 'update'])->name('pulsa-ppob.profit');
+    Route::put('/admin/pulsa-ppob/profit', [ProfitController::class, 'update'])->name('pulsa-ppob.profit.update');
 
     // point pulsa ppob
     Route::get('/admin/pulsa-ppob/point', [PointController::class, 'index'])->name('pulsa-ppob.point');
-    Route::put('/admin/pulsa-ppob/point', [PointController::class, 'update'])->name('pulsa-ppob.point');
+    Route::put('/admin/pulsa-ppob/point', [PointController::class, 'update'])->name('pulsa-ppob.point.update');
 
     // get saldo dan configuration
     Route::post('/admin/configDigiFlazz', [ProviderController::class, 'configDigiFlazz'])->name('configDigiFlazz');

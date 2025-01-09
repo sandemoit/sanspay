@@ -7,7 +7,7 @@
                     <div class="border p-3 rounded">
                         <h6 class="mb-0 text-uppercase">{{ __('Profit Credit & PPOB') }}</h6>
                         <hr>
-                        <form action="{{ route('pulsa-ppob.profit') }}" method="POST" class="row g-3">
+                        <form action="{{ route('pulsa-ppob.profit.update') }}" method="POST" class="row g-3">
                             @csrf
                             @method('PUT')
                             <div class="col-12">

@@ -24,7 +24,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/') }}web/dist/assets/owl.carousel.min.css" />
 
-    @livewireStyles
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/livewire/livewire@2.x/dist/livewire.css">
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7J1CR16G83"></script>
     <script>
@@ -306,7 +307,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('/') }}web/bundle.js"></script>
     <script src="{{ asset('/') }}web/dist/owl.carousel.min.js"></script>
-    @livewireScripts
+    <script src="https://cdn.jsdelivr.net/gh/livewire/livewire@2.x/dist/livewire.js"></script>
 </body>
 
 </html>
