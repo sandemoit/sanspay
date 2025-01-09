@@ -1,5 +1,4 @@
-@extends('layouts.guest')
-@section('content')
+<x-guest-layout>
     <div class="row g-0 m-0">
         <div class="col-xl-6 col-lg-12">
             <div class="login-cover-wrapper">
@@ -40,4 +39,4 @@
             </div>
         </div>
     </div>
-@endsection
+</x-guest-layout>

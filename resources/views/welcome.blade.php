@@ -1,5 +1,4 @@
-@extends('layouts.guest')
-@section('content')
+<x-guest-layout>
     <section class="gj do ir hj sp jr i pg" id="home">
         <!-- Hero Images -->
         <div class="xc fn zd/2 2xl:ud-w-187.5 bd 2xl:ud-h-171.5 h q r">
@@ -183,7 +182,8 @@
                                                 <span class="rc">Founter @democompany</span>
                                             </div>
 
-                                            <img class="rk" src="{{ asset('/') }}web/images/brand-light-02.svg"
+                                            <img class="rk"
+                                                src="{{ asset('/') }}web/images/brand-light-02.svg"
                                                 alt="Brand" />
                                         </div>
                                     </div>
@@ -269,27 +269,32 @@
                         alt="Clients" />
                 </a>
                 <a href="#" class="rc ">
-                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-02.svg" alt="Clients" />
+                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-02.svg"
+                        alt="Clients" />
                     <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-02.svg"
                         alt="Clients" />
                 </a>
                 <a href="#" class="rc ">
-                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-03.svg" alt="Clients" />
+                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-03.svg"
+                        alt="Clients" />
                     <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-03.svg"
                         alt="Clients" />
                 </a>
                 <a href="#" class="rc ">
-                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-04.svg" alt="Clients" />
+                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-04.svg"
+                        alt="Clients" />
                     <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-04.svg"
                         alt="Clients" />
                 </a>
                 <a href="#" class="rc ">
-                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-05.svg" alt="Clients" />
+                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-05.svg"
+                        alt="Clients" />
                     <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-05.svg"
                         alt="Clients" />
                 </a>
                 <a href="#" class="rc ">
-                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-06.svg" alt="Clients" />
+                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-06.svg"
+                        alt="Clients" />
                     <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-06.svg"
                         alt="Clients" />
                 </a>
@@ -424,4 +429,4 @@
             </div>
         </div>
     </section>
-@endsection
+</x-guest-layout>

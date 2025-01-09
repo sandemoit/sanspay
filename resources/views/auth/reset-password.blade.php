@@ -1,5 +1,4 @@
-@extends('layouts.guest')
-@section('content')
+<x-guest-layout>
     <section class="i pg fh rm ki xn vq gj qp gr hj rp hr">
         <!-- Bg Shapes -->
         <img src="{{ asset('/') }}web/images/shape-06.svg" alt="Shape" class="h j k" />
@@ -22,8 +21,8 @@
                 @csrf
                 <div class="wb">
                     <label class="rc kk wm vb" for="email">{{ __('Email') }}</label>
-                    <input type="text" id="email" name="email" value="{{ old('email', $request->email) }}" required
-                        autofocus autocomplete="email" placeholder="example@gmail.com"
+                    <input type="text" id="email" name="email" value="{{ old('email', $request->email) }}"
+                        required autofocus autocomplete="email" placeholder="example@gmail.com"
                         class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 @error('email') is-invalid @enderror" />
                     @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -56,4 +55,4 @@
             </form>
         </div>
     </section>
-@endsection
+</x-guest-layout>

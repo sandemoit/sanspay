@@ -1,5 +1,4 @@
-@extends('layouts.guest')
-@section('content')
+<x-guest-layout>
     <section class="i pg fh rm ki xn vq gj qp gr hj rp hr">
         <!-- Bg Shapes -->
         <img src="{{ asset('/') }}web/images/shape-06.svg" alt="Shape" class="h j k" />
@@ -106,4 +105,4 @@
             </form>
         </div>
     </section>
-@endsection
+</x-guest-layout>
