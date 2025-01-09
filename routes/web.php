@@ -32,3 +32,9 @@ Route::middleware(XSS::class)->group(function () {
     require __DIR__ . '/users.php';
     require __DIR__ . '/job.php';
 });
+Route::get('/clear-cache', function () {
+    Artisan::call('view:clear');
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    return "Cache cleared!";
+});

@@ -5,10 +5,6 @@ namespace App\Http\Controllers;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\TwitterCard;
-use Artesaos\SEOTools\Facades\JsonLd;
-// OR with multi
-
-// OR
 use Artesaos\SEOTools\Facades\SEOTools;
 
 class WebController extends Controller
