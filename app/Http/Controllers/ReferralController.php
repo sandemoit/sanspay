@@ -17,8 +17,8 @@ class ReferralController extends Controller
         $data = [
             'title' => 'Program Referral',
             'user' => $currentUser,
-            'total_referral' => Referrals::where('username_from', $currentUser->name)->count(),
-            'total_point' => Referrals::where('username_from', $currentUser->name)->sum('point'),
+            'total_referral' => Referrals::where('username_from', $currentUser->name)->where('status', 'active')->count(),
+            'total_point' => Referrals::where('username_from', $currentUser->name)->where('status', 'active')->sum('point'),
         ];
 
         return view('users.referral.index', $data);

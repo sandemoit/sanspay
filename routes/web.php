@@ -1,14 +1,18 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DigiflazzController;
-use App\Http\Controllers\Orders\TokenController;
+use App\Http\Controllers\DigiflazzController;;
+
 use App\Http\Middleware\XSS;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/harga-produk', function () {
+    return view('harga');
+})->name('harga-produk');
+
 
 Route::middleware(XSS::class)->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {

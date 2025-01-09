@@ -167,6 +167,7 @@
     "Cancel Deposit": "Cancel Deposit",
     "Request Deposit": "Request Deposit",
     "Update PIN Transaction": "Update PIN Transaction",
-    "Make sure your transactions use a hard-to-guess PIN to stay safe.": "Make sure your transactions use a hard-to-guess PIN to stay safe."
+    "Make sure your transactions use a hard-to-guess PIN to stay safe.": "Make sure your transactions use a hard-to-guess PIN to stay safe.",
+    "available": "available"
 
 }

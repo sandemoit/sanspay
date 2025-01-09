@@ -1,4 +1,5 @@
-<x-guest-layout>
+@extends('layouts.guest')
+@section('content')
     <section class="i pg fh rm ki xn vq gj qp gr hj rp hr">
         <!-- Bg Shapes -->
         <img src="{{ asset('/') }}web/images/shape-06.svg" alt="Shape" class="h j k" />
@@ -41,8 +42,7 @@
                 <div class="row mb-3">
                     <div class="col-12 col-lg-6">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="remember_me"
-                                name="remember">
+                            <input class="form-check-input" type="checkbox" role="switch" id="remember_me" name="remember">
                             <label class="form-check-label" for="remember_me">{{ __('Remember Me') }}</label>
                         </div>
                     </div>
@@ -64,4 +64,4 @@
             </form>
         </div>
     </section>
-</x-guest-layout>
+@endsection

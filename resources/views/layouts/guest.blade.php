@@ -24,6 +24,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/') }}web/dist/assets/owl.carousel.min.css" />
 
+    @livewireStyles
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7J1CR16G83"></script>
     <script>
@@ -79,6 +80,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         <li><a href="{{ url('/#features') }}" class="xl">Features</a></li>
                         <li><a href="{{ url('/#testimoni') }}" class="xl">Testimoni</a></li>
                         <li><a href="{{ url('/#product') }}" class="xl">Produk</a></li>
+                        <li><a href="{{ route('harga-produk') }}" class="xl">Daftar Harga</a></li>
                         <li><a href="{{ url('/#news') }}" class="xl">Blog</a></li>
                     </ul>
                 </nav>
@@ -142,7 +144,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
     {{-- main --}}
     <main>
-        {{ $slot }}
+        @yield('content')
     </main>
 
     {{-- end main --}}
@@ -304,7 +306,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('/') }}web/bundle.js"></script>
     <script src="{{ asset('/') }}web/dist/owl.carousel.min.js"></script>
-
+    @livewireScripts
 </body>
 
 </html>
