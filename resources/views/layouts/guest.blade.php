@@ -129,7 +129,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                         'sh': page === '{{ $firstUriSegment }}' &&
                                             stickyMenu
                                     }"
-                                    class="lk gh dk rg tc wf xf _l gi hi">{{ __('Sign Up') }}</a>
+                                    class="lk gh dk rg tc wf xf _l gi hi">{{ __('Sign up') }}</a>
                             @endif
                         @endauth
                     @endif

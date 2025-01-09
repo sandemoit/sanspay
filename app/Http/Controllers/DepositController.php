@@ -201,7 +201,7 @@ class DepositController extends Controller
                 'topup_id' => 'INV' . time(),
                 'member_id' => $user->id,
                 'payment_method' => $request->methodpayment,
-                'amount' => $amount,
+                'amount' => $request->typepayment == 0 ? $total_transfer : $amount,
                 'total_transfer' => $total_transfer,
                 'status' => 'pending',
             ]);
