@@ -8,7 +8,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark-theme">
 
 <head>
-    <title>{{ configWeb('title')->value }} | Agen Resmi dan Murah di Indonesia</title>
+    <title>{{ configWeb('title')->value . ' | ' . $title ?? '' }}</title>
     <meta name="description" content="{{ configWeb('web_description')->value }}">
     <meta name="keywords"
         content="agen pulsa, ppob murah, cepat, aman, pulsa elektrik, transaksi cepat, layanan terpercaya, agen PPOB, pembayaran tagihan, pulsa murah, transaksi aman, pembayaran online, agen pulsa terpercaya, pulsa 24 jam, pembayaran listrik, pembayaran air, agen pulsa dan PPOB, layanan pulsa, pembayaran internet, pulsa semua operator, transaksi mudah, agen resmi, layanan pelanggan, diskon pulsa, pembayaran cepat, agen pulsa online, pembayaran multifungsi, layanan cepat, agen PPOB terbaik, pembayaran praktis, pulsa dan PPOB, transaksi tanpa ribet, agen pulsa terpercaya di Indonesia, layanan pembayaran tagihan, pembayaran aman dan cepat">

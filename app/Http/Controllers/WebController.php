@@ -70,6 +70,8 @@ class WebController extends Controller
         // OpenGraph::addImage(['url' => asset('storage/images/announcement/Cae8z7bNjeouCaHs5ps4bYMCrmzPaTvOD8Z09LE3.png'), 'size' => 300]);
         // OpenGraph::addImage(asset('storage/images/announcement/Cae8z7bNjeouCaHs5ps4bYMCrmzPaTvOD8Z09LE3.png'), ['height' => 300, 'width' => 300]);
 
-        return view('welcome');
+        $titel = 'Agen Resmi dan Murah di Indonesia';
+
+        return view('welcome', compact('titel'));
     }
 }
