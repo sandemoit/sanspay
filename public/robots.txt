@@ -1,2 +1,14 @@
-User-agent: *
-Disallow:
+# robots.txt for https://sanspay.id/
+  
+User-agent: *  
+Disallow: /admin/  
+Disallow: /login  
+Disallow: /register  
+Disallow: /forgot-password  
+Disallow: /sitemap/generate  
+  
+# Allow all other pages  
+Allow: /  
+  
+# Sitemap location  
+Sitemap: https://sanspay.id/sitemap.xml  

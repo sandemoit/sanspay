@@ -1,4 +1,5 @@
 @push('custom-css')
+    </script>
     <style>
         @media (max-width: 768px) {
             .product-name {
