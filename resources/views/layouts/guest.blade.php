@@ -25,7 +25,7 @@
     <meta property="og:title" content="Sans Pay | Agen Resmi dan Murah di Indonesia">
     <meta property="og:locale" content="id-ID">
     <meta property=":locale:alternate" content="id-ID">
-    <meta property=":locale:alternate" content="en-us">
+    <meta property=":locale:alternate" content="en-MY">
     <meta property="og:url" content="{{ request()->url() }}">
     <meta property="og:image"
         content="{{ asset('storage') }}/images/announcement/Cae8z7bNjeouCaHs5ps4bYMCrmzPaTvOD8Z09LE3.png">
@@ -37,13 +37,13 @@
     <meta property="og:image:width" content="300">
 
     <meta name="twitter:site" content="@sanspay.id">
-    <meta name="twitter:title" content="Homepage">
+    <meta name="twitter:title" content="{{ $title ?? '' }}">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Over 9000 Thousand!","description":"For those who helped create the Genki Dama","image":"{{asset('storage')}}/images/f20vwsOXAIzYgf5UyrHcMJ2phHXY5NwLcmBlYhUz.svg"}</script>
 
     {{-- load css --}}
+    <link rel="icon" href="{{ asset(configWeb('favicon')->value) }}">
     <link href="{{ asset('/') }}css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('/') }}css/bootstrap-extended.css" rel="stylesheet">
-    <link rel="icon" href="{{ asset(configWeb('favicon')->value) }}">
     <link href="{{ asset('/') }}web/style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/') }}web/dist/assets/owl.carousel.min.css" />
@@ -178,7 +178,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
     <footer>
         <div class="bb ze ki xn 2xl:ud-px-0">
             <!-- Footer Top -->
-            <div class="ji gp">
+            {{-- <div class="ji gp">
                 <div class="tc uf ap gg fp">
                     <div class=" zd/2 to/4">
                         <a href="index.html">
@@ -302,7 +302,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!-- Footer Top -->
 
             <!-- Footer Bottom -->

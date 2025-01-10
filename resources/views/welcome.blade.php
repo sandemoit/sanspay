@@ -14,7 +14,7 @@
         <div class="bb ze ki xn 2xl:ud-px-0">
             <div class="tc _o">
                 <div class=" jn/2">
-                    <h1 class="fk vj zp or kk wm wb">Selamat Datang di SansPay!</h1>
+                    <h1 class="fk vj zp or kk wm wb">Selamat Datang di Sans Pay!</h1>
                     <p class="fq">
                         Kami adalah solusi terpercaya untuk kebutuhan pulsa dan PPOB Anda. Dengan layanan yang lengkap,
                         murah, cepat, dan terjamin, kami siap membantu Anda dalam setiap transaksi.
