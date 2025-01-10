@@ -1,3 +1,24 @@
+@push('custom-css')
+    <style>
+        @media (max-width: 768px) {
+            .product-name {
+                white-space: nowrap;
+                /* Mencegah teks terpotong */
+                overflow: hidden;
+                /* Menyembunyikan teks yang tidak muat */
+                text-overflow: ellipsis;
+                /* Menambahkan elipsis jika teks terlalu panjang */
+                font-size: 0.85rem;
+            }
+
+            .table th,
+            .table td {
+                vertical-align: middle;
+                /* Menyelaraskan teks di tengah */
+            }
+        }
+    </style>
+@endpush
 <x-guest-layout>
     <section class="gj ir hj sp jr i pg ">
         <!-- Section Title Start -->
@@ -52,9 +73,11 @@
                             <tbody>
                                 @forelse ($products as $product)
                                     <tr>
-                                        <td>{{ $product->name }}</td>
-                                        <td>Rp {{ number_format($product->mitra_price, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($product->cust_price, 0, ',', '.') }}</td>
+                                        <td class="product-name">{{ $product->name }}</td>
+                                        <td class="product-name">Rp
+                                            {{ number_format($product->mitra_price, 0, ',', '.') }}</td>
+                                        <td class="product-name">Rp
+                                            {{ number_format($product->cust_price, 0, ',', '.') }}</td>
                                         <td class="{{ $product->healthy == 1 ? 'text-success' : 'text-danger' }}">
                                             {{ $product->healthy == 1 ? 'Normal' : 'Gangguan' }}
                                         </td>

@@ -60,6 +60,8 @@
 
         gtag('config', 'G-7J1CR16G83');
     </script>
+
+    @stack('custom-css')
 </head>
 
 <body x-data="{ page: 'home', 'darkMode': true, 'stickyMenu': false, 'navigationOpen': false, 'scrollTop': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
