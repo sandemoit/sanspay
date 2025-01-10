@@ -47,7 +47,6 @@
         async>
     <link href="{{ asset('/') }}web/style.css" rel="stylesheet" async>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    {{-- <link rel="stylesheet" href="{{ asset('/') }}web/dist/assets/owl.carousel.min.css" async /> --}}
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7J1CR16G83"></script>
@@ -112,7 +111,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                 </nav>
 
                 <div class="tc wf ig pb no">
-                    <div class="pc h io pa ra" :class="navigationOpen ? '!-ud-visible' : 'd'">
+                    {{-- <div class="pc h io pa ra" :class="navigationOpen ? '!-ud-visible' : 'd'">
                         <label class="rc ab i" for="darkMode">
                             <input type="checkbox" :value="darkMode" @change="darkMode = !darkMode"
                                 class="pf vd yc uk h r za ab" />
@@ -131,7 +130,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                             <!-- Icon Sun -->
                             <img class="xc nm" src="{{ asset('/') }}web/images/icon-moon.svg" alt="Moon" />
                         </label>
-                    </div>
+                    </div> --}}
 
                     @if (Route::has('login'))
                         @auth
@@ -331,7 +330,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous" async></script>
     <script src="{{ asset('/') }}web/bundle.js" async></script>
-    {{-- <script src="{{ asset('/') }}web/dist/owl.carousel.min.js" async></script> --}}
+    @stack('custom-js')
 </body>
 
 </html>

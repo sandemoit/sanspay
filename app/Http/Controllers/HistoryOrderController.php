@@ -12,10 +12,10 @@ class HistoryOrderController extends Controller
     {
         $currentId = Auth::id();
         $statuses = [
-            'pending' => TrxPpob::where('status', 'Pending')->where('user_id', $currentId)->count(),
-            'success' => TrxPpob::where('status', 'Sukses')->where('user_id', $currentId)->count(),
-            'cancel' => TrxPpob::where('status', 'Gagal')->where('user_id', $currentId)->count(),
-            'total_price' => TrxPpob::where('user_id', $currentId)->sum('price'),
+            'pending' => TrxPpob::where('status', 'Pending')->where('user_id', $currentId)->whereDate('created_at', date('Y-m-d'))->count(),
+            'success' => TrxPpob::where('status', 'Sukses')->where('user_id', $currentId)->whereDate('created_at', date('Y-m-d'))->count(),
+            'cancel' => TrxPpob::where('status', 'Gagal')->where('user_id', $currentId)->whereDate('created_at', date('Y-m-d'))->count(),
+            'total_price' => TrxPpob::where('user_id', $currentId)->where('status', '=', 'Sukses')->whereDate('created_at', date('Y-m-d'))->sum('price'),
         ];
 
         $title = 'History Transaksi';
@@ -25,7 +25,7 @@ class HistoryOrderController extends Controller
     public function getData()
     {
         $currentId = Auth::id();
-        $transaksiPpob = TrxPpob::select(['id', 'id_order', 'user_id', 'status', 'updated_at', 'name', 'sn', 'price', 'note', 'refund', 'data'])->where('user_id', $currentId)->get();
+        $transaksiPpob = TrxPpob::select(['id', 'id_order', 'user_id', 'status', 'updated_at', 'name', 'sn', 'price', 'note', 'refund', 'data'])->where('user_id', $currentId)->whereDate('created_at', date('Y-m-d'))->get();
 
         return DataTables::of($transaksiPpob)
             ->addColumn('trx_id', function ($row) {

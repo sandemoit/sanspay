@@ -101,7 +101,7 @@
                                     <a href="{{ route('order.paket-telepon') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="call-outline"
-                                                style="font-size: 30px;color: #00d1ff;"></ion-icon>
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
                                         <p title="Paket Telepon/SMS">Paket Telepon/SMS</p>
                                     </a>
@@ -110,7 +110,7 @@
                                     <a href="{{ route('order.pulsa-reguler') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="phone-portrait-outline"
-                                                style="font-size: 30px;color: #00d1ff;"></ion-icon>
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
                                         <p title="Pulsa Reguler">Pulsa Reguler</p>
                                     </a>
@@ -119,7 +119,7 @@
                                     <a href="{{ route('order.paket-internet') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="cellular-outline"
-                                                style="font-size: 30px;color: #00d1ff;"></ion-icon>
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
                                         <p title="Paket Data Internet">Paket Data Internet</p>
                                     </a>
@@ -128,7 +128,7 @@
                                     <a href="{{ route('order.pulsa-transfer') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="repeat-outline"
-                                                style="font-size: 30px;color: #00d1ff;"></ion-icon>
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
                                         <p title="Pulsa Transfer">Pulsa Transfer</p>
                                     </a>
@@ -137,7 +137,7 @@
                                     <a href="{{ route('order.emonney') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="wallet-outline"
-                                                style="font-size: 30px;color: #00d1ff;"></ion-icon>
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
                                         <p title="E-Money">E-Money</p>
                                     </a>
@@ -146,7 +146,7 @@
                                     <a href="{{ route('order.token-pln') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="flash-outline"
-                                                style="font-size: 30px;color: #00d1ff;"></ion-icon>
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
                                         <p title="Token PLN">Token PLN</p>
                                     </a>
@@ -155,7 +155,7 @@
                                     <a href="{{ route('order.pulsa-reguler') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="game-controller-outline"
-                                                style="font-size: 30px;color: #00d1ff;"></ion-icon>
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
                                         <p title="Top Up Game">Top Up Game</p>
                                     </a>
@@ -164,7 +164,7 @@
                                     <a href="{{ route('order.pulsa-reguler') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="tv-outline"
-                                                style="font-size: 30px;color: #00d1ff;"></ion-icon>
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
                                         <p title="TV">TV</p>
                                     </a>
@@ -173,7 +173,7 @@
                                     <a href="{{ route('order.pulsa-reguler') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="ticket-outline"
-                                                style="font-size: 30px;color: #00d1ff;"></ion-icon>
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
                                         <p title="Voucher">Voucher</p>
                                     </a>
@@ -182,7 +182,7 @@
                                     <a href="{{ route('order.pulsa-reguler') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="planet-outline"
-                                                style="font-size: 30px;color: #00d1ff;"></ion-icon>
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
                                         <p title="Lainnya">Voucher Lainnya</p>
                                     </a>
