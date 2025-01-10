@@ -324,7 +324,7 @@
                         <img class="w-full" src="{{ asset('/') }}web/images/blog-01.png" alt="Blog" />
 
                         <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                            <a href="./blog-single.html" class="vc ek rg lk gh sl ml il gi hi">Read More</a>
+                            <a href="javascript:;" class="vc ek rg lk gh sl ml il gi hi">Read More</a>
                         </div>
                     </div>
 
@@ -351,7 +351,7 @@
                         <img class="w-full" src="{{ asset('/') }}web/images/blog-02.png" alt="Blog" />
 
                         <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                            <a href="./blog-single.html" class="vc ek rg lk gh sl ml il gi hi">Read More</a>
+                            <a href="javascript:;" class="vc ek rg lk gh sl ml il gi hi">Read More</a>
                         </div>
                     </div>
 
@@ -378,7 +378,7 @@
                         <img class="w-full" src="{{ asset('/') }}web/images/blog-03.png" alt="Blog" />
 
                         <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                            <a href="./blog-single.html" class="vc ek rg lk gh sl ml il gi hi">Read More</a>
+                            <a href="javascript:;" class="vc ek rg lk gh sl ml il gi hi">Read More</a>
                         </div>
                     </div>
 
