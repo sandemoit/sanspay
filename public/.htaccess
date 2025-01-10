@@ -18,4 +18,11 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+
+    <FilesMatch "\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$">  
+        Header set Cache-Control "max-age=31536000, public"  
+    </FilesMatch>  
+    <FilesMatch "\.(html|json|xml)$">  
+        Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"  
+    </FilesMatch>
 </IfModule>

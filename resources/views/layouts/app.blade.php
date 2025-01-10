@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="csrf-token" content="{!! csrf_token() !!}" />
+    <link rel="manifest" href="{{ asset('/manifest.json') }}">
 
     <title>{{ configWeb('title')->value }}</title>
 
@@ -89,6 +90,36 @@
             @elseif (Session::has('success'))
                 var success = "{{ Session::get('success') }}";
             @endif
+        </script>
+
+        <script src="{{ asset('/sw.js') }}"></script>
+        <script>
+            if ("serviceWorker" in navigator) {
+                // Register a service worker hosted at the root of the
+                // site using the default scope.
+                navigator.serviceWorker.register("/sw.js");
+            }
+        </script>
+
+        <script>
+            let deferredPrompt;
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                deferredPrompt = e;
+            });
+
+            const installApp = document.getElementById('installApp');
+            installApp.addEventListener('click', async () => {
+                if (deferredPrompt !== null) {
+                    deferredPrompt.prompt();
+                    const {
+                        outcome
+                    } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        deferredPrompt = null;
+                    }
+                }
+            });
         </script>
 
         @stack('custom-js')

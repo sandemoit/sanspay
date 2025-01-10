@@ -51,7 +51,8 @@
                                 <div>
                                     <a href="{{ route('deposit.new') }}"
                                         class="btn btn-primary btn-sm text-white"><ion-icon
-                                            name="wallet-outline"></ion-icon> Deposit</a>
+                                            name="wallet-outline"></ion-icon> Deposit
+                                    </a>
                                     {{-- <a href="{{ route('deposit.new') }}"
                                         class="btn btn-primary btn-sm text-white"><ion-icon
                                             name="repeat-outline"></ion-icon> Kirim</a>

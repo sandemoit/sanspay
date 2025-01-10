@@ -22,6 +22,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="manifest" href="{{ asset('/manifest.json') }}">
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('images/icons') }}/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('images/icons') }}/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('images/icons') }}/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('images/icons') }}/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('images/icons') }}/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('images/icons') }}/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('images/icons') }}/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('images/icons') }}/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/icons') }}/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/icons') }}/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/icons') }}/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('images/icons') }}/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/icons') }}/favicon-16x16.png">
+    <meta name="msapplication-TileImage" content="{{ asset('images/icons') }}/ms-icon-144x144.png">
 
     <title>{{ configweb('title')->value . ' | ' . $pageTitle ?? $title }}</title>
 
@@ -51,7 +66,6 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Over 9000 Thousand!","description":"For those who helped create the Genki Dama","image":"{{asset('storage')}}/images/f20vwsOXAIzYgf5UyrHcMJ2phHXY5NwLcmBlYhUz.svg"}</script>
 
     {{-- load css --}}
-    <link rel="icon" href="{{ asset(configWeb('favicon')->value) }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"
         async>
@@ -340,6 +354,36 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous" async></script>
     <script src="{{ asset('/') }}web/bundle.js" async></script>
+
+    <script src="{{ asset('/sw.js') }}" async></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            // Register a service worker hosted at the root of the
+            // site using the default scope.
+            navigator.serviceWorker.register("/sw.js");
+        }
+    </script>
+
+    <script>
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            deferredPrompt = e;
+        });
+
+        const installApp = document.getElementById('installApp');
+        installApp.addEventListener('click', async () => {
+            if (deferredPrompt !== null) {
+                deferredPrompt.prompt();
+                const {
+                    outcome
+                } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    deferredPrompt = null;
+                }
+            }
+        });
+    </script>
     @stack('custom-js')
 </body>
 
