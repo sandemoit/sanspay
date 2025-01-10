@@ -167,12 +167,24 @@
             <li class="menu-label">{{ __('Main Menu') }}</li>
             </li>
             <li>
-                <a href="{{ route('order.history') }}">
+                <a href="javascript:;" class="has-arrow">
                     <div class="parent-icon">
                         <ion-icon name="cart-outline"></ion-icon>
                     </div>
-                    <div class="menu-title">{{ __('Histori Transaksi') }}</div>
+                    <div class="menu-title">{{ __('Transaksi') }}</div>
                 </a>
+                <ul>
+                    <li>
+                        <a href="{{ route('order.history') }}">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('History') }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('Laporan') }}
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="javascript:;" class="has-arrow">
@@ -195,6 +207,11 @@
                     <li>
                         <a href="{{ route('send.saldo') }}">
                             <ion-icon name="ellipse-outline"></ion-icon>{{ __('Kirim Antar Mitra') }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('Mutasi Saldo') }}
                         </a>
                     </li>
                 </ul>

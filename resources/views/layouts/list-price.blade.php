@@ -1,6 +1,6 @@
 @foreach ($sortedGroupedProducts as $label => $products)
     @if ($label !== 'Umum')
-        <h5 class="mb-3 text-uppercase">{{ $label }}</h5>
+        <p class="mb-3 text-uppercase">{{ $label }}</p>
     @endif
 
     <div class="desktop-view">
