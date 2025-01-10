@@ -13,9 +13,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [WebController::class, 'index']);
 
 Route::get('/harga-produk', function () {
+    $title = 'Daftar Harga';
     $productsByBrand = Category::select('brand', 'name')->groupBy('brand', 'name')->get();
     $products = ProductPpob::select('name', 'mitra_price', 'cust_price', 'healthy')->get();
-    return view('harga', compact('products', 'productsByBrand'));
+    return view('harga', compact('products', 'productsByBrand', 'title'));
 })->name('harga-produk');
 
 Route::middleware(XSS::class)->group(function () {
