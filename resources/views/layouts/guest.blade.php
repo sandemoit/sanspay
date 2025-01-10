@@ -78,7 +78,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                 </a>
 
                 <!-- Hamburger Toggle BTN -->
-                <button class="po rc" @click="navigationOpen = !navigationOpen">
+                <button aria-label="Toggle navigation" class="po rc" @click="navigationOpen = !navigationOpen">
                     <span class="rc i pf re pd">
                         <span class="du-block h q vd yc">
                             <span class="rc i r s eh um tg te rd eb ml jl dl"
@@ -113,7 +113,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
                 <div class="tc wf ig pb no">
                     <div class="pc h io pa ra" :class="navigationOpen ? '!-ud-visible' : 'd'">
-                        <label class="rc ab i">
+                        <label class="rc ab i" for="darkMode">
                             <input type="checkbox" :value="darkMode" @change="darkMode = !darkMode"
                                 class="pf vd yc uk h r za ab" />
                             <!-- Icon Sun -->
