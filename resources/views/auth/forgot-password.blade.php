@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-guest-layout :title="$title">
     <section class="i pg fh rm ki xn vq gj qp gr hj rp hr">
         <!-- Bg Shapes -->
         <img src="{{ asset('/') }}web/images/shape-06.svg" alt="Shape" class="h j k" />

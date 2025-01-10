@@ -19,7 +19,7 @@
         }
     </style>
 @endpush
-<x-guest-layout>
+<x-guest-layout :title="$title">
     <section class="gj ir hj sp jr i pg ">
         <!-- Section Title Start -->
         <div x-data="{ sectionTitle: `Daftar Harga` }">

@@ -7,11 +7,15 @@ use Illuminate\View\View;
 
 class GuestLayout extends Component
 {
-    /**
-     * Get the view / contents that represents the component.
-     */
+    public $title; // Tambahkan properti untuk title  
+
+    public function __construct($title = 'Agen Resmi dan Murah di Indonesia') // Berikan nilai default  
+    {
+        $this->title = $title; // Simpan title ke properti  
+    }
+
     public function render(): View
     {
-        return view('layouts.guest');
+        return view('layouts.guest', ['title' => $this->title]); // Kirim title ke view  
     }
 }

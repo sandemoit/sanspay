@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-guest-layout :title="$title">
     <section class="gj do ir hj sp jr i pg" id="home">
         <!-- Hero Images -->
         <div class="xc fn zd/2 2xl:ud-w-187.5 bd 2xl:ud-h-171.5 h q r">
