@@ -9,7 +9,7 @@ class GuestLayout extends Component
 {
     public $title; // Tambahkan properti untuk title  
 
-    public function __construct($title = 'Agen Resmi dan Murah di Indonesia') // Berikan nilai default  
+    public function __construct($title = 'Distributor Agen Resmi dan Terbaik di Indonesia') // Berikan nilai default  
     {
         $this->title = $title; // Simpan title ke properti  
     }
