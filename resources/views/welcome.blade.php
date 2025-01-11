@@ -35,10 +35,10 @@
                     <div class="tc tf yo mb" style="gap: 0.5rem">
                         <a href="{{ route('login') }}" class="ek jk lk gh gi hi rg ml il vc _d _l">Gabung dan
                             Nikmati!</a>
-                        <button type="button" class="ek jk lk gh gi hi rg ml il vc _d _l" id="installApp">
+                        <a href="{{ route('instal-app') }}" class="ek jk lk gh gi hi rg ml il vc _d _l" id="installApp">
                             <img src="{{ asset('/') }}web/images/android-brands-solid.svg" alt="Icon" />
                             <img src="{{ asset('/') }}web/images/apple-brands-solid.svg" alt="Icon" />
-                            Install Aplikasi</button>
+                            Install Aplikasi</a>
                     </div>
                 </div>
             </div>

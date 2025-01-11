@@ -358,32 +358,10 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
     <script src="{{ asset('/sw.js') }}" async></script>
     <script>
         if ("serviceWorker" in navigator) {
-            // Register a service worker hosted at the root of the
-            // site using the default scope.
             navigator.serviceWorker.register("/sw.js");
         }
     </script>
 
-    <script>
-        let deferredPrompt;
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            deferredPrompt = e;
-        });
-
-        const installApp = document.getElementById('installApp');
-        installApp.addEventListener('click', async () => {
-            if (deferredPrompt !== null) {
-                deferredPrompt.prompt();
-                const {
-                    outcome
-                } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    deferredPrompt = null;
-                }
-            }
-        });
-    </script>
     @stack('custom-js')
 </body>
 
