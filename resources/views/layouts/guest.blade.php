@@ -38,7 +38,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/icons') }}/favicon-16x16.png">
     <meta name="msapplication-TileImage" content="{{ asset('images/icons') }}/ms-icon-144x144.png">
 
-    <title>{{ $pageTitle }}</title>
+    <title>{{ $pageTitle ?? $title }}</title>
 
     <meta name="description" content="{{ configWeb('web_description')->value }}">
     <meta name="keywords"
