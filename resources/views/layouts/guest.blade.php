@@ -3,6 +3,16 @@
     if (empty($firstUriSegment)) {
         $firstUriSegment = 'home';
     }
+
+    if ($firstUriSegment == 'home') {
+        $pageTitle = $title;
+    } elseif ($firstUriSegment == 'harga-produk') {
+        $pageTitle = 'Daftar Harga Produk Sans Pay';
+    } elseif ($firstUriSegment == 'login') {
+        $pageTitle = 'Transaksi Sekarang di Sans Pay';
+    } elseif ($firstUriSegment == 'register') {
+        $pageTitle = 'Daftar Agen Resmi di Sans Pay';
+    }
 @endphp
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark-theme">
@@ -13,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ configweb('title')->value . ' | ' . $title ?? '' }}</title>
+    <title>{{ configweb('title')->value . ' | ' . $pageTitle ?? $title }}</title>
 
     <meta name="description" content="{{ configWeb('web_description')->value }}">
     <meta name="keywords"
@@ -22,7 +32,7 @@
     <meta property="og:type" content="article">
     <meta property="og:description"
         content="Sanspay - Solusi cepat dan mudah untuk kebutuhan pulsa, top-up game, dan pembayaran tagihan pascabayar. Dapatkan layanan terbaik untuk top-up pulsa, voucher game, token PLN, dan lebih banyak lagi di Sanspay. Aman, terpercaya, dan tersedia 24/7.">
-    <meta property="og:title" content="Sans Pay | {{ $title }}">
+    <meta property="og:title" content="Sans Pay | {{ $pageTitle ?? $title }}">
     <meta property="og:locale" content="id-ID">
     <meta property=":locale:alternate" content="id-ID">
     <meta property=":locale:alternate" content="en-MY">
@@ -37,7 +47,7 @@
     <meta property="og:image:width" content="300">
 
     <meta name="twitter:site" content="@sanspay.id">
-    <meta name="twitter:title" content="Sans Pay | {{ $title ?? '' }}">
+    <meta name="twitter:title" content="Sans Pay | {{ $pageTitle ?? $title }}">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Over 9000 Thousand!","description":"For those who helped create the Genki Dama","image":"{{asset('storage')}}/images/f20vwsOXAIzYgf5UyrHcMJ2phHXY5NwLcmBlYhUz.svg"}</script>
 
     {{-- load css --}}
