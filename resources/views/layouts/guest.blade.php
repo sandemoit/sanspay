@@ -22,7 +22,7 @@
     <meta property="og:type" content="article">
     <meta property="og:description"
         content="Sanspay - Solusi cepat dan mudah untuk kebutuhan pulsa, top-up game, dan pembayaran tagihan pascabayar. Dapatkan layanan terbaik untuk top-up pulsa, voucher game, token PLN, dan lebih banyak lagi di Sanspay. Aman, terpercaya, dan tersedia 24/7.">
-    <meta property="og:title" content="Sans Pay | Agen Resmi dan Murah di Indonesia">
+    <meta property="og:title" content="Sans Pay | {{ $title }}">
     <meta property="og:locale" content="id-ID">
     <meta property=":locale:alternate" content="id-ID">
     <meta property=":locale:alternate" content="en-MY">
@@ -37,7 +37,7 @@
     <meta property="og:image:width" content="300">
 
     <meta name="twitter:site" content="@sanspay.id">
-    <meta name="twitter:title" content="{{ $title ?? '' }}">
+    <meta name="twitter:title" content="Sans Pay | {{ $title ?? '' }}">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Over 9000 Thousand!","description":"For those who helped create the Genki Dama","image":"{{asset('storage')}}/images/f20vwsOXAIzYgf5UyrHcMJ2phHXY5NwLcmBlYhUz.svg"}</script>
 
     {{-- load css --}}
