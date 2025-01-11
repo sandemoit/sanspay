@@ -1,3 +1,15 @@
+@push('custom-css')
+    <style>
+        #installApp img {
+            width: 20px;
+            position: relative;
+            text-align: center;
+            align-self: center;
+            margin-right: 10px;
+            filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7487%) hue-rotate(223deg) brightness(101%) contrast(104%);
+        }
+    </style>
+@endpush
 <x-guest-layout :title="$title">
     <section class="gj do ir hj sp jr i pg" id="home">
         <!-- Hero Images -->
@@ -20,9 +32,13 @@
                         murah, cepat, dan terjamin, kami siap membantu Anda dalam setiap transaksi.
                     </p>
 
-                    <div class="tc tf yo zf mb">
+                    <div class="tc tf yo mb" style="gap: 0.5rem">
                         <a href="{{ route('login') }}" class="ek jk lk gh gi hi rg ml il vc _d _l">Gabung dan
                             Nikmati!</a>
+                        <button type="button" class="ek jk lk gh gi hi rg ml il vc _d _l" id="installApp">
+                            <img src="{{ asset('/') }}web/images/android-brands-solid.svg" alt="Icon" />
+                            <img src="{{ asset('/') }}web/images/apple-brands-solid.svg" alt="Icon" />
+                            Install Aplikasi</button>
                     </div>
                 </div>
             </div>
