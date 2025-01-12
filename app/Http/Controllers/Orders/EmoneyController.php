@@ -164,6 +164,7 @@ class EmoneyController extends Controller
                         'name' => $product->name,
                         'data' => $request->target,
                         'price' => strip_tags($price),
+                        'profit' => strip_tags($price - $product->price),
                         'point' => ($user->role === 'customer') ? 0 : $point,
                         'refund' => '0',
                         'note' => $prepaidData['data']['message'] ?? 'Unknown',

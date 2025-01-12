@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('data');
             $table->string('sn');
             $table->integer('price');
+            $table->float('profit')->default(0);
             $table->integer('point');
             $table->enum('refund', [1, 0])->default(0);
             $table->string('note');
