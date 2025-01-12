@@ -3,7 +3,7 @@
         <link href="{{ asset('/') }}plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     @endpush
 
-    <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3">
+    <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-4">
         <div class="col mb-3">
             <div class="card radius-10">
                 <div class="card-body">
@@ -56,6 +56,25 @@
                     <div class="d-flex align-items-center mt-3">
                         <div>
                             <h4 class="mb-0">{{ $statuses['cancel'] }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-3">
+            <div class="card radius-10">
+                <div class="card-body">
+                    <div class="d-flex align-items-start gap-2">
+                        <div>
+                            <p class="mb-0 fs-6">{{ __('Profit Agen') }}</p>
+                        </div>
+                        <div class="ms-auto widget-icon-small text-white bg-gradient-info">
+                            <ion-icon name="cash-outline"></ion-icon>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <div>
+                            <h4 class="mb-0">Rp.{{ nominal($statuses['profit']) }}</h4>
                         </div>
                     </div>
                 </div>

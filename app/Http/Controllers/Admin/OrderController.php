@@ -19,6 +19,7 @@ class OrderController extends Controller
             'in_process' => TrxPpob::where('status', 'in_process')->count(),
             'success' => TrxPpob::where('status', 'Sukses')->count(),
             'cancel' => TrxPpob::where('status', 'Gagal')->count(),
+            'profit' => TrxPpob::where('status', 'Sukses')->sum('profit'),
         ];
 
         return view('admin.order', compact('statuses'));
