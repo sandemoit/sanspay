@@ -96,8 +96,8 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         <div class="bb ze ki xn 2xl:ud-px-0 oo wf yf i">
             <div class="vd to/4 tc wf yf">
                 <a href="{{ url('/') }}">
-                    <img class="om" src="{{ asset(configWeb('favicon')->value) }}" alt="Logo Light" />
-                    <img class="xc nm" src="{{ asset(configWeb('favicon')->value) }}" alt="Logo Dark" />
+                    <img class="om" src="{{ asset(configWeb('logo')->value) }}" alt="Logo Light" />
+                    <img class="xc nm" src="{{ asset(configWeb('logo')->value) }}" alt="Logo Dark" />
                 </a>
 
                 <!-- Hamburger Toggle BTN -->
