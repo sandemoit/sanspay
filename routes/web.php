@@ -21,12 +21,12 @@ Route::middleware(XSS::class)->group(function () {
 
     Route::post('/webhook', [DigiflazzController::class, 'handle'])->name('webhook');
 
-    require __DIR__ . '/auth.php';
     require __DIR__ . '/admin.php';
     require __DIR__ . '/users.php';
     require __DIR__ . '/job.php';
     require __DIR__ . '/order.php';
 });
+require __DIR__ . '/auth.php';
 Route::get('/clear-cache', function () {
     Artisan::call('view:clear');
     Artisan::call('config:clear');
