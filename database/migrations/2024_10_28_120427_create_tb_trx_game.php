@@ -13,14 +13,20 @@ return new class extends Migration
     {
         Schema::create('trx_game', function (Blueprint $table) {
             $table->id();
+            $table->string('id_order');
             $table->integer('user_id');
-            $table->integer('product_id');
-            $table->integer('id_order');
-            $table->integer('total_payment');
-            $table->integer('payment_type');
+            $table->string('code');
+            $table->string('name');
+            $table->string('data');
+            $table->string('sn');
+            $table->integer('price');
+            $table->float('profit')->default(0);
+            $table->integer('point');
+            $table->enum('refund', [1, 0])->default(0);
             $table->string('note');
-            $table->string('status_trx');
-            $table->string('target');
+            $table->string('status');
+            $table->string('from');
+            $table->enum('type', ['pospaid', 'prepaid']);
             $table->timestamps();
         });
     }

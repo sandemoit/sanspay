@@ -79,22 +79,24 @@
             <div class="card mt-3">
                 <div class="card-body">
                     <!-- Tabs navs -->
-                    <ul class="nav nav-tabs mb-3 nav-tabs-custom nav-justified" id="ex-with-icons" role="tablist">
+                    <ul class="nav nav-pills mb-3 nav-pills-custom nav-justified" id="ex-with-icons" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="nav-link active" id="ex-with-icons-tab-1" href="#tab-prepaid" role="tab"
-                                aria-controls="tab-prepaid" aria-selected="true" data-bs-toggle="tab"><ion-icon
-                                    name="cart-outline"></ion-icon> Prabayar</a>
+                                aria-controls="tab-prepaid" aria-selected="true" data-bs-toggle="tab">
+                                <ion-icon name="cart-outline"></ion-icon> Prabayar
+                            </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="ex-with-icons-tab-2" href="#tab-postpaid" role="tab"
-                                aria-controls="tab-postpaid" aria-selected="false" data-bs-toggle="tab"><ion-icon
-                                    name="cart-outline"></ion-icon> Pascabayar</a>
+                                aria-controls="tab-postpaid" aria-selected="false" data-bs-toggle="tab">
+                                <ion-icon name="cart-outline"></ion-icon> Pascabayar
+                            </a>
                         </li>
                     </ul>
                     <!-- Tabs navs -->
 
                     <!-- Tabs content -->
-                    <div class="tab-content text-muted" id="ex-with-icons-content">
+                    <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="tab-prepaid" role="tabpanel"
                             aria-labelledby="ex-with-icons-tab-1">
                             <div class="row mt-3 text-center">
@@ -153,7 +155,7 @@
                                     </a>
                                 </div>
                                 <div class="col-4 mb-3">
-                                    <a href="{{ route('order.pulsa-reguler') }}">
+                                    <a href="{{ route('order.games') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="game-controller-outline"
                                                 style="font-size: 30px;color: #2274b7;"></ion-icon>
@@ -162,30 +164,30 @@
                                     </a>
                                 </div>
                                 <div class="col-4 mb-3">
-                                    <a href="{{ route('order.pulsa-reguler') }}">
+                                    <a href="javascript:;">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="tv-outline"
                                                 style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
-                                        <p title="TV">TV</p>
+                                        <p title="TV">TV (Coming Soon)</p>
                                     </a>
                                 </div>
                                 <div class="col-4 mb-3">
-                                    <a href="{{ route('order.pulsa-reguler') }}">
+                                    <a href="{{ route('order.pertagas') }}">
+                                        <div class="avatar avatar-40 no-shadow border-0 mb-1">
+                                            <ion-icon name="server-outline"
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
+                                        </div>
+                                        <p title="Pertagas">Pertagas</p>
+                                    </a>
+                                </div>
+                                <div class="col-4 mb-3">
+                                    <a href="{{ route('order.voucher') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="ticket-outline"
                                                 style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
-                                        <p title="Voucher">Voucher</p>
-                                    </a>
-                                </div>
-                                <div class="col-4 mb-0">
-                                    <a href="{{ route('order.pulsa-reguler') }}">
-                                        <div class="avatar avatar-40 no-shadow border-0 mb-1">
-                                            <ion-icon name="planet-outline"
-                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
-                                        </div>
-                                        <p title="Lainnya">Voucher Lainnya</p>
+                                        <p title="Voucher">Voucher Lainnya</p>
                                     </a>
                                 </div>
                             </div>

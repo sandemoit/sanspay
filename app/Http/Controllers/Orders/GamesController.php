@@ -8,7 +8,7 @@ use App\Models\Category;
 use App\Models\Mutation;
 use App\Models\Point;
 use App\Models\ProductPpob;
-use App\Models\TrxPpob;
+use App\Models\TrxGame;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class TokenController extends Controller
+class GamesController extends Controller
 {
     protected string $baseUrl;
     protected string $username;
@@ -31,18 +31,18 @@ class TokenController extends Controller
 
     public function index()
     {
-        $title = 'Token PLN';
+        $title = 'Games';
 
-        // Ambil kategori dengan type 'TOKEN PLN'
-        $categories = Category::where('real', 'PLN')
+        // Ambil kategori dengan type 'voucher-game'
+        $categories = Category::where('real', 'Games')
             ->distinct()
             ->get(['brand', 'name']);
 
 
-        return view('users.orders.token-pln', compact('title', 'categories'));
+        return view('users.orders.games', compact('title', 'categories'));
     }
 
-    public function priceToken(Request $request)
+    public function priceGames(Request $request)
     {
         $categoryBrand = $request->categoryBrand;
 
@@ -50,13 +50,10 @@ class TokenController extends Controller
             return response()->json(['success' => false, 'message' => 'Kategori harus diisi.']);
         }
 
-        $cacheKey = "products_{$categoryBrand}";
-
         // Ambil produk dengan relasi ke category
         $products = ProductPpob::with('category')
             ->where('brand', $categoryBrand)
-            ->where('type', 'token-pln')
-            ->where('code', '!=', 'plncn')
+            ->where('type', 'voucher-game')
             ->orderBy('price', 'asc')
             ->get();
 
@@ -157,9 +154,9 @@ class TokenController extends Controller
                     ]);
 
                     // Simpan data transaksi ke database
-                    TrxPpob::create([
-                        'id_order' => $ref_id,
+                    TrxGame::create([
                         'user_id' => $user->id,
+                        'id_order' => $ref_id,
                         'code' => $product->code,
                         'name' => $product->name,
                         'data' => $request->target,

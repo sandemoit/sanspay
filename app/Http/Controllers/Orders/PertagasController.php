@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class TokenController extends Controller
+class PertagasController extends Controller
 {
     protected string $baseUrl;
     protected string $username;
@@ -31,18 +31,18 @@ class TokenController extends Controller
 
     public function index()
     {
-        $title = 'Token PLN';
+        $title = 'Pertagas';
 
-        // Ambil kategori dengan type 'TOKEN PLN'
-        $categories = Category::where('real', 'PLN')
+        // Ambil kategori dengan type 'pertagas'
+        $categories = Category::where('real', 'Pertagas')
             ->distinct()
             ->get(['brand', 'name']);
 
 
-        return view('users.orders.token-pln', compact('title', 'categories'));
+        return view('users.orders.pertagas', compact('title', 'categories'));
     }
 
-    public function priceToken(Request $request)
+    public function pricePertagas(Request $request)
     {
         $categoryBrand = $request->categoryBrand;
 
@@ -55,8 +55,7 @@ class TokenController extends Controller
         // Ambil produk dengan relasi ke category
         $products = ProductPpob::with('category')
             ->where('brand', $categoryBrand)
-            ->where('type', 'token-pln')
-            ->where('code', '!=', 'plncn')
+            ->where('type', 'pertagas')
             ->orderBy('price', 'asc')
             ->get();
 
@@ -93,6 +92,7 @@ class TokenController extends Controller
             'ref_id' => $ref_id,
             'sign' => $this->generateSignature($ref_id),
         ]);
+
 
         // Validasi respons dari API
         if (!isset($prepaidData['data'])) {

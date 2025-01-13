@@ -1491,3 +1491,14 @@ div:where(.swal2-container) h2:where(.swal2-title) {
     font-size: 1rem;
     font-weight: 500;
 }
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    color: white;
+    background-color: #2274b7;
+}
+
+.nav-link ion-icon {
+    position: relative;
+    align-self: center;
+}

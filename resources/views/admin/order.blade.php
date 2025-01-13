@@ -73,15 +73,15 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center mt-3">
-                        <div>
+                        <div class="d-flex">
                             <h4 class="mb-0">Rp.{{ nominal($statuses['profit']) }}</h4>
+                            <span class="mt-2"> / 1 - {{ $statuses['date'] }}</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <hr />
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">

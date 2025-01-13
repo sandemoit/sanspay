@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Models\TrxPpob;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
@@ -19,7 +20,8 @@ class OrderController extends Controller
             'in_process' => TrxPpob::where('status', 'in_process')->count(),
             'success' => TrxPpob::where('status', 'Sukses')->count(),
             'cancel' => TrxPpob::where('status', 'Gagal')->count(),
-            'profit' => TrxPpob::where('status', 'Sukses')->sum('profit'),
+            'profit' => TrxPpob::where('status', 'Sukses')->whereMonth('updated_at', date('m'))->whereYear('updated_at', date('Y'))->sum('profit'),
+            'date' => Carbon::now()->endOfMonth()->format('d F Y'),
         ];
 
         return view('admin.order', compact('statuses'));
