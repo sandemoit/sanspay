@@ -52,6 +52,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/ticket', [TicketController::class, 'store'])->name('ticket.store');
     Route::get('/ticket/{id}', [TicketController::class, 'show'])->name('ticket.show');
     Route::post('/ticket/{id}/reply', [TicketController::class, 'reply'])->name('ticket.reply');
+
+    require __DIR__ . '/order.php';
 });
 
 

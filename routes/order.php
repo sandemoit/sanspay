@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Orders\GamesController;
 use App\Http\Controllers\Orders\OrderHpController;
+use App\Http\Controllers\Orders\PascabayarController;
 use App\Http\Controllers\Orders\PertagasController;
 use App\Http\Controllers\Orders\TokenController;
 use App\Http\Controllers\Orders\VoucherController;
@@ -44,3 +45,8 @@ Route::post('/order/orderVoucher', [VoucherController::class, 'prosesTransaksi']
 Route::get('/order/pertagas', [PertagasController::class, 'index'])->name('order.pertagas');
 Route::post('/order/pricePertagas', [PertagasController::class, 'pricePertagas'])->name('pricePertagas');
 Route::post('/order/orderPertagas', [PertagasController::class, 'prosesTransaksi'])->name('orderPertagas');
+
+// pascabayar
+Route::get('/order/pascabayar/{brand}', [PascabayarController::class, 'index'])->name('order.pascabayar');
+Route::post('/order/check-bill', [PascabayarController::class, 'checkBill'])->name('check-bill');
+Route::post('/order/pascabayar/pascaTrx', [PascabayarController::class, 'prosesTransaksi'])->name('pascaTrx');

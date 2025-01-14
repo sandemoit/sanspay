@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Mail\SendEmail;
+use App\Models\Category;
 use App\Models\Upgrade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,26 @@ class DashboardController extends Controller
     {
         $title = 'Dashboard';
 
-        return view('users.dashboard', compact('title'));
+        $categories = Category::where('order', 'postpaid')
+            ->orWhere('real', 'Pascabayar')
+            ->get();
+
+        // Mapping brand ke icon  
+        $iconMapping = [
+            'bpjs-kesehatan' => 'medkit',
+            'internet-pascabayar' => 'wifi',
+            'gas-negara' => 'server',
+            'pdam' => 'water',
+            'pln-nontaglis' => 'flash',
+            'pln-pascabayar' => 'flash',
+            'bpjs-ketenagakerjaan' => 'briefcase',
+            'e-money' => 'wallet',
+            'multifinance' => 'receipt',
+            'hp-pascabayar' => 'phone-portrait',
+            // Tambahkan mapping lainnya sesuai kebutuhan  
+        ];
+
+        return view('users.dashboard', compact('title', 'categories', 'iconMapping'));
     }
 
     public function upgradeMitra(Request $request)

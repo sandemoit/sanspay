@@ -303,7 +303,7 @@
 
                                 setTimeout(function() {
                                     window.location.href = "{{ route('order.history') }}";
-                                }, 1000);
+                                }, 1500);
                             } else {
                                 toastr.error(data.message || 'Gagal memproses transaksi.', {
                                     timeOut: 1000

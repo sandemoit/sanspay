@@ -192,9 +192,24 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="tab-postpaid" role="tabpanel"
-                            aria-labelledby="ex-with-icons-tab-2">
-                            Tab 2 content
+                        <div class="tab-pane fade show" id="tab-postpaid" role="tabpanel"
+                            aria-labelledby="ex-with-icons-tab-1">
+                            <div class="row mt-3 text-center">
+                                @foreach ($categories as $category)
+                                    @if ($category->order == 'postpaid' || $category->real == 'Pascabayar')
+                                        <div class="col-4 mb-3">
+                                            <a href="{{ route('order.pascabayar', Str::slug($category->brand)) }}">
+                                                <div class="avatar avatar-40 no-shadow border-0 mb-1">
+                                                    <ion-icon
+                                                        name="{{ $iconMapping[Str::slug($category->brand)] ?? 'storefront' }}-outline"
+                                                        style="font-size: 30px;color: #2274b7;"></ion-icon>
+                                                </div>
+                                                <p title="{{ $category->name }}">{{ $category->name }}</p>
+                                            </a>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                     <!-- Tabs content -->

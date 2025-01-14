@@ -24,7 +24,6 @@ Route::middleware(XSS::class)->group(function () {
     require __DIR__ . '/admin.php';
     require __DIR__ . '/users.php';
     require __DIR__ . '/job.php';
-    require __DIR__ . '/order.php';
 });
 require __DIR__ . '/auth.php';
 Route::get('/clear-cache', function () {

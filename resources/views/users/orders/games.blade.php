@@ -68,7 +68,7 @@
                             </select>
                         </div>
                         <div class="col-12">
-                            <label class="form-label">{{ __('Nomor Pelanggan') }}</label>
+                            <label class="form-label">{{ __('ID Game/Nickname') }}</label>
                             <input type="text" name="phone" id="phone" class="form-control"
                                 placeholder="Masukan ID dan Server (jika ada)">
                             <div class="invalid-feedback"></div>
@@ -336,7 +336,7 @@
 
                                 setTimeout(function() {
                                     window.location.href = "{{ route('order.history') }}";
-                                }, 1000);
+                                }, 1500);
                             } else {
                                 toastr.error(data.message || 'Gagal memproses transaksi.', {
                                     timeOut: 1000
