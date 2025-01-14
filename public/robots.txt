@@ -1,14 +1,14 @@
 # robots.txt for https://sanspay.id/
   
 User-agent: *  
-Disallow: /admin/  
-Disallow: /login  
-Disallow: /register  
-Disallow: /forgot-password  
+Disallow: /admin/    
 Disallow: /sitemap/generate  
   
 # Allow all other pages  
 Allow: /  
-  
+Allow: /login  
+Allow: /register  
+Allow: /forgot-password
+
 # Sitemap location  
 Sitemap: https://sanspay.id/sitemap.xml  

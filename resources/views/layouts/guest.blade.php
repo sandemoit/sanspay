@@ -22,6 +22,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="author" content="sadas">
+    <meta name="copyright" content="sanspay.id">
+    <meta name="robots" content="index, follow">
     <link rel="manifest" href="{{ asset('/manifest.json') }}">
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('images/icons') }}/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('images/icons') }}/apple-icon-60x60.png">
@@ -40,13 +43,12 @@
 
     <title>{{ $pageTitle ?? $title }}</title>
 
-    <meta name="description" content="{{ configWeb('web_description')->value }}">
+    <meta name="description" content="{{ configWeb('web_description')->value }} - {{ $pageTitle ?? $title }}">
     <meta name="keywords"
         content="agen pulsa, ppob murah, cepat, aman, pulsa elektrik, transaksi cepat, layanan terpercaya, agen PPOB, pembayaran tagihan, pulsa murah, transaksi aman, pembayaran online, agen pulsa terpercaya, pulsa 24 jam, pembayaran listrik, pembayaran air, agen pulsa dan PPOB, layanan pulsa, pembayaran internet, pulsa semua operator, transaksi mudah, agen resmi, layanan pelanggan, diskon pulsa, pembayaran cepat, agen pulsa online, pembayaran multifungsi, layanan cepat, agen PPOB terbaik, pembayaran praktis, pulsa dan PPOB, transaksi tanpa ribet, agen pulsa terpercaya di Indonesia, layanan pembayaran tagihan, pembayaran aman dan cepat">
     <link rel="canonical" href="{{ request()->url() }}">
-    <meta property="og:type" content="article">
-    <meta property="og:description"
-        content="Sanspay - Solusi cepat dan mudah untuk kebutuhan pulsa, top-up game, dan pembayaran tagihan pascabayar. Dapatkan layanan terbaik untuk top-up pulsa, voucher game, token PLN, dan lebih banyak lagi di Sanspay. Aman, terpercaya, dan tersedia 24/7.">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="{{ configWeb('web_description')->value }} - {{ $pageTitle ?? $title }}">
     <meta property="og:title" content="{{ $pageTitle ?? $title }}">
     <meta property="og:locale" content="id-ID">
     <meta property=":locale:alternate" content="id-ID">
@@ -58,12 +60,46 @@
         content="{{ asset('storage') }}/images/announcement/Cae8z7bNjeouCaHs5ps4bYMCrmzPaTvOD8Z09LE3.png">
     <meta property="og:image"
         content="{{ asset('storage') }}/images/announcement/Cae8z7bNjeouCaHs5ps4bYMCrmzPaTvOD8Z09LE3.png">
-    <meta property="og:image:height" content="300">
-    <meta property="og:image:width" content="300">
+    <meta property="og:image:height" content="500">
+    <meta property="og:image:width" content="1280">
 
     <meta name="twitter:site" content="@sanspay.id">
     <meta name="twitter:title" content="{{ $pageTitle ?? $title }}">
+    <meta name="twitter:card" content="player">
+    <meta name="twitter:player" content="{{ request()->url() }}">
+    <meta name="twitter:player:height" content="500">
+    <meta name="twitter:player:width" content="1280">
+    <meta name="twitter:image"
+        content="{{ asset('storage') }}/images/announcement/Cae8z7bNjeouCaHs5ps4bYMCrmzPaTvOD8Z09LE3.png">
+
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Over 9000 Thousand!","description":"For those who helped create the Genki Dama","image":"{{asset('storage')}}/images/f20vwsOXAIzYgf5UyrHcMJ2phHXY5NwLcmBlYhUz.svg"}</script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org/",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "{{$pageTitle ?? $title}}",
+                "item": "{{ request()->url() }}"
+            }
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org/",
+        "@type": "WebSite",
+        "url": "{{ request()->url() }}",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "{{$pageTitle ?? $title}}?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
 
     {{-- load css --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"

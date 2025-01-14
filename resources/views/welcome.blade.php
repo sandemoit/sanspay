@@ -19,7 +19,7 @@
             <img src="{{ asset('/') }}web/images/shape-02.svg" alt="shape" class="xc 2xl:ud-block h u p va" />
             <img src="{{ asset('/') }}web/images/shape-03.svg" alt="shape" class="xc 2xl:ud-block h v w va" />
             <img src="{{ asset('/') }}web/images/shape-04.svg" alt="shape" class="h q r" />
-            <img src="{{ asset('/') }}web/images/hero.png" alt="Mitra Sans Pay" class="h q r ua"
+            <img src="{{ asset('/') }}web/images/hero.webp" alt="Mitra Sans Pay" class="h q r ua"
                 style="top: 4rem;" />
         </div>
 
