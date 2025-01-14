@@ -357,7 +357,7 @@
                             </div>
                         </div>
                         <h4 class="ek tj ml il kk wm xl eq lb">
-                            <a href="blog-single.html">Free advertising for your online business</a>
+                            <a href="javascript:;">Free advertising for your online business</a>
                         </h4>
                     </div>
                 </div>
@@ -384,7 +384,7 @@
                             </div>
                         </div>
                         <h4 class="ek tj ml il kk wm xl eq lb">
-                            <a href="blog-single.html">9 simple ways to improve your design skills</a>
+                            <a href="javascript:;">9 simple ways to improve your design skills</a>
                         </h4>
                     </div>
                 </div>
@@ -411,7 +411,7 @@
                             </div>
                         </div>
                         <h4 class="ek tj ml il kk wm xl eq lb">
-                            <a href="blog-single.html">Tips to quickly improve your coding speed.</a>
+                            <a href="javascript:;">Tips to quickly improve your coding speed.</a>
                         </h4>
                     </div>
                 </div>

@@ -241,7 +241,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
             {{-- <div class="ji gp">
                 <div class="tc uf ap gg fp">
                     <div class=" zd/2 to/4">
-                        <a href="index.html">
+                        <a href="javascript:;">
                             <img src="{{ asset('storage') }}/images/QCm2aNyyeuZgfnuYmvdNDFZfNoNFnp3WUkbnqcCm.ico"
                                 alt="Logo" class="om" />
                             <img src="{{ asset('storage') }}/images/QCm2aNyyeuZgfnuYmvdNDFZfNoNFnp3WUkbnqcCm.ico"
