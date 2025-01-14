@@ -197,7 +197,7 @@ class PascabayarController extends Controller
                 case '00': // Transaksi Sukses
                 case '03': // Transaksi Pending
                     // Kurangi saldo dan mutasi
-                    User::updateOrCreate(['id' => $user->id], ['saldo' => $user->saldo - $prepaidData['data']['selling_price'], 'point' => $point]);
+                    User::where('id', $user->id)->update(['saldo' => $user->saldo - $prepaidData['data']['selling_price'], 'point' => $point]);
                     Mutation::create([
                         'username' => $user->name,
                         'type' => '-',

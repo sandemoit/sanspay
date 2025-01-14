@@ -94,7 +94,7 @@
         <!-- Bg Shapes -->
 
         <!-- Section Title Start -->
-        <div x-data="{ sectionTitle: `Mengapa Memilih SansPay?`, sectionTitleText: `Kami berkomitmen untuk memberikan layanan terbaik dengan fitur yang dirancang khusus untuk memenuhi kebutuhan Anda. Temukan berbagai keunggulan yang membuat SansPay menjadi pilihan utama untuk pulsa dan PPOB.` }">
+        <div x-data="{ sectionTitle: `Mengapa Memilih SansP ay?`, sectionTitleText: `Kami berkomitmen untuk memberikan layanan terbaik dengan fitur yang dirancang khusus untuk memenuhi kebutuhan Anda. Temukan berbagai keunggulan yang membuat Sans Pay menjadi pilihan utama untuk pulsa dan PPOB.` }">
             <div class=" bb ze rj ki xn vq">
                 <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
                 </h2>
@@ -430,7 +430,7 @@
             <div class="tc uf sn tn un gg">
                 <div class=" to/2">
                     <h2 class="fk vj zp pr lk ac">
-                        Gabung bersama 1000+ mitra maju bersama SansPay
+                        Gabung bersama 1000+ mitra maju bersama Sans Pay
                     </h2>
                     <p class="lk">
                         Kami membantu Anda meningkatkan bisnis Anda melalui platform kami yang inovatif dan aman.

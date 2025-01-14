@@ -9,7 +9,7 @@ class WebController extends Controller
 {
     public function index()
     {
-        $title = 'Dapatkan Pulsa dan PPOB Termurah, Terlengkap & Terpercaya di Sanspay - Distributor Pulsa Termurah dan Terlengkap';
+        $title = 'Sans Pay Pulsa dan PPOB Termurah, Terlengkap & Terpercaya - Distributor Pulsa Termurah dan Terlengkap';
 
         return view('welcome', compact('title'));
     }
