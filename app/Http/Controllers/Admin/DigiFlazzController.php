@@ -101,21 +101,47 @@ class DigiFlazzController extends Controller
     protected function processData(array $data, string $prepost): array
     {
         $output = [];
+        $groupedData = [];
+
+        // Kelompokkan data berdasarkan product_name  
         foreach ($data as $item) {
-            $output[] = [
-                'brand' => is_array($item) ? $item['brand'] : '',
-                'category' => $item['category'],
-                'otype' => $item['type'] ?? $item['category'],
-                'type' => $this->filterType($item['category'], $item['product_name']),
-                'name' => $this->space($item['product_name']),
-                'note' => $this->space($item['desc'] ?? '-'),
-                'code' => str_replace(['&', '*'], '-', $item['buyer_sku_code']),
-                'price' => $item['price'] ?? $item['admin'],
-                'status' => $this->stock($item['unlimited_stock'] ?? 'Available'),
-                'prepost' => strtolower($prepost),
-                'label' => $item['type'] ?? Null,
-                'healthy' => $item['buyer_product_status'],
-            ];
+            $name = $this->space($item['product_name']); // Normalisasi nama produk jika perlu  
+            if (!isset($groupedData[$name])) {
+                $groupedData[$name] = [];
+            }
+            $groupedData[$name][] = $item; // Kelompokkan item dengan nama yang sama  
+        }
+
+        // Proses setiap grup berdasarkan nama produk  
+        foreach ($groupedData as $name => $items) {
+            // Pastikan hanya memproses grup dengan data valid  
+            $prices = array_column($items, 'price');
+            if (empty($prices)) {
+                continue; // Jika tidak ada harga, skip grup ini  
+            }
+
+            // Cek apakah ada variasi harga dalam grup  
+            $uniquePrices = array_unique($prices);
+            $hasDiscount = count($uniquePrices) > 1; // Jika ada lebih dari satu harga, berarti ada diskon  
+
+            foreach ($items as $item) {
+                $currentPrice = $item['price'] ?? 0;
+                $output[] = [
+                    'brand' => $item['brand'] ?? '',
+                    'category' => $item['category'],
+                    'otype' => $item['type'] ?? $item['category'],
+                    'type' => $this->filterType($item['category'], $item['product_name']),
+                    'name' => $this->space($item['product_name']),
+                    'note' => $this->space($item['desc'] ?? '-'),
+                    'code' => str_replace(['&', '*'], '-', $item['buyer_sku_code']),
+                    'price' => $currentPrice,
+                    'discount' => $hasDiscount ? ($currentPrice == min($prices) ? 1 : 0) : 0,
+                    'status' => $this->stock($item['unlimited_stock'] ?? 'Available'),
+                    'prepost' => strtolower($prepost),
+                    'label' => $item['type'] ?? null,
+                    'healthy' => $item['buyer_product_status'],
+                ];
+            }
         }
 
         return $output;

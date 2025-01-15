@@ -23,6 +23,9 @@
                         <div class="col-md-6">
                             <div class="card product-card {{ $product->healthy == 0 ? 'disabled-card' : '' }}"
                                 onclick="prepaid('{{ route('order.confirm', $product->code) }}')">
+                                @if ($product->discount == 1)
+                                    <div class="discount-label">Promo Terbatas!</div>
+                                @endif
                                 @if ($product->healthy == 0)
                                     <div class="status-label">Gangguan</div>
                                 @endif
@@ -62,6 +65,9 @@
                         <div class="col-6">
                             <div class="card product-card {{ $product->healthy == 0 ? 'disabled-card' : '' }}"
                                 onclick="prepaid('{{ route('order.confirm', $product->code) }}')">
+                                @if ($product->discount == 1)
+                                    <div class="discount-label">Promo Terbatas!</div>
+                                @endif
                                 @if ($product->healthy == 0)
                                     <div class="status-label">Gangguan</div>
                                 @endif

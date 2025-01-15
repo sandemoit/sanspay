@@ -1502,3 +1502,22 @@ div:where(.swal2-container) h2:where(.swal2-title) {
     position: relative;
     align-self: center;
 }
+
+.product-card .discount-label {
+    position: absolute;
+    background-color: blue;
+    color: white;
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0 0 8px 0;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .product-card .discount-label {
+        bottom: 0;
+        left: 0;
+        border-radius: 0 8px 0 0;
+        font-size: 0.5rem;
+    }
+}

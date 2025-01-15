@@ -98,8 +98,11 @@ class OrderHpController extends Controller
                 'brand' => $provider,
                 'provider' => 'DigiFlazz',
                 'status' => 'available'
-            ])->orderBy('price', 'asc')
+            ])
+                ->orderBy('discount', 'desc') // Urutkan berdasarkan discount terlebih dahulu  
+                ->orderBy('price', 'asc') // Kemudian urutkan berdasarkan harga  
                 ->get();
+
 
             $groupedProducts = $products->groupBy('label');
 
