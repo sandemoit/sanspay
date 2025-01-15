@@ -70,7 +70,6 @@ class GetProduct extends Command
 
                 // Check if product exists  
                 $existingProduct = ProductPpob::where('code', $product['code'])->first();
-
                 if ($existingProduct) {
                     // Check for changes
                     if (

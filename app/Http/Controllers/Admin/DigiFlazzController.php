@@ -116,16 +116,20 @@ class DigiFlazzController extends Controller
         foreach ($groupedData as $name => $items) {
             // Pastikan hanya memproses grup dengan data valid  
             $prices = array_column($items, 'price');
-            if (empty($prices)) {
+            $adminPrices = array_column($items, 'admin'); // Ambil harga admin jika ada  
+            $allPrices = array_merge($prices, $adminPrices); // Gabungkan harga biasa dan harga admin  
+
+            if (empty($allPrices)) {
                 continue; // Jika tidak ada harga, skip grup ini  
             }
 
             // Cek apakah ada variasi harga dalam grup  
-            $uniquePrices = array_unique($prices);
+            $uniquePrices = array_unique($allPrices);
             $hasDiscount = count($uniquePrices) > 1; // Jika ada lebih dari satu harga, berarti ada diskon  
 
             foreach ($items as $item) {
-                $currentPrice = $item['price'] ?? 0;
+                $currentPrice = $prepost === 'Postpaid' ? ($item['admin'] ?? 0) : ($item['price'] ?? 0);
+
                 $output[] = [
                     'brand' => $item['brand'] ?? '',
                     'category' => $item['category'],
