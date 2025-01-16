@@ -199,7 +199,6 @@ class TokenController extends Controller
             ]);
         }
     }
-
     /**
      * Hitung point berdasarkan konfigurasi.
      */

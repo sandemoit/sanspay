@@ -166,8 +166,9 @@
         {{-- load modal --}}
         <script>
             function prepaid(url) {
-                const phone = document.getElementById('phone').value;
-                if (!phone) {
+                const targetPhone = document.getElementById('phone').value;
+
+                if (!targetPhone) {
                     toastr.error('Nomor/ID tujuan tidak boleh kosong!', {
                         timeOut: 1000
                     });
@@ -197,8 +198,6 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            const targetPhone = document.getElementById('phone').value;
-
                             // Render konten ke dalam modal
                             modalContent.innerHTML = `
                             <div class="form-group mb-3">

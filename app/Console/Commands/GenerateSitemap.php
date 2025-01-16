@@ -29,7 +29,7 @@ class GenerateSitemap extends Command
      */
     public function handle()
     {
-        SitemapGenerator::create(config('app.url'))
+        SitemapGenerator::create(env('APP_URL'))
             ->hasCrawled(function (Url $url) {
                 // Menentukan prioritas berdasarkan path  
                 switch ($url->path()) {

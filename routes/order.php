@@ -10,6 +10,9 @@ use App\Http\Controllers\Orders\PertagasController;
 use App\Http\Controllers\Orders\TokenController;
 use App\Http\Controllers\Orders\VoucherController;
 
+// index
+Route::get('/confirm/{code}/{target?}', [OrderHpController::class, 'confirmOrder'])->name('order.confirm');
+
 // games
 Route::get('/order/games', [GamesController::class, 'index'])->name('order.games');
 Route::post('/order/priceGames', [GamesController::class, 'priceGames'])->name('priceGames');
@@ -23,7 +26,6 @@ Route::get('/order/pulsa-transfer', [OrderHpController::class, 'newOrder'])->nam
 Route::post('/order/proses', [OrderHpController::class, 'prosesTransaksi'])->name('order.proses');
 Route::post('/filter-products', [OrderHpController::class, 'filterProducts'])->name('filter.products');
 Route::post('/check-provider', [OrderHpController::class, 'checkProvider'])->name('order.checkProvider');
-Route::get('/confirm/{code}', [OrderHpController::class, 'confirmOrder'])->name('order.confirm');
 
 // order emoney
 Route::get('/order/emonney', [EmoneyController::class, 'index'])->name('order.emonney');
@@ -34,7 +36,6 @@ Route::post('/order/orderEmoney', [EmoneyController::class, 'prosesTransaksi'])-
 Route::get('/order/token-pln', [TokenController::class, 'index'])->name('order.token-pln');
 Route::post('/order/priceToken', [TokenController::class, 'priceToken'])->name('priceToken');
 Route::post('/order/orderToken', [TokenController::class, 'prosesTransaksi'])->name('orderToken');
-Route::post('/order/cekToken', [TokenController::class, 'cekToken'])->name('cekToken');
 
 // voucher
 Route::get('/order/voucher', [VoucherController::class, 'index'])->name('order.voucher');

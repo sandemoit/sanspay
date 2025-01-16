@@ -157,7 +157,7 @@
     <!-- ===== Testimonials Start ===== -->
     <section class="hj rp hr" id="testimoni">
         <!-- Section Title Start -->
-        <div x-data="{ sectionTitle: `Client’s Testimonials`, sectionTitleText: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using.` }">
+        <div x-data="{ sectionTitle: `Testimoni Pelanggan`, sectionTitleText: `Kami sangat bangga atas kepercayaan pelanggan terhadap layanan kami. Berikut beberapa komentar yang memuaskan dari pelanggan.` }">
             <div class=" bb ze rj ki xn vq">
                 <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b">
                 </h2>
@@ -182,25 +182,75 @@
                                 <span class="rc je md/2 mh yg h q p"></span>
 
                                 <div class="tc sf rn tn un zf dp">
+                                    <img class="bf" src="{{ asset('/') }}web/images/testimonial.svg"
+                                        alt="User" />
+
+                                    <div>
+                                        <p class="ek ik xj _p kc fb">
+                                            Saya sangat puas menggunakan aplikasi ini selama bertahun-tahun. Pertanyaan
+                                            saya langsung ditanggapi oleh CS dan saya pernah menerima bonus mingguan
+                                            sebesar Rp 50.000. Lumayan, keuntungan penjualan ditambah bonus membuat
+                                            pendapatan saya meningkat. Terima kasih Sans Pay.
+                                        </p>
+
+                                        <div class="tc yf vf">
+                                            <div>
+                                                <span class="rc ek xj kk wm zb">Putra Ardila</span>
+                                                <span class="rc">Jambi, Muara Bungo</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="i hh rm sg vk xm bi qj">
+                                <!-- Border Shape -->
+                                <span class="rc je md/2 gh xg h q r"></span>
+                                <span class="rc je md/2 mh yg h q p"></span>
+
+                                <div class="tc sf rn tn un zf dp">
                                     <img class="bf" src="{{ asset('/') }}web/images/testimonial.png"
                                         alt="User" />
 
                                     <div>
                                         <p class="ek ik xj _p kc fb">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dolor
-                                            diam, feugiat quis enim sed, ullamcorper semper ligula. Mauris
-                                            consequat justo volutpat.
+                                            Saya sangat bersyukur bergabung dengan Sans Pay, karena transaksi saya
+                                            berjalan lancar dan aman. Saya juga sangat terbantu dengan bonus yang
+                                            diberikan, itu sangat membantu perekonomian keluarga saya. Terima
+                                            kasih Sans Pay! 😊🙏
                                         </p>
 
                                         <div class="tc yf vf">
                                             <div>
-                                                <span class="rc ek xj kk wm zb">Devid Smith</span>
-                                                <span class="rc">Founter @democompany</span>
+                                                <span class="rc ek xj kk wm zb">Arya Fadilah</span>
+                                                <span class="rc">Jawa Barat</span>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="i hh rm sg vk xm bi qj">
+                                <!-- Border Shape -->
+                                <span class="rc je md/2 gh xg h q r"></span>
+                                <span class="rc je md/2 mh yg h q p"></span>
 
-                                            {{-- <img class="rk"
-                                                src="{{ asset('/') }}web/images/brand-light-02.svg"
-                                                alt="Brand" /> --}}
+                                <div class="tc sf rn tn un zf dp">
+                                    <img class="bf" src="{{ asset('/') }}web/images/testimonial.png"
+                                        alt="User" />
+
+                                    <div>
+                                        <p class="ek ik xj _p kc fb">
+                                            Saya sangat bersyukur telah menggunakan Sans Pay selama 2 tahun ini,
+                                            transaksi saya berjalan lancar
+                                            trus,harga murah,CS fast respon
+                                        </p>
+
+                                        <div>
+                                            <span class="rc ek xj kk wm zb">Rudi Hartono</span>
+                                            <span class="rc">Bandung</span>
                                         </div>
                                     </div>
                                 </div>
@@ -276,42 +326,162 @@
         </div>
         <!-- Section Title End -->
 
-        <div class="bb ze ah ch pm hj xp ki xn 2xl:ud-px-49 bc">
-            <div class="wc rf qn zf cp kq xf wf">
-                <a href="#" class="rc ">
-                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand-light-01.svg"
-                        alt="Clients" />
-                    <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-01.svg"
+        <div class="bb ze ah ch pm hj xp bc">
+            <div class="wc rf qn xf wf">
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand1.png"
                         alt="Clients" />
                 </a>
-                <a href="#" class="rc ">
-                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-02.svg"
-                        alt="Clients" />
-                    <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-02.svg"
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand2.png"
                         alt="Clients" />
                 </a>
-                <a href="#" class="rc ">
-                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-03.svg"
-                        alt="Clients" />
-                    <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-03.svg"
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand3.png"
                         alt="Clients" />
                 </a>
-                <a href="#" class="rc ">
-                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-04.svg"
-                        alt="Clients" />
-                    <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-04.svg"
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand4.png"
                         alt="Clients" />
                 </a>
-                <a href="#" class="rc ">
-                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-05.svg"
-                        alt="Clients" />
-                    <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-05.svg"
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand5.png"
                         alt="Clients" />
                 </a>
-                <a href="#" class="rc ">
-                    <img class="tk ml il zl om" src="{{ asset('/') }}web/images/brand-light-06.svg"
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand6.png"
                         alt="Clients" />
-                    <img class="xc sk ml il zl nm" src="{{ asset('/') }}web/images/brand-dark-06.svg"
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand7.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand8.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand9.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand10.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand11.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand12.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand13.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand14.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand15.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand16.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand17.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand18.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand19.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand20.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand21.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand22.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand23.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand24.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand25.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand26.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand27.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand28.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand29.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand30.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand31.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand32.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand33.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand34.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand35.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand36.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand37.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand38.png"
+                        alt="Clients" />
+                </a>
+                <a href="javascript:;" class="rc ">
+                    <img class="th wl ml il zl om" src="{{ asset('/') }}web/images/brand/brand39.png"
                         alt="Clients" />
                 </a>
             </div>
@@ -320,7 +490,7 @@
     <!-- ===== Clients End ===== -->
 
     <!-- ===== Blog Start ===== -->
-    <section class="ji gp uq" id="news">
+    {{-- <section class="ji gp uq" id="news">
         <!-- Section Title Start -->
         <div x-data="{ sectionTitle: `Latest Blogs & News`, sectionTitleText: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using.` }">
             <div class=" bb ze rj ki xn vq">
@@ -417,7 +587,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
     <!-- ===== Blog End ===== -->
 
 

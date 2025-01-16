@@ -143,7 +143,7 @@ class OrderHpController extends Controller
         }
     }
 
-    public function confirmOrder($code)
+    public function confirmOrder($code, $target = null)
     {
         $product = ProductPpob::select('id', 'name', 'code', 'note') // Pilih kolom penting
             ->where('code', $code)
@@ -165,6 +165,7 @@ class OrderHpController extends Controller
             'mitra' => 'mitra_price',
             'customer' => 'cust_price',
         };
+
         $userSaldo = Auth::user()->saldo;
 
         if ($productPrice->$priceField > $userSaldo) {
@@ -174,6 +175,7 @@ class OrderHpController extends Controller
             ]);
         }
 
+        $ref_id = substr(str_shuffle('0123456789'), 0, 12);
         // Generate token dinamis
         $token = hash_hmac('sha256', $product->code . $productPrice->$priceField, env('APP_KEY'));
 
