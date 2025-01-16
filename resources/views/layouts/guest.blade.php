@@ -397,7 +397,6 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
             navigator.serviceWorker.register("/sw.js");
         }
     </script>
-
     @stack('custom-js')
 </body>
 

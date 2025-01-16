@@ -175,7 +175,7 @@
                     <!-- Additional required wrapper -->
                     <div class="swiper-wrapper">
                         <!-- Slides -->
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" data-swiper-autoplay="1000">
                             <div class="i hh rm sg vk xm bi qj">
                                 <!-- Border Shape -->
                                 <span class="rc je md/2 gh xg h q r"></span>
@@ -203,14 +203,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" data-swiper-autoplay="1000">
                             <div class="i hh rm sg vk xm bi qj">
                                 <!-- Border Shape -->
                                 <span class="rc je md/2 gh xg h q r"></span>
                                 <span class="rc je md/2 mh yg h q p"></span>
 
                                 <div class="tc sf rn tn un zf dp">
-                                    <img class="bf" src="{{ asset('/') }}web/images/testimonial.png"
+                                    <img class="bf" src="{{ asset('/') }}web/images/testimonial.svg"
                                         alt="User" />
 
                                     <div>
@@ -231,14 +231,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" data-swiper-autoplay="1000">
                             <div class="i hh rm sg vk xm bi qj">
                                 <!-- Border Shape -->
                                 <span class="rc je md/2 gh xg h q r"></span>
                                 <span class="rc je md/2 mh yg h q p"></span>
 
                                 <div class="tc sf rn tn un zf dp">
-                                    <img class="bf" src="{{ asset('/') }}web/images/testimonial.png"
+                                    <img class="bf" src="{{ asset('/') }}web/images/testimonial.svg"
                                         alt="User" />
 
                                     <div>
