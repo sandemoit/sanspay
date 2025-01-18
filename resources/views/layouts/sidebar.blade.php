@@ -167,24 +167,12 @@
             <li class="menu-label">{{ __('Main Menu') }}</li>
             </li>
             <li>
-                <a href="javascript:;" class="has-arrow">
+                <a href="{{ route('order.history') }}">
                     <div class="parent-icon">
                         <ion-icon name="cart-outline"></ion-icon>
                     </div>
                     <div class="menu-title">{{ __('Transaksi') }}</div>
                 </a>
-                <ul>
-                    <li>
-                        <a href="{{ route('order.history') }}">
-                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('History') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('Laporan') }}
-                        </a>
-                    </li>
-                </ul>
             </li>
             <li>
                 <a href="javascript:;" class="has-arrow">
@@ -209,9 +197,34 @@
                             <ion-icon name="ellipse-outline"></ion-icon>{{ __('Kirim Antar Mitra') }}
                         </a>
                     </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon">
+                        <ion-icon name="stats-chart-outline"></ion-icon>
+                    </div>
+                    <div class="menu-title">{{ __('Laporan/Rekap') }}</div>
+                </a>
+                <ul>
+                    <li>
+                        <a href="{{ route('laporan.prabayar') }}">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('Prabayar') }}
+                        </a>
+                    </li>
+                    {{-- <li>
+                        <a href="#">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('Pascabayar/PPOB') }}
+                        </a>
+                    </li>
                     <li>
                         <a href="#">
-                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('Mutasi Saldo') }}
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('Game') }}
+                        </a>
+                    </li> --}}
+                    <li>
+                        <a href="{{ route('laporan.mutation') }}">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('Mutasi') }}
                         </a>
                     </li>
                 </ul>

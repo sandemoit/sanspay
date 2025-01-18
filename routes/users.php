@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\HistoryOrderController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\TicketController;
 use App\Http\Middleware\HasRoleCustomer;
@@ -52,6 +53,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/ticket', [TicketController::class, 'store'])->name('ticket.store');
     Route::get('/ticket/{id}', [TicketController::class, 'show'])->name('ticket.show');
     Route::post('/ticket/{id}/reply', [TicketController::class, 'reply'])->name('ticket.reply');
+
+    // laporan trx
+    Route::get('/laporan/prabayar', [LaporanController::class, 'prabayar'])->name('laporan.prabayar');
+    Route::get('/laporan/mutation', [LaporanController::class, 'mutation'])->name('laporan.mutation');
 
     require __DIR__ . '/order.php';
 });
