@@ -105,7 +105,7 @@
                         class="btn btn-primary btn-sm mb-2">{{ __('Pay Now') }}</button> --}}
                         <a href="{{ $deposit->redirect_url }}"
                             class="btn btn-primary btn-sm mb-2">{{ __('Pay Now') }}</a>
-                        <a href="{{ route('deposit.cancelMidtrans', $deposit->topup_id) }}"
+                        <a href="{{ route('deposit.cancel', $deposit->topup_id) }}"
                             class="btn btn-danger btn-sm mb-2">{{ __('Cancel Deposit') }}</a><br>
                     @endif
                 @endif

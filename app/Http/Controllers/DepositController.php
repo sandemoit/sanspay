@@ -305,7 +305,7 @@ class DepositController extends Controller
         $amount = nominal($deposit->amount);
         $nameBank = $deposit->depositmethod->name;
         $target = "$user->number|$user->name|$deposit->topup_id|$nameBank|$amount|CANCELED";
-        $sendWa = WhatsApp::sendMessage($target, formatNotif('create_deposit_wa')->value);
+        $sendWa = WhatsApp::sendMessage($target, formatNotif('done_deposit_wa')->value);
 
         if ($sendWa['success'] == false) {
             return redirect()->back()->with('error', __($sendWa['message']));
