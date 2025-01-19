@@ -9,6 +9,7 @@ use App\Http\Controllers\Orders\PascabayarController;
 use App\Http\Controllers\Orders\PertagasController;
 use App\Http\Controllers\Orders\TokenController;
 use App\Http\Controllers\Orders\VoucherController;
+use App\Http\Middleware\VerifyRecaptcha;
 
 // index
 Route::get('/confirm/{code}/{target?}', [OrderHpController::class, 'confirmOrder'])->name('order.confirm');
@@ -23,9 +24,9 @@ Route::get('/order/paket-telepon', [OrderHpController::class, 'newOrder'])->name
 Route::get('/order/pulsa-reguler', [OrderHpController::class, 'newOrder'])->name('order.pulsa-reguler');
 Route::get('/order/paket-internet', [OrderHpController::class, 'newOrder'])->name('order.paket-internet');
 Route::get('/order/pulsa-transfer', [OrderHpController::class, 'newOrder'])->name('order.pulsa-transfer');
-Route::post('/order/proses', [OrderHpController::class, 'prosesTransaksi'])->name('order.proses');
 Route::post('/filter-products', [OrderHpController::class, 'filterProducts'])->name('filter.products');
 Route::post('/check-provider', [OrderHpController::class, 'checkProvider'])->name('order.checkProvider');
+Route::post('/order/proses', [OrderHpController::class, 'prosesTransaksi'])->name('order.proses');
 
 // order emoney
 Route::get('/order/emonney', [EmoneyController::class, 'index'])->name('order.emonney');

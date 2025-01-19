@@ -147,6 +147,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                    {{-- {!! NoCaptcha::displaySubmit('modalContent', 'Konfirmasi', [
+                        'class' => 'btn btn-primary',
+                        'id' => 'confirmButton',
+                    ]) !!} --}}
                     <button type="button" id="confirmButton" class="btn btn-primary">Konfirmasi</button>
                 </div>
             </div>
