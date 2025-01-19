@@ -39,6 +39,7 @@ class RegisteredUserController extends Controller
             'number' => ['required', 'string', 'digits:12', 'unique:' . User::class],
             'pin' => ['required', 'string', 'digits:6'],
             'terms' => ['required', 'accepted'],
+            'g-recaptcha-response' => 'required|captcha'
         ]);
 
         $user = User::create([

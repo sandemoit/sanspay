@@ -53,6 +53,11 @@
                     @endif
                 </div>
 
+                <div class="wb">
+                    {!! NoCaptcha::renderJs() !!}
+                    {!! NoCaptcha::display() !!}
+                </div>
+
                 <button type="submit" class="vd rj ek rc rg gh lk ml il _l gi hi">
                     Sign In
                 </button>

@@ -93,6 +93,10 @@
                         </label>
                     </div>
                 </div>
+                <div class="col-12 col-lg-12">
+                    {!! NoCaptcha::renderJs() !!}
+                    {!! NoCaptcha::display() !!}
+                </div>
 
                 <button type="submit" class="vd rj ek rc rg gh lk ml il _l gi hi">
                     {{ __('Sign up') }}

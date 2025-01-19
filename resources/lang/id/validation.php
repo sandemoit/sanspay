@@ -150,4 +150,5 @@ return [
     'uppercase'            => ':Attribute harus berupa huruf kapital.',
     'url'                  => 'Format :attribute tidak valid.',
     'uuid'                 => ':Attribute harus merupakan UUID yang valid.',
+    'captcha'              => 'Verifikasi reCAPTCHA untuk :attribute gagal. Silakan coba lagi.',
 ];
