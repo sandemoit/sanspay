@@ -70,7 +70,7 @@
                 background-position: 98% 50%;
             }
 
-            .sc-three {
+            .sc-tri {
                 background-image: url('../storage/images/cards/three.png');
                 background-color: white;
                 background-repeat: no-repeat;
@@ -239,8 +239,14 @@
 
                 function handleResponse(data) {
                     // Remove existing provider classes
-                    const providerClasses = ['sc-telkomsel', 'sc-indosat', 'sc-xl', 'sc-axis',
-                        'sc-three', 'sc-smartfren', 'sc-byu'
+                    const providerClasses = [
+                        'sc-telkomsel',
+                        'sc-indosat',
+                        'sc-xl',
+                        'sc-axis',
+                        'sc-tri',
+                        'sc-smartfren',
+                        'sc-byu'
                     ];
                     phoneInput.classList.remove(...providerClasses);
 

@@ -91,8 +91,6 @@ class OrderHpController extends Controller
         }
 
         try {
-            $cacheKey = "products_{$type}_{$provider}";
-
             $products = ProductPpob::where([
                 'type' => $type,
                 'brand' => $provider,
