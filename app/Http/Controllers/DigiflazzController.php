@@ -60,6 +60,10 @@ class DigiflazzController extends Controller
         if ($status === 'Gagal') {
             $note = 'Refund :: ' . $ref_id;
 
+            // Update saldo
+            $user = $trxPpob->user;
+            $user->increment('saldo', $amount);
+
             // Buat mutasi
             Mutation::create([
                 'username' => $username,
@@ -68,10 +72,6 @@ class DigiflazzController extends Controller
                 'note' => $note,
             ]);
 
-            // Update saldo
-            $user = $trxPpob->user;
-            $user->increment('saldo', $amount);
-
             // Update status transaksi
             $trxPpob->update([
                 'status' => $status,
@@ -79,13 +79,6 @@ class DigiflazzController extends Controller
                 'sn' => $sn,
             ]);
         } elseif ($status === 'Sukses') {
-            // Update status transaksi
-            $trxPpob->update([
-                'status' => $status,
-                'note' => $message,
-                'sn' => $sn,
-            ]);
-
             // Cari referral yang masih inactive dan ubah statusnya
             // Serta tambahkan poin ke user yang mereferensi
             Referrals::where('username_to', $username)
@@ -94,6 +87,13 @@ class DigiflazzController extends Controller
                     $referral->update(['status' => 'active']);
                     User::where('name', $referral->username_from)->increment('point', $referral->point);
                 });
+
+            // Update status transaksi
+            $trxPpob->update([
+                'status' => $status,
+                'note' => $message,
+                'sn' => $sn,
+            ]);
         } else {
             Log::info('Unhandled transaction status: ' . $status);
         }
