@@ -104,4 +104,9 @@ Route::middleware(['auth', 'verified', HasRoleAdmin::class])->group(function () 
     Route::get('/getUpgradeMitra', [UsermanagementController::class, 'getUpgradeMitra'])->name('getUpgradeMitra');
     Route::get('/pengajuan/detail/{id}', [UsermanagementController::class, 'getDetailUpgrade'])->name('pengajuan.detail');
     Route::put('/pengajuan/update-status/{id}', [UsermanagementController::class, 'updateStatusUpgrade'])->name('pengajuan.update-status');
+
+    Route::get('/admin/user', [UsermanagementController::class, 'user'])->name('admin.user');
+    Route::get('/admin/getUser', [UsermanagementController::class, 'getUser'])->name('admin.getUser');
+    Route::get('/admin/user/block/{id}', [UsermanagementController::class, 'blockUser'])->name('admin.user.block');
+    Route::get('/admin/user/unblock/{id}', [UsermanagementController::class, 'unblockUser'])->name('admin.user.unblock');
 });

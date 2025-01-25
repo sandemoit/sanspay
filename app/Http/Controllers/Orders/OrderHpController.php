@@ -28,7 +28,7 @@ class OrderHpController extends Controller
     {
         $this->baseUrl = 'https://api.digiflazz.com/v1';
         $this->username = DigiFlazz::ProvDigi()->username;
-        $this->key = DigiFlazz::ProvDigi()->product_api_key;
+        $this->key = config('app.env') === 'local' ? DigiFlazz::ProvDigi()->development_api_key : DigiFlazz::ProvDigi()->product_api_key;
     }
 
     public function newOrder(Request $request)
@@ -195,13 +195,26 @@ class OrderHpController extends Controller
 
             $ref_id = substr(str_shuffle('0123456789'), 0, 12);
 
-            $prepaidData = $this->makeRequest('/transaction', [
-                'username' => $this->username,
-                'buyer_sku_code' => $request->code,
-                'customer_no' => $request->target,
-                'ref_id' => $ref_id,
-                'sign' => $this->generateSignature($ref_id),
-            ]);
+            if (config('app.env') === 'local') {
+                // Mode development/local
+                $prepaidData = $this->makeRequest('/transaction', [
+                    'username' => $this->username,
+                    'buyer_sku_code' => 'xld10',
+                    'customer_no' => '087800001230',
+                    'ref_id' => 'test1',
+                    'testing' => true,
+                    'sign' => $this->generateSignature('test1'),
+                ]);
+            } else {
+                // Mode production
+                $prepaidData = $this->makeRequest('/transaction', [
+                    'username' => $this->username,
+                    'buyer_sku_code' => $request->code,
+                    'customer_no' => $request->target,
+                    'ref_id' => $ref_id,
+                    'sign' => $this->generateSignature($ref_id),
+                ]);
+            }
 
             // Validasi respons dari API  
             if (!isset($prepaidData['data'])) {

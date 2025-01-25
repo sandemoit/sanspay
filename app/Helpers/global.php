@@ -207,3 +207,10 @@ if (!function_exists('detectProvider')) {
         return null; // Provider tidak ditemukan
     }
 }
+
+if (!function_exists('isMode')) {
+    function isMode()
+    {
+        return config('app.env') === 'local' ? 'local' : 'production';
+    }
+}

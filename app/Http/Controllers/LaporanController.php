@@ -58,8 +58,9 @@ class LaporanController extends Controller
         $mutasi = $query->orderBy('created_at', 'desc')->get();
 
         // Hitung total mutasi masuk dan keluar
-        $totalMasuk = $query->where('type', '+')->sum('amount');
-        $totalKeluar = $query->where('type', '-')->sum('amount');
+        // Kita perlu clone query untuk menghindari query builder yang sama
+        $totalMasuk = (clone $query)->where('type', '+')->sum('amount');
+        $totalKeluar = (clone $query)->where('type', '-')->sum('amount');
 
         // Hitung sisa saldo
         $sisaSaldo = $user->saldo;

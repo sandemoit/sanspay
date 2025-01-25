@@ -26,6 +26,7 @@ class VerifyEmailController extends Controller
         }
 
         $user = $request->user();
+        $user->update(['status' => 'active']);
 
         // Tambahkan flash message
         session()->flash('success', 'Akun Anda telah berhasil diverifikasi.');

@@ -71,11 +71,11 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <input type="date" id="start_date" class="form-control" placeholder="Start Date"
-                        value="{{ request('start_date') }}">
+                        value="{{ request('start_date', date('Y-m-d')) }}">
                 </div>
                 <div class="col-md-4">
                     <input type="date" id="end_date" class="form-control" placeholder="End Date"
-                        value="{{ request('end_date') }}">
+                        value="{{ request('end_date', date('Y-m-d')) }}">
                 </div>
                 <div class="col-md-4">
                     <button id="filter" class="btn btn-primary">Filter</button>

@@ -35,6 +35,8 @@ class DashboardController extends Controller
             // Tambahkan mapping lainnya sesuai kebutuhan  
         ];
 
+        // Cek mode aplikasi  
+
         return view('users.dashboard', compact('title', 'categories', 'iconMapping'));
     }
 

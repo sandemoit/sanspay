@@ -1,4 +1,3 @@
-<!--start sidebar -->
 <aside class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
         <div>
@@ -119,9 +118,13 @@
                     <div class="parent-icon">
                         <ion-icon name="people-outline"></ion-icon>
                     </div>
-                    <div class="menu-title">{{ __('User Management') }}</div>
+                    <div class="menu-title">{{ __('Management') }}</div>
                 </a>
                 <ul>
+                    <li> <a href="{{ route('admin.user') }}">
+                            <ion-icon name="ellipse-outline"></ion-icon>{{ __('User') }}
+                        </a>
+                    </li>
                     <li> <a href="{{ route('admin.upgrade-mitra') }}">
                             <ion-icon name="ellipse-outline"></ion-icon>{{ __('Upgrade Mitra') }}
                         </a>

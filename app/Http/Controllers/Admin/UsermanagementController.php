@@ -19,7 +19,15 @@ class UsermanagementController extends Controller
             'title' => 'Upgrade Mitra',
         ];
 
-        return view('admin.user-management.upgrade', $data);
+        return view('admin.management.upgrade', $data);
+    }
+
+    public function user()
+    {
+        $data = [
+            'title' => 'User',
+        ];
+        return view('admin.management.user', $data);
     }
 
     public function getUpgradeMitra()
@@ -121,6 +129,63 @@ class UsermanagementController extends Controller
         }
 
         return response()->json(['message' => 'Status updated successfully', 201]);
+    }
+
+    public function getUser()
+    {
+        $users = User::select('id', 'fullname', 'name', 'email', 'role', 'created_at', 'gender', 'status', 'email_verified_at')->get();
+        return DataTables::of($users)
+            ->addColumn('gabung', function ($row) {
+                return tanggal($row->created_at);
+            })
+            ->addColumn('status_user', function ($row) {
+                $badgeClass = $row->status == 'active' ? 'success' : 'danger';
+                return '<span class="badge bg-' . $badgeClass . '">' . $row->status . '</span>';
+            })
+            ->addColumn('terverifikasi', function ($row) {
+                $badgeClass = $row->email_verified_at !== null ? 'success' : 'danger';
+                $status = $row->email_verified_at !== null ? 'Terverifikasi' : 'Tidak Terverifikasi';
+                return '<span class="badge bg-' . $badgeClass . '">' . $status . '</span>';
+            })
+            ->addColumn('role_user', function ($row) {
+                $badgeClass = match ($row->role) {
+                    'admin' => 'success',
+                    'mitra' => 'primary',
+                    'customer' => 'info',
+                    default => 'danger'
+                };
+                return '<span class="badge bg-' . $badgeClass . '">' . strtoupper($row->role) . '</span>';
+            })
+            ->addColumn('action', function ($row) {
+                $action = $row->status == 'active' ? '
+                            <a class="btn btn-sm btn-danger block-user" href="' . url('/admin/user/block/' . $row->id) . '" data-id="' . $row->id . '"><ion-icon name="skull-outline"></ion-icon></a>
+                        ' : '<a class="btn btn-sm btn-success unblock-user" href="' . url('/admin/user/unblock/' . $row->id) . '" data-id="' . $row->id . '"><ion-icon name="shield-checkmark-outline"></ion-icon></a>';
+                return $action;
+            })
+            ->rawColumns(['gabung', 'status_user', 'terverifikasi', 'role_user', 'action'])
+            ->make(true);
+    }
+
+    public function blockUser($id)
+    {
+        try {
+            $user = User::find($id);
+            $user->update(['status' => 'inactive']);
+            return response()->json(['success' => 'User berhasil di blokir']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Gagal memblokir user', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function unblockUser($id)
+    {
+        try {
+            $user = User::find($id);
+            $user->update(['status' => 'active']);
+            return response()->json(['success' => 'User berhasil di unblokir']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Gagal memblokir user', 'error' => $e->getMessage()], 500);
+        }
     }
 
     private function prepareEmailData($pengajuan)

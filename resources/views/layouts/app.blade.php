@@ -44,6 +44,12 @@
         <!-- Page Content -->
         <div class="page-content-wrapper">
             <div class="page-content">
+                @if (isMode() === 'local')
+                    <div class="alert alert-warning">
+                        <ion-icon name="shield-half-outline"></ion-icon>
+                        Anda sedang dalam mode development.
+                    </div>
+                @endif
                 {{ $slot }}
             </div>
 

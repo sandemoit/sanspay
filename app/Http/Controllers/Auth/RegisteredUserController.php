@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
             'role' => 'customer',
             'pin' => Hash::make($request->pin),
             'number' => $request->number,
-            'status' => 'active',
+            'status' => 'inactive',
             'code_referral' => 'SP' . substr(str_shuffle('0123456789'), 0, 4),
         ]);
 

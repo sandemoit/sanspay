@@ -109,17 +109,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7J1CR16G83"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
+    @php
+        $isMode = isMode();
+        if ($isMode === 'production') {
+            echo '<script async src="https://www.googletagmanager.com/gtag/js?id=G-7J1CR16G83"></script>';
+            echo '<script>
+                window.dataLayer = window.dataLayer || [];
 
-        function gtag() {
-            dataLayer.push(arguments);
+                function gtag() {
+                    dataLayer.push(arguments);
+                }
+                gtag(\'js\', new Date());
+                        gtag(\'config\', \'G-7J1CR16G83\');
+            </script>';
         }
-        gtag('js', new Date());
-
-        gtag('config', 'G-7J1CR16G83');
-    </script>
+    @endphp
 
     @stack('custom-css')
 </head>

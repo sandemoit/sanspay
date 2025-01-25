@@ -68,7 +68,6 @@
                     </div>
                 </div>
             </div>
-
             @if (Auth::user()->saldo <= '5000')
                 <div class="alert alert-primary" role="alert">
                     Pelanggan yang terhormat, saldo Anda sudah <b>menipis</b>, segera

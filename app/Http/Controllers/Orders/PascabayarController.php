@@ -26,7 +26,7 @@ class PascabayarController extends Controller
     {
         $this->baseUrl = 'https://api.digiflazz.com/v1';
         $this->username = DigiFlazz::ProvDigi()->username;
-        $this->key = DigiFlazz::ProvDigi()->product_api_key;
+        $this->key = config('app.env') === 'local' ? DigiFlazz::ProvDigi()->development_api_key : DigiFlazz::ProvDigi()->product_api_key;
     }
 
     public function index($brand)
@@ -151,14 +151,27 @@ class PascabayarController extends Controller
 
         $ref_id = substr(str_shuffle('0123456789'), 0, 12);
 
-        $prepaidData = $this->makeRequest('/transaction', [
-            'commands' => "pay-pasca",
-            'username' => $this->username,
-            'buyer_sku_code' => $request->code,
-            'customer_no' => $request->target,
-            'ref_id' => $ref_id,
-            'sign' => $this->generateSignature($ref_id),
-        ]);
+        if (config('app.env') === 'local') {
+            // Mode development/local
+            $prepaidData = $this->makeRequest('/transaction', [
+                'commands' => "pay-pasca",
+                'username' => $this->username,
+                'buyer_sku_code' => 'pln',
+                'customer_no' => '530000000001',
+                'ref_id' => 'some1d',
+                'sign' => $this->generateSignature('some1d'),
+            ]);
+        } else {
+            // Mode production
+            $prepaidData = $this->makeRequest('/transaction', [
+                'commands' => "pay-pasca",
+                'username' => $this->username,
+                'buyer_sku_code' => $request->code,
+                'customer_no' => $request->target,
+                'ref_id' => $ref_id,
+                'sign' => $this->generateSignature($ref_id),
+            ]);
+        }
 
         // Validasi respons dari API
         if (!isset($prepaidData['data'])) {
