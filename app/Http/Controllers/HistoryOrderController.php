@@ -37,6 +37,10 @@ class HistoryOrderController extends Controller
             ->addColumn('trx_price', function ($row) {
                 return 'Rp ' . nominal($row->price);
             })
+            ->addColumn('sn', function ($row) {
+                $parts = explode('/', $row->sn);
+                return count($parts) >= 2 ? $parts[0] . '/' . $parts[1] : $row->sn;
+            })
             ->addColumn('status', function ($row) {
                 if ($row->status == 'Pending') {
                     return '<span class="badge bg-warning">' . ucfirst($row->status) . '</span>';
@@ -65,7 +69,7 @@ class HistoryOrderController extends Controller
                 'data' => $trx->data,
                 'status' => $trx->status,
                 'note' => $trx->note,
-                'sn' => $trx->sn,
+                'sn' => implode('/', array_slice(explode('/', $trx->sn), 0, 2)),
                 'price' => nominal($trx->price),
                 'created_at' => tanggalTrx($trx->created_at),
                 'updated_at' => tanggalTrx($trx->updated_at),

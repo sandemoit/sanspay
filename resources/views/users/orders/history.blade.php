@@ -171,7 +171,7 @@
                             </li>
                             <li><span class="label">Status</span> : <span class="value" id="status">-</span></li>
                             <li><span class="label">Note</span> : <span class="value" id="note">-</span></li>
-                            <li><span class="label">SN</span> : <span class="value" id="sn">-</span></li>
+                            <li><span class="label">ket/SN</span> : <span class="value" id="sn">-</span></li>
                             <li><span class="label">Harga</span> : <span class="value" id="price">-</span></li>
                             <li><span class="label">Transaksi</span> : <span class="value" id="created_at">-</span>
                             </li>
@@ -179,7 +179,6 @@
                         </ul>
                     </div>
                 </div>
-
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"

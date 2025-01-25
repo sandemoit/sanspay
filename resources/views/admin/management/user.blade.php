@@ -10,6 +10,7 @@
                         <tr>
                             <th>No</th>
                             <th>{{ __('Nama Lengkap') }}</th>
+                            <th>{{ __('Saldo') }}</th>
                             <th>{{ __('Username') }}</th>
                             <th>{{ __('Email') }}</th>
                             <th>{{ __('Gender') }}</th>
@@ -74,6 +75,12 @@
                         {
                             data: 'fullname',
                             name: 'fullname',
+                            orderable: true,
+                            searchable: true,
+                        },
+                        {
+                            data: 'saldo',
+                            name: 'saldo',
                             orderable: true,
                             searchable: true,
                         },

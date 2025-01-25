@@ -133,10 +133,13 @@ class UsermanagementController extends Controller
 
     public function getUser()
     {
-        $users = User::select('id', 'fullname', 'name', 'email', 'role', 'created_at', 'gender', 'status', 'email_verified_at')->get();
+        $users = User::select('id', 'fullname', 'name', 'email', 'role', 'created_at', 'gender', 'status', 'email_verified_at', 'saldo')->get();
         return DataTables::of($users)
             ->addColumn('gabung', function ($row) {
                 return tanggal($row->created_at);
+            })
+            ->addColumn('saldo', function ($row) {
+                return "Rp " . nominal($row->saldo);
             })
             ->addColumn('status_user', function ($row) {
                 $badgeClass = $row->status == 'active' ? 'success' : 'danger';
@@ -162,7 +165,7 @@ class UsermanagementController extends Controller
                         ' : '<a class="btn btn-sm btn-success unblock-user" href="' . url('/admin/user/unblock/' . $row->id) . '" data-id="' . $row->id . '"><ion-icon name="shield-checkmark-outline"></ion-icon></a>';
                 return $action;
             })
-            ->rawColumns(['gabung', 'status_user', 'terverifikasi', 'role_user', 'action'])
+            ->rawColumns(['gabung', 'status_user', 'terverifikasi', 'role_user', 'action', 'saldo'])
             ->make(true);
     }
 

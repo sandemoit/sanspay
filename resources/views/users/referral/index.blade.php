@@ -3,6 +3,17 @@
         <link href="{{ asset('/') }}plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     @endpush
 
+    <div class="alert alert-primary" role="alert">
+        <div class="text-left mb-2">
+            <span class="badge bg-primary">🎉 Ayo ajak teman-teman gabung di Sans Pay!</span>
+        </div>
+        <div>
+            Setiap teman yang kamu ajak dan transaksi pertama selesai, kamu akan dapat 2500 poin! ✨ Poin ini bisa
+            langsung ditukar jadi Saldo Transaksi.
+            Semakin banyak teman yang kamu ajak, semakin besar saldo kamu. Yuk, mulai sekarang! 🚀
+        </div>
+    </div>
+    <hr />
     <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3">
         <div class="col mb-3">
             <div class="card radius-10">
@@ -62,17 +73,6 @@
             </div>
         </div>
     </div>
-    <div class="alert alert-primary" role="alert">
-        <div class="text-left mb-2">
-            <span class="badge bg-primary">🎉 Ayo ajak teman-teman gabung di Sans Pay!</span>
-        </div>
-        <div>
-            Setiap teman yang kamu ajak dan transaksi pertama selesai, kamu akan dapat 2500 poin! ✨ Poin ini bisa
-            langsung ditukar jadi Saldo Transaksi.
-            Semakin banyak teman yang kamu ajak, semakin besar saldo kamu. Yuk, mulai sekarang! 🚀
-        </div>
-    </div>
-    <hr />
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">

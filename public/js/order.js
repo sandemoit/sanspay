@@ -69,7 +69,7 @@ $(document).ready(function() {
                 $('#detailTrxModal #date').val(response.trx.updated_at);
                 $('#detailTrxModal #product').val(response.trx.name);
                 $('#detailTrxModal #target').val(response.trx.data);
-                $('#detailTrxModal #sn').val(response.trx.sn);
+                $('#detailTrxModal #sn').val(response.trx.sn.split('/').slice(0,2).join('/'));
                 $('#detailTrxModal #note').val(response.trx.note);
             },
             error: function(xhr) {
