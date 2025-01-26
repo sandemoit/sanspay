@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class VoucherController extends Controller
+class ActivateVoucherController extends Controller
 {
     protected string $baseUrl;
     protected string $username;
@@ -31,27 +31,18 @@ class VoucherController extends Controller
 
     public function index()
     {
-        $title = 'Voucher Data';
+        $title = 'Aktivasi Voucher';
 
-        // Ambil kategori dengan type 'paket-lainnya'
-        $categories = Category::where('real', 'Voucher')
-            ->whereIn('name', [
-                'TELKOMSEL',
-                'INDOSAT',
-                'AXIS',
-                'XL',
-                'TRI',
-                'SMARTFREN',
-                'by.U'
-            ])
+        // Ambil kategori dengan real 'Aktivasi Voucher'
+        $categories = Category::where('real', 'Aktivasi Voucher')
             ->distinct()
             ->get(['brand', 'name']);
 
 
-        return view('users.orders.voucher', compact('title', 'categories'));
+        return view('users.orders.activate-voucher', compact('title', 'categories'));
     }
 
-    public function priceVoucher(Request $request)
+    public function priceActivateVoucher(Request $request)
     {
         $categoryBrand = $request->categoryBrand;
 
@@ -64,7 +55,7 @@ class VoucherController extends Controller
         // Ambil produk dengan relasi ke category
         $products = ProductPpob::with('category')
             ->where('brand', $categoryBrand)
-            ->where('type', 'paket-lainnya')
+            ->where('type', 'aktivasi-voucher')
             ->orderBy('price', 'asc')
             ->get();
 

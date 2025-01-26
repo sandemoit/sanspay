@@ -68,7 +68,7 @@ class DepositController extends Controller
                     case 'expired':
                         return '<span class="badge bg-danger">Expired</span>';
                     case 'pending';
-                        if (in_array($row->depositmethod->type_payment, ['va', 'gopay', 'shopeepay', 'qris', 'cstore', 'akulaku', 'kredivo', 'alfamart', 'indomaret'])) {
+                        if (in_array($row->depositmethod->type_payment, ['va', 'gopay', 'shopeepay', 'other_qris', 'cstore', 'akulaku', 'kredivo', 'alfamart', 'indomaret'])) {
                             return '<a class="btn btn-sm btn-warning accept-btn" href="' . $row->redirect_url . '"><ion-icon name="cash-outline"></ion-icon>Pay</a>';
                         } else {
                             return '
@@ -105,7 +105,7 @@ class DepositController extends Controller
         $type = request('type'); // Mendapatkan nilai 'type' dari request
 
         // Daftar kode yang hanya ditampilkan jika type == 1
-        $autoCodes = ['bni_va', 'bri_va', 'shopeepay', 'gopay', 'alfamart', 'indomaret', 'permata_va', 'cimb_va', 'echannel', 'qris', 'akulaku'];
+        $autoCodes = ['bni_va', 'bri_va', 'shopeepay', 'gopay', 'alfamart', 'indomaret', 'permata_va', 'cimb_va', 'echannel', 'other_qris', 'akulaku'];
 
         // Query untuk mendapatkan metode deposit berdasarkan kondisi
         $methods = DepositMethod::when($type == 1, function ($query) use ($autoCodes) {
@@ -136,8 +136,6 @@ class DepositController extends Controller
         if ($methodPayment) {
             $fee = $methodPayment->fee; // Ambil fee dari DepositMethod
             $feeType = $methodPayment->xfee; // Tipe fee: 'mines' atau 'percent'
-
-            // Inisialisasi $calculatedFee sebagai 0 agar tidak undefined
 
             // Hitung fee berdasarkan tipe fee
             if ($feeType === '-') {
@@ -236,7 +234,7 @@ class DepositController extends Controller
                 // Atur metode pembayaran
                 $enabledPayments = match ($request->methodpayment) {
                     'bni_va', 'bri_va', 'echannel', 'cimb_va', 'permata_va', 'bca_va' => [$request->methodpayment],
-                    'gopay', 'shopeepay', 'qris', 'akulaku', 'kredivo', 'alfamart', 'indomaret' => [$request->methodpayment],
+                    'gopay', 'shopeepay', 'other_qris', 'akulaku', 'kredivo', 'alfamart', 'indomaret' => [$request->methodpayment],
                     default => throw new \Exception('Metode pembayaran tidak valid.'),
                 };
 
@@ -414,6 +412,7 @@ class DepositController extends Controller
                 'status' => 'success',
             ]);
 
+            // Buat entri deposit
             Deposit::create([
                 'topup_id' => 'INV' . time(),
                 'member_id' => $receiver->id,

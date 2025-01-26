@@ -54,7 +54,7 @@
                                 <option value="va">Virtual Account</option>
                                 <option value="cstore">Ritel</option>
                                 <option value="gopay">Gopay</option>
-                                <option value="qris">Qris</option>
+                                <option value="other_qris">Qris</option>
                                 <option value="shopeepay">Shopee Pay</option>
                                 <option value="kredivo">Kredivo</option>
                                 <option value="akulaku">Akulaku</option>

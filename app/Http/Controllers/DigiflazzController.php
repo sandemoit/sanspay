@@ -13,89 +13,103 @@ class DigiflazzController extends Controller
 {
     public function handle(Request $request)
     {
-        // Mendapatkan data mentah dari request  
+        try {
+            $this->validateSignature($request);
+            $payload = $this->getValidPayload($request);
+
+            $data = $payload['data'] ?? [];
+            $status = $data['status'] ?? 'Unknown';
+            $ref_id = $data['ref_id'] ?? null;
+            $amount = $data['price'] ?? 0;
+            $message = $data['message'] ?? null;
+            $sn = $data['sn'] ?? '-';
+
+            if (!$ref_id) {
+                throw new \Exception('Ref ID missing in webhook payload');
+            }
+
+            $trxPpob = $this->getTransaction($ref_id);
+            $username = $trxPpob->user->name;
+
+            match ($status) {
+                'Gagal' => $this->handleFailedTransaction($trxPpob, $username, $amount, $ref_id, $message, $sn),
+                'Sukses' => $this->handleSuccessTransaction($trxPpob, $username, $message, $sn),
+                default => Log::info("Unhandled transaction status: $status")
+            };
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    private function validateSignature(Request $request): void
+    {
         $secret = config('services.digiflazz_secret');
         $post_data = file_get_contents('php://input');
         $signature = hash_hmac('sha1', $post_data, $secret);
 
-        // Validasi tanda tangan (signature)  
         if ($request->header('X-Hub-Signature') !== 'sha1=' . $signature) {
-            // Tanda tangan tidak valid  
-            Log::warning('Invalid Webhook Signature');
+            throw new \Exception('Invalid Webhook Signature');
         }
+    }
 
-        // Mendapatkan payload dari request  
+    private function getValidPayload(Request $request): array
+    {
         $payload = json_decode($request->getContent(), true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            // Payload tidak valid JSON  
-            Log::warning('Invalid JSON Payload: ' . json_last_error_msg());
+            throw new \Exception('Invalid JSON Payload: ' . json_last_error_msg());
         }
 
-        $data = $payload['data'] ?? [];
-        $status = $data['status'] ?? 'Unknown';
-        $ref_id = $data['ref_id'] ?? null;
-        $amount = $data['price'] ?? 0;
-        $message = $data['message'] ?? null;
-        $sn = $data['sn'] ?? '-';
+        return $payload;
+    }
 
-        // Validasi ID order
-        if (!$ref_id) {
-            Log::error('Ref ID missing in webhook payload');
-        }
-
-        // Ambil data transaksi
-        $trxPpob = TrxPpob::with('user')->where(
-            'id_order',
-            $ref_id
-        )->first();
+    private function getTransaction(string $ref_id): TrxPpob
+    {
+        $trxPpob = TrxPpob::with('user')->where('id_order', $ref_id)->first();
 
         if (!$trxPpob || !$trxPpob->user) {
-            Log::error('Transaction or User not found for Ref ID: ' . $ref_id);
+            throw new \Exception('Transaction or User not found for Ref ID: ' . $ref_id);
         }
 
-        $username = $trxPpob->user->name;
+        return $trxPpob;
+    }
 
-        // Proses sesuai status
-        if ($status === 'Gagal') {
-            $note = 'Refund :: ' . $ref_id;
+    private function handleFailedTransaction(TrxPpob $trxPpob, string $username, float $amount, string $ref_id, string $message, string $sn): void
+    {
+        $note = "Refund :: $ref_id";
 
-            // Update saldo
-            $user = $trxPpob->user;
-            $user->increment('saldo', $amount);
+        $trxPpob->user->increment('saldo', $amount);
 
-            // Buat mutasi
-            Mutation::create([
-                'username' => $username,
-                'type' => '+',
-                'amount' => $amount,
-                'note' => $note,
-            ]);
+        Mutation::create([
+            'username' => $username,
+            'type' => '+',
+            'amount' => $amount,
+            'note' => $note,
+        ]);
 
-            // Update status transaksi
-            $trxPpob->update([
-                'status' => $status,
-                'note' => $message,
-                'sn' => $sn,
-            ]);
-        } elseif ($status === 'Sukses') {
-            // Cari referral yang masih inactive dan ubah statusnya
-            // Serta tambahkan poin ke user yang mereferensi
-            Referrals::where('username_to', $username)
-                ->where('status', 'inactive')
-                ->each(function ($referral) {
-                    $referral->update(['status' => 'active']);
-                    User::where('name', $referral->username_from)->increment('point', $referral->point);
-                });
+        $trxPpob->update([
+            'status' => 'Gagal',
+            'note' => $message,
+            'sn' => $sn,
+        ]);
+    }
 
-            // Update status transaksi
-            $trxPpob->update([
-                'status' => $status,
-                'note' => $message,
-                'sn' => $sn,
-            ]);
-        } else {
-            Log::info('Unhandled transaction status: ' . $status);
-        }
+    private function handleSuccessTransaction(TrxPpob $trxPpob, string $username, string $message, string $sn): void
+    {
+        Referrals::where('username_to', $username)
+            ->where('status', 'inactive')
+            ->each(function ($referral) {
+                $referral->update(['status' => 'active']);
+                User::where('name', $referral->username_from)->increment('point', $referral->point);
+            });
+
+        $trxPpob->update([
+            'status' => 'Sukses',
+            'note' => $message,
+            'sn' => $sn,
+        ]);
     }
 }

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class OrderHpController extends Controller
+class IsiUlangController extends Controller
 {
     private const VALID_TYPES = ['pulsa-reguler', 'pulsa-transfer', 'paket-internet', 'paket-telepon'];
 

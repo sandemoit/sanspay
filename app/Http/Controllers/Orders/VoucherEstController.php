@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class VoucherController extends Controller
+class VoucherEstController extends Controller
 {
     protected string $baseUrl;
     protected string $username;
@@ -31,11 +31,11 @@ class VoucherController extends Controller
 
     public function index()
     {
-        $title = 'Voucher Data';
+        $title = 'Voucher Lainnya';
 
         // Ambil kategori dengan type 'paket-lainnya'
         $categories = Category::where('real', 'Voucher')
-            ->whereIn('name', [
+            ->whereNotIn('name', [
                 'TELKOMSEL',
                 'INDOSAT',
                 'AXIS',

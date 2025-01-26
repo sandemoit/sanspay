@@ -1,5 +1,5 @@
 <!-- Nav Pills -->
-<ul class="nav nav-pills mb-3" role="tablist">
+<ul class="nav nav-pills" role="tablist">
     @foreach ($sortedGroupedProducts as $label => $products)
         <li class="nav-item" role="presentation">
             <a class="nav-link {{ $loop->first ? 'active' : '' }}" id="tab-{{ Str::slug($label) }}" data-bs-toggle="pill"
@@ -12,7 +12,7 @@
 </ul>
 
 <!-- Tab Content -->
-<div class="tab-content">
+<div class="tab-content mt-3">
     @foreach ($sortedGroupedProducts as $label => $products)
         <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="panel-{{ Str::slug($label) }}"
             role="tabpanel" aria-labelledby="tab-{{ Str::slug($label) }}">
@@ -46,7 +46,7 @@
                                             </h4>
                                         </div>
                                     </div>
-                                    @if ($product->note)
+                                    @if ($product->note != '-')
                                         <div class="product-note mt-2" style="font-size: 0.8rem;">
                                             {{ $product->note }}
                                         </div>
@@ -62,7 +62,7 @@
             <div class="mobile-view">
                 <div class="row g-3">
                     @foreach ($products as $product)
-                        <div class="col-6">
+                        <div class="col-12 mb-0 mt-0">
                             <div class="card product-card {{ $product->healthy == 0 ? 'disabled-card' : '' }}"
                                 onclick="prepaid('{{ route('order.confirm', $product->code) }}')">
                                 @if ($product->discount == 1)
@@ -71,10 +71,15 @@
                                 @if ($product->healthy == 0)
                                     <div class="status-label">Gangguan</div>
                                 @endif
-                                <div class="card-body text-center">
-                                    <div class="product-name" style="font-size: 0.8rem;">
+                                <div class="card-body">
+                                    <h4 class="product-name">
                                         {{ $product->name }}
-                                    </div>
+                                    </h4>
+                                    @if ($product->note != '-')
+                                        <div class="product-name" style="font-size: 0.8rem;">
+                                            {{ $product->note }}
+                                        </div>
+                                    @endif
                                     <div class="product-price mt-2">
                                         <h4 class="text-primary font-semibold" style="font-size: 1.2rem;">
                                             @if (Auth::user()->role == 'admin')

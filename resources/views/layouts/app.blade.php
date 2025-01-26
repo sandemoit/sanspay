@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark-theme">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light-theme">
 
 <head>
     <meta charset="utf-8">
@@ -29,7 +29,8 @@
     <link async href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
     <!--Theme Styles-->
-    <link async href="{{ asset('/') }}css/dark-theme.css" rel="stylesheet" />
+    {{-- <link async href="{{ asset('/') }}css/dark-theme.css" rel="stylesheet" /> --}}
+
     @stack('custom-css')
 
 </head>
@@ -54,11 +55,11 @@
             </div>
 
             <!--start footer-->
-            <footer class="footer">
+            {{-- <footer class="footer">
                 <div class="footer-text">
                     Copyright © {{ date('Y') }}. All right reserved.
                 </div>
-            </footer>
+            </footer> --}}
             <!--end footer-->
 
 

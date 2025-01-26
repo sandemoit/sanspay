@@ -127,6 +127,33 @@
                                     </a>
                                 </div>
                                 <div class="col-4 mb-3">
+                                    <a href="{{ route('order.activate-voucher') }}">
+                                        <div class="avatar avatar-40 no-shadow border-0 mb-1">
+                                            <ion-icon name="ticket-outline"
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
+                                        </div>
+                                        <p title="Voucher">Aktivasi Voucher</p>
+                                    </a>
+                                </div>
+                                <div class="col-4 mb-3">
+                                    <a href="{{ route('order.voucher') }}">
+                                        <div class="avatar avatar-40 no-shadow border-0 mb-1">
+                                            <ion-icon name="ticket-outline"
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
+                                        </div>
+                                        <p title="Voucher">Voucher Data</p>
+                                    </a>
+                                </div>
+                                <div class="col-4 mb-3">
+                                    <a href="{{ route('order.voucher-etc') }}">
+                                        <div class="avatar avatar-40 no-shadow border-0 mb-1">
+                                            <ion-icon name="ticket-outline"
+                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
+                                        </div>
+                                        <p title="Voucher">Voucher Lainnya</p>
+                                    </a>
+                                </div>
+                                <div class="col-4 mb-3">
                                     <a href="{{ route('order.pulsa-transfer') }}">
                                         <div class="avatar avatar-40 no-shadow border-0 mb-1">
                                             <ion-icon name="repeat-outline"
@@ -178,15 +205,6 @@
                                                 style="font-size: 30px;color: #2274b7;"></ion-icon>
                                         </div>
                                         <p title="Pertagas">Pertagas</p>
-                                    </a>
-                                </div>
-                                <div class="col-4 mb-3">
-                                    <a href="{{ route('order.voucher') }}">
-                                        <div class="avatar avatar-40 no-shadow border-0 mb-1">
-                                            <ion-icon name="ticket-outline"
-                                                style="font-size: 30px;color: #2274b7;"></ion-icon>
-                                        </div>
-                                        <p title="Voucher">Voucher Lainnya</p>
                                     </a>
                                 </div>
                             </div>
