@@ -12,6 +12,9 @@ class ProductPpob extends Model
 
     protected $table = 'products_ppob';
     protected $guarded = [];
+    protected $casts = [
+        'discount' => 'boolean'
+    ];
 
     public function order()
     {

@@ -25,6 +25,11 @@ $(document).ready(function() {
                 orderable: true, 
             },
             {
+                data: 'is_promo',
+                name: 'is_promo',
+                orderable: true, 
+            },
+            {
                 data: 'provider',
                 name: 'provider',
                 orderable: true, 
@@ -283,5 +288,33 @@ $(document).on('click', '#delProductBtn', function (e) {
             }
             });
         }
+    });
+});
+
+$(document).ready(function() {
+    $(document).on('change', '.toggle-promo', function() {
+        let id = $(this).data('id');
+        let isChecked = $(this).prop('checked');
+
+        $.ajax({
+            url: "/admin/pulsa-ppob/product/toggle-promo",
+            type: "POST",
+            data: {
+                id: id,
+            },
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            success: function(response) {
+                if(response.success) {
+                    toastr.success(response.message, {timeOut: 1500});
+                    // Refresh DataTable jika diperlukan
+                    $('#products-table').DataTable().ajax.reload();
+                }
+            },
+            error: function(xhr) {
+                toastr.error(xhr.responseJSON.message, {timeOut: 1500});
+                // Kembalikan switch ke posisi sebelumnya jika terjadi error
+                $(this).prop('checked', !isChecked);
+            }
+        });
     });
 });

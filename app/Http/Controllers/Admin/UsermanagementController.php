@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\SendEmail;
+use App\Models\ProductPpob;
 use App\Models\Upgrade;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -133,7 +134,7 @@ class UsermanagementController extends Controller
 
     public function getUser()
     {
-        $users = User::select('id', 'fullname', 'name', 'email', 'role', 'created_at', 'gender', 'status', 'email_verified_at', 'saldo')->get();
+        $users = User::select('id', 'fullname', 'name', 'email', 'role', 'created_at', 'gender', 'status', 'email_verified_at', 'saldo', 'number')->get();
         return DataTables::of($users)
             ->addColumn('gabung', function ($row) {
                 return tanggal($row->created_at);

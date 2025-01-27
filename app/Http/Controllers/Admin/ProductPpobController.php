@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\ProductPpob;
 use App\Models\Profit;
+use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -38,7 +39,7 @@ class ProductPpobController extends Controller
 
     public function getData()
     {
-        $product = ProductPpob::select('id', 'brand', 'code', 'provider', 'type', 'name', 'status', 'healthy', 'price', 'mitra_price', 'cust_price')
+        $product = ProductPpob::select('id', 'brand', 'code', 'provider', 'type', 'name', 'status', 'healthy', 'price', 'mitra_price', 'cust_price', 'discount')
             ->orderBy('brand', 'asc')
             ->get();
 
@@ -55,14 +56,53 @@ class ProductPpobController extends Controller
                 <li>Rp. ' . nominal($row->cust_price, 'IDR') . ' [Customer]</li>
                 </td>';
             })
+            ->addColumn('is_promo', function ($row) {
+                return '<div class="form-check form-switch">
+                    <input class="form-check-input toggle-promo" type="checkbox" 
+                        data-id="' . base64_encode($row->id) . '" 
+                        ' . ($row->discount == true ? 'checked' : '') . '>
+                </div>';
+            })
             ->addColumn('action', function ($row) {
                 return '
                             <a class="btn btn-sm btn-primary edit-btn" data-id="' . base64_encode($row->id) . '" data-bs-toggle="modal" data-bs-target="#editModal"><ion-icon name="pencil-outline"></ion-icon></a>
                             <a class="btn btn-sm btn-danger delete-btn" href="' . url('/admin/pulsa-ppob/product/delete/' . base64_encode($row->id)) . '" data-id="' . base64_encode($row->id) . '"><ion-icon name="trash-outline"></ion-icon></a>
                         ';
             })
-            ->rawColumns(['action', 'product_name', 'product_price'])
+            ->rawColumns(['action', 'product_name', 'product_price', 'is_promo'])
             ->make(true);
+    }
+
+    public function togglePromo(Request $request)
+    {
+        try {
+            // Decode base64 ID
+            $decodedId = base64_decode($request->id);
+
+            // Ambil produk berdasarkan ID
+            $product = ProductPpob::findOrFail($decodedId);
+
+            if (!$product) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Produk tidak ditemukan'
+                ], 404);
+            }
+
+            // Ubah status promo menjadi 1 jika 0, dan 0 jika 1
+            $product->discount = $product->discount == true ? false : true;
+            $product->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Produk berhasil di set promo'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 404);
+        }
     }
 
     public function getProduct($id)

@@ -23,6 +23,7 @@
                             <th>{{ __('Code') }}</th>
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Price') }}</th>
+                            <th>{{ __('Promo') }}</th>
                             <th>{{ __('Provider') }}</th>
                             <th>{{ __('Action') }}</th>
                         </tr>

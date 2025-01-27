@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified', HasRoleAdmin::class])->group(function () 
     Route::get('/admin/pulsa-ppob/product/get-product/{id}', [ProductPpobController::class, 'getProduct']);
     Route::put('/admin/pulsa-ppob/product/update-product/{id}', [ProductPpobController::class, 'updateProduct']);
     Route::get('/admin/pulsa-ppob/product/deleteAllProduct', [ProductPpobController::class, 'deleteAllProduct'])->name('pulsa-ppob.product.deleteAll');
+    Route::post('/admin/pulsa-ppob/product/toggle-promo', [ProductPpobController::class, 'togglePromo'])->name('product.toggle-promo');
 
     // category pulsa ppob
     Route::get('/admin/pulsa-ppob/category', [CategoryController::class, 'index'])->name('pulsa-ppob.category');

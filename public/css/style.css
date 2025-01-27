@@ -1591,10 +1591,10 @@ div:where(.swal2-container) h2:where(.swal2-title) {
     background: rgba(85, 85, 85, 0.7);
 }
 
-.nav-pills .nav-item {
+/* .nav-pills .nav-item {
     flex: 0 0 auto;
     margin-right: 5px;
-}
+} */
 
 .nav-pills .nav-link {
     padding: 8px 15px;
@@ -1610,7 +1610,7 @@ div:where(.swal2-container) h2:where(.swal2-title) {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 13;
     height: 65px;
 }
 
