@@ -21,7 +21,7 @@
                 <div class="row g-3">
                     @foreach ($products as $product)
                         <div class="col-md-6">
-                            <div class="card product-card {{ $product->healthy == 0 ? 'disabled-card' : '' }}"
+                            <div class="card sanspay product-card {{ $product->healthy == 0 ? 'disabled-card' : '' }}"
                                 onclick="prepaid('{{ route('order.confirm', $product->code) }}')">
                                 @if ($product->discount == 1)
                                     <div class="discount-label">Promo Terbatas!</div>
@@ -29,7 +29,7 @@
                                 @if ($product->healthy == 0)
                                     <div class="status-label">Gangguan</div>
                                 @endif
-                                <div class="card-body">
+                                <div class="card-body card-sanspay">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="product-name" style="font-size: 0.8rem;">
                                             {{ $product->name }}
@@ -63,7 +63,7 @@
                 <div class="row g-3">
                     @foreach ($products as $product)
                         <div class="col-12 mb-0 mt-0">
-                            <div class="card product-card {{ $product->healthy == 0 ? 'disabled-card' : '' }}"
+                            <div class="card sanspay product-card {{ $product->healthy == 0 ? 'disabled-card' : '' }}"
                                 onclick="prepaid('{{ route('order.confirm', $product->code) }}')">
                                 @if ($product->discount == 1)
                                     <div class="discount-label">Promo Terbatas!</div>
@@ -71,7 +71,7 @@
                                 @if ($product->healthy == 0)
                                     <div class="status-label">Gangguan</div>
                                 @endif
-                                <div class="card-body">
+                                <div class="card-body card-sanspay">
                                     <div class="product-name">
                                         {{ $product->name }}
                                     </div>

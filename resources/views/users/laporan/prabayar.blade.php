@@ -15,7 +15,7 @@
                             <p class="mb-0 fs-6">{{ __('Total Transaksi Sukses') }}</p>
                         </div>
                         <div class="ms-auto widget-icon-small text-white bg-gradient-success">
-                            <ion-icon name="money-outline"></ion-icon>
+                            <ion-icon name="checkmark-outline"></ion-icon>
                         </div>
                     </div>
                     <div class="d-flex align-items-center mt-3">

@@ -1511,18 +1511,38 @@ div:where(.swal2-container) h2:where(.swal2-title) {
     color: white;
     font-size: 0.7rem;
     padding: 0.3rem 0.5rem;
-    border-radius: 0 0 8px 0;
     font-weight: bold;
+    bottom: 0;
+    right: 0;
+    border-radius: 8px 0 0 0;
 }
 
 @media (max-width: 768px) {
     .product-card .discount-label {
-        bottom: 0;
-        right: 0;
-        border-radius: 8px 0 0 0;
         font-size: 0.8rem;
     }
+
+    .wrapper .page-content {
+        padding: 1rem !important;
+    }
+
+    .desktop-view {
+        display: none;
+    }
 }
-.card {
+
+/* Sembunyikan tampilan mobile pada desktop */
+@media (min-width: 769px) {
+    .mobile-view {
+        display: none;
+    }
+}
+
+.card-sanspay {
+    background: linear-gradient(45deg, #ffffff, #cbe8ff);
+}
+
+.sanspay {
+    border-radius: 0.8rem;
     margin-bottom: 1rem !important;
 }

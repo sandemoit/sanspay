@@ -85,34 +85,6 @@
                 background-size: auto 26px;
                 background-position: 98% 50%;
             }
-
-            /*operator end*/
-
-            /* Sembunyikan tampilan desktop pada mobile */
-            @media (max-width: 768px) {
-                .desktop-view {
-                    display: none;
-                }
-
-                .wrapper .page-content {
-                    padding: 1rem !important;
-                }
-
-                .card-body {
-                    background: linear-gradient(45deg, #ffffff, #cbe8ff);
-                }
-
-                .card {
-                    border-radius: 0.8rem;
-                }
-            }
-
-            /* Sembunyikan tampilan mobile pada desktop */
-            @media (min-width: 769px) {
-                .mobile-view {
-                    display: none;
-                }
-            }
         </style>
     @endpush
 
