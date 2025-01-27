@@ -72,11 +72,11 @@
                                     <div class="status-label">Gangguan</div>
                                 @endif
                                 <div class="card-body">
-                                    <h4 class="product-name">
+                                    <div class="product-name">
                                         {{ $product->name }}
-                                    </h4>
+                                    </div>
                                     @if ($product->note != '-')
-                                        <div class="product-name" style="font-size: 0.8rem;">
+                                        <div class="product-desc">
                                             {{ $product->note }}
                                         </div>
                                     @endif

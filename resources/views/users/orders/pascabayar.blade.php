@@ -37,6 +37,18 @@
                 .desktop-view {
                     display: none;
                 }
+
+                .wrapper .page-content {
+                    padding: 1rem !important;
+                }
+
+                .card-body {
+                    background: linear-gradient(45deg, #ffffff, #cbe8ff);
+                }
+
+                .card {
+                    border-radius: 0.8rem;
+                }
             }
 
             /* Sembunyikan tampilan mobile pada desktop */
@@ -52,45 +64,45 @@
     <div class="row">
         <div class="col-lg-7 col-md-12 col-sm-12 mx-auto">
 
-            <div class="card p-2">
-                <div class="card-body">
-                    <h6 class="text-uppercase text-center">{{ $title }}</h6>
-                    <hr>
-                    <form method="POST" class="row g-3" id="orderForm">
-                        @csrf
-                        <div class="col-12">
-                            <label class="form-label">{{ __('Kategori') }}</label>
-                            <select class="form-select" id="categoryBrand" name="categoryBrand">
-                                <option disabled selected>Pilih Kategori</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->code }}" {{ !$category->healthy ? 'disabled' : '' }}>
-                                        {{ !$category->healthy ? "$category->name - Gangguan" : $category->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">{{ __('Nomor Pelanggan') }}</label>
-                            <input type="text" name="target" id="target" class="form-control"
-                                placeholder="Masukan Nomor Pelanggan Anda">
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="col-12 e-money-form" style="display: none;">
-                            <label class="form-label">{{ __('Nominal') }}</label>
-                            <input type="text" name="amount" id="amount" class="form-control"
-                                placeholder="Masukan Nominal Pembelian">
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">{{ __('BAYAR TAGIHAN') }}</button>
-                            </div>
-                        </div>
-                    </form>
+            {{-- <div class="card p-2">
+                <div class="card-body"> --}}
+            <h6 class="text-uppercase text-center">{{ $title }}</h6>
+            <hr>
+            <form method="POST" class="row g-3" id="orderForm">
+                @csrf
+                <div class="col-12">
+                    <label class="form-label">{{ __('Kategori') }}</label>
+                    <select class="form-select" id="categoryBrand" name="categoryBrand">
+                        <option disabled selected>Pilih Kategori</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->code }}" {{ !$category->healthy ? 'disabled' : '' }}>
+                                {{ !$category->healthy ? "$category->name - Gangguan" : $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
-            </div>
+                <div class="col-12">
+                    <label class="form-label">{{ __('Nomor Pelanggan') }}</label>
+                    <input type="text" name="target" id="target" class="form-control"
+                        placeholder="Masukan Nomor Pelanggan Anda">
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-12 e-money-form" style="display: none;">
+                    <label class="form-label">{{ __('Nominal') }}</label>
+                    <input type="text" name="amount" id="amount" class="form-control"
+                        placeholder="Masukan Nominal Pembelian">
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-12">
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">{{ __('BAYAR TAGIHAN') }}</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+    {{-- </div>
+    </div> --}}
 
     <!-- Modal -->
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">

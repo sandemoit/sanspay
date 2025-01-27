@@ -101,13 +101,19 @@ class GetProduct extends Command
 
             // Bulk operations
             DB::transaction(function () use ($categories, $productsToInsert, $productsToUpdate) {
-                // Bulk upsert categories
+                // Insert categories yang belum ada saja
                 if (!empty($categories)) {
-                    Category::upsert(
-                        array_values($categories),
-                        ['brand'],
-                        ['name', 'type', 'order', 'real']
-                    );
+                    foreach ($categories as $category) {
+                        Category::firstOrCreate(
+                            ['brand' => $category['brand']],
+                            [
+                                'name' => $category['name'],
+                                'type' => $category['type'],
+                                'order' => $category['order'],
+                                'real' => $category['real']
+                            ]
+                        );
+                    }
                 }
 
                 // Bulk insert new products

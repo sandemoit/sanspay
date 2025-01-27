@@ -37,6 +37,18 @@
                 .desktop-view {
                     display: none;
                 }
+
+                .wrapper .page-content {
+                    padding: 1rem !important;
+                }
+
+                .card-body {
+                    background: linear-gradient(45deg, #ffffff, #cbe8ff);
+                }
+
+                .card {
+                    border-radius: 0.8rem;
+                }
             }
 
             /* Sembunyikan tampilan mobile pada desktop */
@@ -52,39 +64,39 @@
     <div class="row">
         <div class="col-xl-8 mx-auto">
 
-            <div class="card p-2">
-                <div class="card-body">
-                    <h6 class="text-uppercase text-center">{{ $title }}</h6>
-                    <hr>
-                    <form method="POST" class="row g-3" id="orderForm">
-                        @csrf
-                        <div class="col-12">
-                            <label class="form-label">{{ __('Kategori') }}</label>
-                            <select class="form-select" id="categoryBrand" name="categoryBrand">
-                                <option disabled selected>Pilih Kategori</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->brand }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">{{ __('Nomor Tujuan') }}</label>
-                            <input type="text" name="phone" id="phone" class="form-control"
-                                placeholder="Masukan nomor tujuan">
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="col-12">
-                            <div id="productList">
-                                <div class="alert alert-danger" role="alert">
-                                    Silahkan Pilih Kategori!
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+            {{-- <div class="card p-2">
+                <div class="card-body"> --}}
+            <h6 class="text-uppercase text-center">{{ $title }}</h6>
+            <hr>
+            <form method="POST" class="row g-3" id="orderForm">
+                @csrf
+                <div class="col-12">
+                    <label class="form-label">{{ __('Kategori') }}</label>
+                    <select class="form-select" id="categoryBrand" name="categoryBrand">
+                        <option disabled selected>Pilih Kategori</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->brand }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
-            </div>
+                <div class="col-12">
+                    <label class="form-label">{{ __('Nomor Tujuan') }}</label>
+                    <input type="text" name="phone" id="phone" class="form-control"
+                        placeholder="Masukan nomor tujuan">
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-12">
+                    <div id="productList">
+                        <div class="alert alert-danger" role="alert">
+                            Silahkan Pilih Kategori!
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+    {{-- </div>
+    </div> --}}
 
     <!-- Modal -->
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">

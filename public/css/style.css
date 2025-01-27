@@ -1107,6 +1107,8 @@ ion-icon {
 
 .product-name {
     color: #212529;
+    font-weight: 500;
+    font-size: 1rem;
 }
 
 @media (min-width: 992px) {
@@ -1505,7 +1507,7 @@ div:where(.swal2-container) h2:where(.swal2-title) {
 
 .product-card .discount-label {
     position: absolute;
-    background-color: blue;
+    background-color: #2274b7;
     color: white;
     font-size: 0.7rem;
     padding: 0.3rem 0.5rem;
