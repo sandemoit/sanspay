@@ -44,7 +44,6 @@ class GetProduct extends Command
             // Siapkan array untuk bulk insert/update
             $productsToInsert = [];
             $productsToUpdate = [];
-            $categories = [];
 
             // Ambil semua produk yang ada sekali saja
             $existingProducts = ProductPpob::select('code', 'name', 'note', 'brand', 'price', 'mitra_price', 'cust_price', 'status', 'type', 'provider', 'label', 'healthy')
@@ -55,15 +54,14 @@ class GetProduct extends Command
                 $priceMitraMargin = $product['price'] * (1 + $profits['mitra'] / 100);
                 $priceBasicMargin = $product['price'] * (1 + $profits['customer'] / 100);
 
-                // Siapkan data kategori untuk bulk insert
-                $categories[$product['brand']] = [
+                // Cek dan tambahkan kategori jika belum ada
+                Category::firstOrCreate([
                     'brand' => $product['brand'],
                     'name' => $product['brand'],
                     'type' => $product['otype'],
-                    // 'label' => $product['label'],
                     'order' => strtolower($product['prepost']),
                     'real' => $product['category']
-                ];
+                ]);
 
                 $productData = [
                     'name' => $product['name'],
@@ -100,21 +98,7 @@ class GetProduct extends Command
             }
 
             // Bulk operations
-            DB::transaction(function () use ($categories, $productsToInsert, $productsToUpdate) {
-                // Insert categories yang belum ada saja
-                if (!empty($categories)) {
-                    foreach ($categories as $category) {
-                        Category::firstOrCreate(
-                            ['brand' => $category['brand']],
-                            [
-                                'name' => $category['name'],
-                                'type' => $category['type'],
-                                'order' => $category['order'],
-                                'real' => $category['real']
-                            ]
-                        );
-                    }
-                }
+            DB::transaction(function () use ($productsToInsert, $productsToUpdate) {
 
                 // Bulk insert new products
                 if (!empty($productsToInsert)) {
