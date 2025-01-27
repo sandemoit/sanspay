@@ -61,6 +61,17 @@ class VoucherController extends Controller
 
         $cacheKey = "products_{$categoryBrand}";
 
+        // Definisi note berdasarkan brand
+        $brandNotes = [
+            'TELKOMSEL' => 'Dial *133*kode voucher#',
+            'INDOSAT' => 'Dial *556*kode voucher#',
+            'AXIS' => 'Dial *838*kode voucher#',
+            'XL' => 'Dial *123*kode voucher#',
+            'TRI' => 'Dial *111*kode voucher#',
+            'SMARTFREN' => 'Dial *999*kode voucher#',
+            'by.U' => 'Buka aplikasi by.U dan masukan kode voucher'
+        ];
+
         // Ambil produk dengan relasi ke category
         $products = ProductPpob::with('category')
             ->where('brand', $categoryBrand)
@@ -71,6 +82,14 @@ class VoucherController extends Controller
         if ($products->isEmpty()) {
             return response()->json(['success' => false, 'message' => 'Produk tidak ditemukan.']);
         }
+
+        // Tambahkan note sesuai brand ke setiap produk
+        $products->transform(function ($product) use ($brandNotes) {
+            if (isset($brandNotes[$product->brand])) {
+                $product->note = $brandNotes[$product->brand];
+            }
+            return $product;
+        });
 
         // Grupkan produk berdasarkan type pada category
         $groupedProducts = $products->groupBy('label');

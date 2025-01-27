@@ -54,6 +54,44 @@
                 {{ $slot }}
             </div>
 
+            <!-- Bottom Navigation Bar -->
+            <div class="bottom-navbar d-lg-none">
+                <nav class="navbar">
+                    <div class="container">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}"
+                                    href="{{ route('dashboard') }}">
+                                    <ion-icon name="home-outline"></ion-icon>
+                                    <span>Home</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('order/history') ? 'active' : '' }}"
+                                    href="{{ route('order.history') }}">
+                                    <ion-icon name="analytics-outline"></ion-icon>
+                                    <span>Transaksi</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('deposit') ? 'active' : '' }}"
+                                    href="{{ route('deposit') }}">
+                                    <ion-icon name="wallet-outline"></ion-icon>
+                                    <span>Deposit</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('profile') ? 'active' : '' }}"
+                                    href="{{ route('profile.edit') }}">
+                                    <ion-icon name="person-outline"></ion-icon>
+                                    <span>Profile</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+
             <!--start footer-->
             {{-- <footer class="footer">
                 <div class="footer-text">

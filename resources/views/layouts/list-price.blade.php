@@ -1,18 +1,20 @@
 <!-- Nav Pills -->
-<ul class="nav nav-pills" role="tablist">
-    @foreach ($sortedGroupedProducts as $label => $products)
-        <li class="nav-item" role="presentation">
-            <a class="nav-link {{ $loop->first ? 'active' : '' }}" id="tab-{{ Str::slug($label) }}" data-bs-toggle="pill"
-                href="#panel-{{ Str::slug($label) }}" role="tab" aria-controls="panel-{{ Str::slug($label) }}"
-                aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                {{ $label }}
-            </a>
-        </li>
-    @endforeach
-</ul>
+<div class="nav-pills-container">
+    <ul class="nav nav-pills" role="tablist">
+        @foreach ($sortedGroupedProducts as $label => $products)
+            <li class="nav-item" role="presentation">
+                <a class="nav-link {{ $loop->first ? 'active' : '' }}" id="tab-{{ Str::slug($label) }}"
+                    data-bs-toggle="pill" href="#panel-{{ Str::slug($label) }}" role="tab"
+                    aria-controls="panel-{{ Str::slug($label) }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                    {{ $label }}
+                </a>
+            </li>
+        @endforeach
+    </ul>
+</div>
 
 <!-- Tab Content -->
-<div class="tab-content mt-3">
+<div class="tab-content mt-4">
     @foreach ($sortedGroupedProducts as $label => $products)
         <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="panel-{{ Str::slug($label) }}"
             role="tabpanel" aria-labelledby="tab-{{ Str::slug($label) }}">
