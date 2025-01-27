@@ -84,7 +84,7 @@ $(document).ready(function() {
 
                 // Looping array data methods dari response
                 $.each(response, function(index, method) {
-                    $methodSelect.append('<option value="' + method.code + '" data-minimum="' + method.minimum + '">' + method.name + ' (Min. ' + new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(method.minimum) + ')</option>');
+                    $methodSelect.append('<option value="' + method.code + '" data-minimum="' + method.minimum + '">' + method.name + ' (Min. ' + new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(method.minimum) + ')</option>');
                 });
             },
             error: function(xhr) {

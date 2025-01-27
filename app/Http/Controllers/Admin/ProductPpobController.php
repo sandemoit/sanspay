@@ -13,37 +13,34 @@ class ProductPpobController extends Controller
 {
     public function index()
     {
-        $type = [
-            'pulsa-reguler'       => 'Pulsa Reguler',
-            'pulsa-transfer'       => 'Pulsa Transfer',
-            'voucher-game'        => 'Voucher Game',
-            'aktivasi-voucher'    => 'Aktivasi Voucher',
-            'aktivasi-perdana'    => 'Aktivasi Perdana',
-            'paket-internet'      => 'Paket Internet',
-            'saldo-emoney'        => 'Saldo E-Money',
-            'paket-telepon'       => 'Paket Telepon dan SMS',
-            'paket-lainnya'       => 'Kategori Lainnya',
-            'token-pln'           => 'Token Listrik (PLN)',
-            'pascabayar'          => 'Pascabayar',
-            'masa-aktif'          => 'Masa Aktif',
-        ];
+        $type = Category::select('real')
+            ->groupBy('real')
+            ->get();
 
         return view('admin.pulsa-ppob.product', compact('type'));
     }
 
     public function getBrands()
     {
-        $type = request('type');
+        $real = request('type');
 
-        // Ambil semua data yang sesuai dengan type yang dipilih
-        $brands = Category::where('type', $type)->get(['type', 'name']);
+        // Ambil data brand yang sesuai dengan type dan cache hasilnya
+        $brands = cache()->remember('brands_' . $real, 60, function () use ($real) {
+            return Category::where('real', $real)
+                ->select('real', 'name')
+                ->orderBy('name')
+                ->distinct()
+                ->get();
+        });
 
         return response()->json($brands);
     }
 
     public function getData()
     {
-        $product = ProductPpob::orderBy('brand', 'asc')->get();
+        $product = ProductPpob::select('id', 'brand', 'code', 'provider', 'type', 'name', 'status', 'healthy', 'price', 'mitra_price', 'cust_price')
+            ->orderBy('brand', 'asc')
+            ->get();
 
         return DataTables::of($product)
             ->addColumn('product_name', function ($row) {

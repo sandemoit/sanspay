@@ -66,8 +66,8 @@
                             <label for="type" class="form-label">{{ __('Type') }}</label>
                             <select name="type" id="type" class="form-select" required>
                                 <option selected disabled>{{ __('Select Type') }}</option>
-                                @foreach ($type as $value => $display)
-                                    <option value="{{ $value }}">{{ $display }}</option>
+                                @foreach ($type as $value)
+                                    <option value="{{ $value->real }}">{{ $value->real }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -139,8 +139,8 @@
                             <label for="type" class="form-label">{{ __('Type') }}</label>
                             <select name="type" id="type" class="form-select" required>
                                 <option selected disabled>{{ __('Select Type') }}</option>
-                                @foreach ($type as $value => $display)
-                                    <option value="{{ $value }}">{{ $display }}</option>
+                                @foreach ($type as $value)
+                                    <option value="{{ $value->real }}">{{ $value->real }}</option>
                                 @endforeach
                             </select>
                         </div>

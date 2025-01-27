@@ -10,9 +10,10 @@
                         <tr>
                             <th>No</th>
                             <th>{{ __('Nama Lengkap') }}</th>
-                            <th>{{ __('Saldo') }}</th>
                             <th>{{ __('Username') }}</th>
+                            <th>{{ __('Saldo') }}</th>
                             <th>{{ __('Email') }}</th>
+                            <th>{{ __('Whatsapp') }}</th>
                             <th>{{ __('Gender') }}</th>
                             <th>{{ __('Role') }}</th>
                             <th>{{ __('Status') }}</th>
@@ -79,20 +80,26 @@
                             searchable: true,
                         },
                         {
-                            data: 'saldo',
-                            name: 'saldo',
-                            orderable: true,
-                            searchable: true,
-                        },
-                        {
                             data: 'name',
                             name: 'name',
                             orderable: true,
                             searchable: true,
                         },
                         {
+                            data: 'saldo',
+                            name: 'saldo',
+                            orderable: true,
+                            searchable: true,
+                        },
+                        {
                             data: 'email',
                             name: 'email',
+                            orderable: true,
+                            searchable: true,
+                        },
+                        {
+                            data: 'number',
+                            name: 'number',
                             orderable: true,
                             searchable: true,
                         },

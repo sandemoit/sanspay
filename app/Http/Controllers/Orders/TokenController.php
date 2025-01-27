@@ -57,6 +57,7 @@ class TokenController extends Controller
             ->where('brand', $categoryBrand)
             ->where('type', 'token-pln')
             ->where('code', '!=', 'plncn')
+            ->orderBy('discount', 'desc')
             ->orderBy('price', 'asc')
             ->get();
 

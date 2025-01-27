@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\ProductPpob;
 use App\Models\Profit;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class GetProduct extends Command
@@ -35,23 +36,35 @@ class GetProduct extends Command
 
         if ($priceListResponse['result']) {
             $priceList = $priceListResponse['data'];
-            $profits = Profit::whereIn('key', ['customer', 'mitra'])->pluck('value', 'key');
+            $profits = Profit::whereIn('key', ['customer', 'mitra'])
+                ->select('key', 'value')
+                ->get()
+                ->pluck('value', 'key');
 
-            // Loop through the price list and insert/update products
+            // Siapkan array untuk bulk insert/update
+            $productsToInsert = [];
+            $productsToUpdate = [];
+            $categories = [];
+
+            // Ambil semua produk yang ada sekali saja
+            $existingProducts = ProductPpob::select('code', 'name', 'note', 'brand', 'price', 'mitra_price', 'cust_price', 'status', 'type', 'provider', 'label', 'healthy')
+                ->get()
+                ->keyBy('code');
+
             foreach ($priceList as $product) {
                 $priceMitraMargin = $product['price'] * (1 + $profits['mitra'] / 100);
                 $priceBasicMargin = $product['price'] * (1 + $profits['customer'] / 100);
 
-                // Cek dan tambahkan kategori jika belum ada
-                Category::firstOrCreate([
+                // Siapkan data kategori untuk bulk insert
+                $categories[$product['brand']] = [
                     'brand' => $product['brand'],
                     'name' => $product['brand'],
                     'type' => $product['otype'],
+                    // 'label' => $product['label'],
                     'order' => strtolower($product['prepost']),
                     'real' => $product['category']
-                ]);
+                ];
 
-                // Prepare product data  
                 $productData = [
                     'name' => $product['name'],
                     'code' => $product['code'],
@@ -66,69 +79,49 @@ class GetProduct extends Command
                     'provider' => 'DigiFlazz',
                     'label' => $product['label'],
                     'healthy' => $product['healthy'],
+                    'updated_at' => now()
                 ];
 
-                // Check if product exists  
-                $existingProduct = ProductPpob::where('code', $product['code'])->first();
-                if ($existingProduct) {
-                    // Check for changes
-                    if (
-                        $existingProduct->mitra_price != $priceMitraMargin ||
-                        $existingProduct->cust_price != $priceBasicMargin ||
-                        $existingProduct->price != $product['price'] ||
-                        $existingProduct->name != $product['name'] ||
-                        $existingProduct->note != $product['note'] ||
-                        $existingProduct->brand != $product['brand'] ||
-                        $existingProduct->status != $product['status'] ||
-                        $existingProduct->type != $product['type'] ||
-                        $existingProduct->provider != 'DigiFlazz' ||
-                        $existingProduct->label != $product['label'] ||
-                        $existingProduct->healthy != $product['healthy']
-                    ) {
-                        $existingProduct->update([
-                            'code' => $product['code'],
-                            'name' => $product['name'],
-                            'note' => $product['note'],
-                            'brand' => $product['brand'],
-                            'price' => $product['price'],
-                            'mitra_price' => $priceMitraMargin,
-                            'cust_price' => $priceBasicMargin,
-                            'discount' => $product['discount'],
-                            'status' => $product['status'],
-                            'type' => $product['type'],
-                            'provider' => 'DigiFlazz',
-                            'label' => $product['label'],
-                            'healthy' => $product['healthy'],
-                            'updated_at' => now(),
-                        ]);
+                if (isset($existingProducts[$product['code']])) {
+                    $existingProduct = $existingProducts[$product['code']];
 
-                        $this->info("[+] {$product['name']} {Berhasil diupdate}");
-                        $this->info("Type: {$product['type']}");
-                        $this->info("Status: {$existingProduct->status} -> {$product['status']}");
-                        $this->info("Harga Pusat: {Rp. " . nominal($existingProduct->price, 'IDR') . "} -> {Rp. " . nominal($product['price'], 'IDR') . "}");
-                        $this->info("Harga Mitra: {Rp. " . nominal($existingProduct->mitra_price, 'IDR') . "} -> Rp. " . nominal($priceMitraMargin, 'IDR'));
-                        $this->info("Harga Customer: {Rp. " . nominal($existingProduct->cust_price, 'IDR') . "} -> Rp. " . nominal($priceBasicMargin, 'IDR'));
-                        $this->info('<hr>');
+                    // Check if update needed
+                    if ($this->needsUpdate($existingProduct, $productData)) {
+                        $productsToUpdate[] = $productData;
+
+                        $this->logProductUpdate($existingProduct, $productData);
                     } else {
                         $this->info("[*] {$product['name']} {Data masih sama}");
-                        $this->info('<hr>');
                     }
                 } else {
                     $productsToInsert[] = $productData;
-
-                    $this->info("[+] {$productData['name']} {Berhasil ditambahkan}");
-                    $this->info("Type: {$productData['type']}");
-                    $this->info("Status: {$productData['status']}");
-                    $this->info("Harga Pusat: {$productData['price']}");
-                    $this->info("Harga Basic: Rp. " . nominal($productData['cust_price'], 'IDR'));
-                    $this->info('<hr>');
+                    $this->logNewProduct($productData);
                 }
             }
 
-            // Insert new products  
-            if (!empty($productsToInsert)) {
-                ProductPpob::insert($productsToInsert);
-            }
+            // Bulk operations
+            DB::transaction(function () use ($categories, $productsToInsert, $productsToUpdate) {
+                // Bulk upsert categories
+                if (!empty($categories)) {
+                    Category::upsert(
+                        array_values($categories),
+                        ['brand'],
+                        ['name', 'type', 'order', 'real']
+                    );
+                }
+
+                // Bulk insert new products
+                if (!empty($productsToInsert)) {
+                    ProductPpob::insert($productsToInsert);
+                }
+
+                // Bulk update existing products
+                if (!empty($productsToUpdate)) {
+                    foreach ($productsToUpdate as $product) {
+                        ProductPpob::where('code', $product['code'])->update($product);
+                    }
+                }
+            });
 
             $this->info('DigiFlazz price list synced successfully.');
         } else {
@@ -137,5 +130,41 @@ class GetProduct extends Command
         }
 
         return 0;
+    }
+
+    private function needsUpdate($existing, $new): bool
+    {
+        return $existing->mitra_price != $new['mitra_price'] ||
+            $existing->cust_price != $new['cust_price'] ||
+            $existing->price != $new['price'] ||
+            $existing->name != $new['name'] ||
+            $existing->note != $new['note'] ||
+            $existing->brand != $new['brand'] ||
+            $existing->status != $new['status'] ||
+            $existing->type != $new['type'] ||
+            $existing->provider != $new['provider'] ||
+            $existing->label != $new['label'] ||
+            $existing->healthy != $new['healthy'];
+    }
+
+    private function logProductUpdate($old, $new)
+    {
+        $this->info("[+] {$new['name']} {Berhasil diupdate}");
+        $this->info("Type: {$new['type']}");
+        $this->info("Status: {$old->status} -> {$new['status']}");
+        $this->info("Harga Pusat: {Rp. " . nominal($old->price, 'IDR') . "} -> {Rp. " . nominal($new['price'], 'IDR') . "}");
+        $this->info("Harga Mitra: {Rp. " . nominal($old->mitra_price, 'IDR') . "} -> Rp. " . nominal($new['mitra_price'], 'IDR'));
+        $this->info("Harga Customer: {Rp. " . nominal($old->cust_price, 'IDR') . "} -> Rp. " . nominal($new['cust_price'], 'IDR'));
+        $this->info('<hr>');
+    }
+
+    private function logNewProduct($product)
+    {
+        $this->info("[+] {$product['name']} {Berhasil ditambahkan}");
+        $this->info("Type: {$product['type']}");
+        $this->info("Status: {$product['status']}");
+        $this->info("Harga Pusat: {$product['price']}");
+        $this->info("Harga Basic: Rp. " . nominal($product['cust_price'], 'IDR'));
+        $this->info('<hr>');
     }
 }
