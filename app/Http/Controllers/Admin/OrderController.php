@@ -36,6 +36,7 @@ class OrderController extends Controller
             }, 'product' => function ($query) {
                 $query->select('name', 'provider', 'id');
             }])
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         return DataTables::of($orders)

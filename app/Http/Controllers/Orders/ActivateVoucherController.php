@@ -190,6 +190,7 @@ class ActivateVoucherController extends Controller
                     return response()->json([
                         'success' => true,
                         'message' => 'Transaksi berhasil diproses.',
+                        'id_order' => $ref_id
                     ]);
 
                 case '01': // Timeout

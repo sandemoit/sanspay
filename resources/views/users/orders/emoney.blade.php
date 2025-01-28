@@ -307,7 +307,9 @@
                                 });
 
                                 setTimeout(function() {
-                                    window.location.href = "{{ route('order.history') }}";
+                                    window.location.href =
+                                        "{{ route('laporan.prabayar.detail', ['id' => ':id_order']) }}"
+                                        .replace(':id_order', data.id_order);
                                 }, 1500);
                             } else {
                                 toastr.error(data.message || 'Gagal memproses transaksi.', {

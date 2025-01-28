@@ -20,6 +20,13 @@ class LaporanController extends Controller
             $endDate = $request->end_date ? Carbon::parse($request->end_date)->endOfDay() : null;
 
             if ($startDate && $endDate) {
+                // Cek apakah range tanggal lebih dari 3 bulan
+                $monthDiff = $startDate->diffInMonths($endDate);
+
+                if ($monthDiff > 3) {
+                    return back()->with('error', 'Range tanggal tidak boleh lebih dari 3 bulan');
+                }
+
                 $query->whereBetween('created_at', [$startDate, $endDate]);
             }
         } else {
@@ -66,5 +73,15 @@ class LaporanController extends Controller
         $sisaSaldo = $user->saldo;
 
         return view('users.laporan.mutation', compact('mutasi', 'totalMasuk', 'totalKeluar', 'sisaSaldo'));
+    }
+
+    public function prabayarDetail($idOrder)
+    {
+        $trx = TrxPpob::where('id_order', $idOrder)->first();
+        $trxDetail = TrxPpob::where('id_order', $trx->id_order)
+            ->select('id', 'name', 'sn', 'data', 'status', 'created_at', 'updated_at')
+            ->get();
+
+        return view('users.laporan.prabayar-detail', compact('trx', 'trxDetail'));
     }
 }

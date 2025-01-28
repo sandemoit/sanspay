@@ -57,7 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // laporan trx
     Route::get('/laporan/prabayar', [LaporanController::class, 'prabayar'])->name('laporan.prabayar');
     Route::get('/laporan/mutation', [LaporanController::class, 'mutation'])->name('laporan.mutation');
-
+    Route::get('/laporan/prabayar/detail/{id}', [LaporanController::class, 'prabayarDetail'])->name('laporan.prabayar.detail');
     require __DIR__ . '/order.php';
 });
 

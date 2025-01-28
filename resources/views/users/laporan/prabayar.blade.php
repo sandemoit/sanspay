@@ -98,7 +98,9 @@
                         @foreach ($data as $index => $item)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $item->id_order }}</td>
+                                <td><a href="{{ route('laporan.prabayar.detail', $item->id_order) }}">{{ $item->id_order }}
+                                        <ion-icon name="paper-plane-outline"></ion-icon></a>
+                                </td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->data }}</td>
                                 <td>{{ $item->status }}</td>

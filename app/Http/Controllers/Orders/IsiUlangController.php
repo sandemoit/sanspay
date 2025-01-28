@@ -291,7 +291,7 @@ class IsiUlangController extends Controller
                             'data' => $request->target,
                             'price' => strip_tags($price),
                             'profit' => strip_tags($price - $product->price),
-                            'point' => ($user->role === 'customer') ? 0 : $point,
+                            'point' => Point::where('key', 'amount')->first()->value,
                             'refund' => '0',
                             'note' => $prepaidData['data']['message'] ?? 'Unknown',
                             'status' => $prepaidData['data']['status'] ?? 'Unknown',
@@ -303,6 +303,7 @@ class IsiUlangController extends Controller
                         return response()->json([
                             'success' => true,
                             'message' => 'Transaksi berhasil diproses.',
+                            'id_order' => $ref_id
                         ]);
 
                     case '01': // Timeout  
