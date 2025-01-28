@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="row">
-        <div class="col-xl-8 mx-auto">
+        <div class="col-xl-6 mx-auto">
 
             <div class="card">
                 <div class="card-body">
@@ -10,6 +10,19 @@
                         <form action="{{ route('pulsa-ppob.profit.update') }}" method="POST" class="row g-3">
                             @csrf
                             @method('PUT')
+                            <div class="col-12">
+                                <label class="form-label">{{ __('Type') }}</label>
+                                <select name="type" id="type"
+                                    class="form-select @error('type') is-invalid @enderror">
+                                    <option value="1" {{ @old('type', $type->value) == 1 ? 'selected' : '' }}>
+                                        {{ __('Percentage') }}</option>
+                                    <option value="2" {{ @old('type', $type->value) == 2 ? 'selected' : '' }}>
+                                        {{ __('Fixed') }}</option>
+                                </select>
+                                @error('type')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                             <div class="col-12">
                                 <label class="form-label">{{ __('Admin') }}</label>
                                 <input type="text" name="admin" id="admin"

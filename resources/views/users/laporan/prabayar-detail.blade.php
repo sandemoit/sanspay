@@ -27,7 +27,7 @@
             }
 
             .detail-label {
-                width: 100px;
+                width: 140px;
             }
 
             .detail-value {
@@ -56,14 +56,14 @@
             <div class="detail-row">
                 <div class="detail-label">Tanggal</div>
                 <div class="detail-value">:
-                    {{ \Carbon\Carbon::parse($trx->created_at)->translatedFormat('d F Y H:i:s') }}
+                    {{ \Carbon\Carbon::parse($trx->created_at)->translatedFormat('d/m/Y H:i:s') }}
                 </div>
             </div>
 
             <div class="detail-row">
                 <div class="detail-label">Update</div>
                 <div class="detail-value">:
-                    {{ \Carbon\Carbon::parse($trx->updated_at)->translatedFormat('d F Y H:i:s') }}
+                    {{ \Carbon\Carbon::parse($trx->updated_at)->translatedFormat('d/m/Y H:i:s') }}
                 </div>
             </div>
 
@@ -73,7 +73,7 @@
             </div>
 
             <div class="detail-row">
-                <div class="detail-label">Nomor</div>
+                <div class="detail-label">No Pelanggan</div>
                 <div class="detail-value">: {{ $trx->data }}</div>
             </div>
 
@@ -89,34 +89,15 @@
             </div>
 
             <div class="detail-row">
-                <div class="detail-label">SN</div>
-                <div class="detail-value">:
-                    @php
-                        if ($trx->sn) {
-                            // Jika dimulai dengan DNID, ambil bagian pertama sebelum slash
-                            if (str_starts_with($trx->sn, 'DNID')) {
-                                $parts = explode('/', $trx->sn);
-                                echo $parts[0];
-                            }
-                            // Untuk token PLN, ambil sampai slash kedua
-                            else {
-                                $parts = explode('/', $trx->sn);
-                                if (count($parts) >= 2) {
-                                    echo $parts[0] . '/' . $parts[1];
-                                } else {
-                                    echo $trx->sn;
-                                }
-                            }
-                        } else {
-                            echo '-';
-                        }
-                    @endphp
-                </div>
+                <div class="detail-label">Ket/SN</div>
+                <div class="detail-value">: {{ formatSN($trx->sn) }}</div>
             </div>
         </div>
 
         <div class="struk-footer">
-            Terima kasih telah bertransaksi
+            <p class="mb-0">Silahkan refresh 0 - 1 menit untuk melihat status <span
+                    style="color: #28a745">sukses</span></p>
+            <p class="mb-0">Silahkan simpan struk ini sebagai bukti transaksi</p>
         </div>
     </div>
 </x-app-layout>

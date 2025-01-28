@@ -11,7 +11,7 @@ class ProfitController extends Controller
 {
     public function index()
     {
-        $profit = Profit::whereIn('key', ['admin', 'mitra', 'customer'])->get()->keyBy('key');
+        $profit = Profit::whereIn('key', ['admin', 'mitra', 'customer', 'type'])->get()->keyBy('key');
 
         // Inisialisasi array $data dengan nilai-nilai yang diambil
         $data = [
@@ -19,6 +19,7 @@ class ProfitController extends Controller
             'admin' => $profit->get('admin'),
             'mitra' => $profit->get('mitra'),
             'customer' => $profit->get('customer'),
+            'type' => $profit->get('type'),
         ];
 
         return view('admin.pulsa-ppob.profit', $data);
@@ -28,6 +29,7 @@ class ProfitController extends Controller
     {
         try {
             $validated = $request->validate([
+                'type' => 'required|in:1,2',
                 'admin' => 'required|numeric',
                 'mitra' => 'required|numeric',
                 'customer' => 'required|numeric',

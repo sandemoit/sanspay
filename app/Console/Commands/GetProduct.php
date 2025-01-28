@@ -36,7 +36,7 @@ class GetProduct extends Command
 
         if ($priceListResponse['result']) {
             $priceList = $priceListResponse['data'];
-            $profits = Profit::whereIn('key', ['customer', 'mitra'])
+            $profits = Profit::whereIn('key', ['customer', 'mitra', 'type', 'admin'])
                 ->select('key', 'value')
                 ->get()
                 ->pluck('value', 'key');
@@ -51,8 +51,15 @@ class GetProduct extends Command
                 ->keyBy('code');
 
             foreach ($priceList as $product) {
-                $priceMitraMargin = $product['price'] * (1 + $profits['mitra'] / 100);
-                $priceBasicMargin = $product['price'] * (1 + $profits['customer'] / 100);
+                if ($profits['type'] == 1) {
+                    $priceAdminMargin = $product['price'] * (1 + $profits['admin'] / 100);
+                    $priceMitraMargin = $product['price'] * (1 + $profits['mitra'] / 100);
+                    $priceBasicMargin = $product['price'] * (1 + $profits['customer'] / 100);
+                } else {
+                    $priceAdminMargin = $product['price'] + $profits['admin'];
+                    $priceMitraMargin = $product['price'] + $profits['mitra'];
+                    $priceBasicMargin = $product['price'] + $profits['customer'];
+                }
 
                 // Cek dan tambahkan kategori jika belum ada
                 Category::firstOrCreate([
@@ -68,7 +75,7 @@ class GetProduct extends Command
                     'code' => $product['code'],
                     'note' => $product['note'],
                     'brand' => $product['brand'],
-                    'price' => $product['price'],
+                    'price' => $priceAdminMargin,
                     'mitra_price' => $priceMitraMargin,
                     'cust_price' => $priceBasicMargin,
                     'discount' => $product['discount'],
@@ -127,6 +134,7 @@ class GetProduct extends Command
         return $existing->mitra_price != $new['mitra_price'] ||
             $existing->cust_price != $new['cust_price'] ||
             $existing->price != $new['price'] ||
+            $existing->discount != $new['discount'] ||
             $existing->name != $new['name'] ||
             $existing->note != $new['note'] ||
             $existing->brand != $new['brand'] ||
@@ -134,7 +142,8 @@ class GetProduct extends Command
             $existing->type != $new['type'] ||
             $existing->provider != $new['provider'] ||
             $existing->label != $new['label'] ||
-            $existing->healthy != $new['healthy'];
+            $existing->healthy != $new['healthy'] ||
+            $existing->updated_at != $new['updated_at'];
     }
 
     private function logProductUpdate($old, $new)

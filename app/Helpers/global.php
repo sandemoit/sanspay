@@ -105,7 +105,7 @@ if (!function_exists('profit')) {
         static $profits;
 
         if (is_null($profits)) {
-            $profits = Profit::whereIn('key', ['admin', 'customer', 'mitra'])->get()->keyBy('key');
+            $profits = Profit::whereIn('key', ['admin', 'customer', 'mitra', 'type'])->get()->keyBy('key');
         }
 
         if ($value) {
@@ -212,5 +212,41 @@ if (!function_exists('isMode')) {
     function isMode()
     {
         return config('app.env') === 'local' ? 'local' : 'production';
+    }
+}
+
+if (!function_exists('formatSN')) {
+    /**
+     * Format Serial Number (SN) berdasarkan jenisnya
+     * 
+     * @param string|null $sn
+     * @param bool $raw Jika true, akan mengembalikan SN asli
+     * @return string
+     */
+    function formatSN($sn, $raw = false)
+    {
+        if (!$sn) {
+            return '-';
+        }
+
+        // Jika raw = true, kembalikan SN asli
+        if ($raw) {
+            return $sn;
+        }
+
+        // Jika dimulai dengan DNID, ambil bagian pertama sebelum slash
+        if (str_starts_with($sn, 'DNID')) {
+            $parts = explode('/', $sn);
+            return $parts[0];
+        }
+
+        // Untuk token PLN, ambil sampai slash kedua
+        $parts = explode('/', $sn);
+        if (count($parts) >= 2 && strlen($parts[0]) >= 8) {
+            return $parts[0] . '/' . $parts[1];
+        }
+
+        // Default: kembalikan SN asli jika tidak ada format yang sesuai
+        return $sn;
     }
 }
