@@ -308,7 +308,7 @@
 
                                 setTimeout(function() {
                                     window.location.href =
-                                        "{{ route('laporan.prabayar.detail', ['id_order' => ':id_order']) }}"
+                                        "{{ route('laporan.prabayar.detail', ['id' => ':id_order']) }}"
                                         .replace(':id_order', data.id_order);
                                 }, 1500);
                             } else {
