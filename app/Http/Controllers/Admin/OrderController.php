@@ -30,7 +30,7 @@ class OrderController extends Controller
     public function getData()
     {
         // Jika user adalah admin, ambil semua data orders tanpa filter
-        $orders = TrxPpob::select('name as product_name', 'id_order', 'updated_at', 'price', 'status', 'data', 'user_id')
+        $orders = TrxPpob::select('id', 'name as product_name', 'id_order', 'updated_at', 'price', 'status', 'data', 'user_id')
             ->with(['user' => function ($query) {
                 $query->select('name', 'id');
             }, 'product' => function ($query) {
