@@ -30,7 +30,13 @@ class OrderController extends Controller
     public function getData()
     {
         // Jika user adalah admin, ambil semua data orders tanpa filter
-        $orders = TrxPpob::with('user', 'product')->get();
+        $orders = TrxPpob::select('name as product_name', 'id_order', 'updated_at', 'price', 'status', 'data', 'user_id')
+            ->with(['user' => function ($query) {
+                $query->select('name', 'id');
+            }, 'product' => function ($query) {
+                $query->select('name', 'provider', 'id');
+            }])
+            ->get();
 
         return DataTables::of($orders)
             ->addColumn('date', function ($row) {
@@ -52,7 +58,7 @@ class OrderController extends Controller
                 }
             })
             ->addColumn('product', function ($row) {
-                return $row->name . '<br><small class="text-primary">' . $row->product->provider . '</small>';
+                return $row->product_name . '<br><small class="text-primary">' . $row->product->provider . '</small>';
             })
             ->addColumn('id_ref', function ($row) {
                 return '<a href="javascript:;" id="detailTrx" data-id="' . $row->id . '" class="text-primary" data-bs-toggle="modal" data-bs-target="#detailTrxModal">' . $row->id_order . '</a>';

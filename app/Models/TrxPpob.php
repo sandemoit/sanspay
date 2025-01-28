@@ -16,12 +16,17 @@ class TrxPpob extends Model
     // Relasi ke tabel users
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id')
+            ->withDefault();
     }
 
     // Relasi ke tabel products_ppob
     public function product(): BelongsTo
     {
-        return $this->belongsTo(ProductPpob::class, 'code', 'code');
+        return $this->belongsTo(ProductPpob::class, 'code', 'code')
+            ->withDefault();
     }
+
+    // Tambahkan accessor untuk memastikan relasi selalu ada nilai default
+    protected $with = ['user', 'product']; // Eager load relations
 }

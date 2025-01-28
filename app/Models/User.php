@@ -77,4 +77,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Deposit::class);
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(TrxPpob::class, 'user_id', 'id')
+            ->latest();
+    }
 }

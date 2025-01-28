@@ -13,9 +13,10 @@ class ProductPpob extends Model
     protected $table = 'products_ppob';
     protected $guarded = [];
 
-    public function order()
+    public function transactions()
     {
-        return $this->hasMany(TrxPpob::class, 'code', 'code');
+        return $this->hasMany(TrxPpob::class, 'code', 'code')
+            ->latest();
     }
 
     public function category()
