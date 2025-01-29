@@ -31,6 +31,7 @@ class VerifyEmailController extends Controller
         // Tambahkan flash message
         session()->flash('success', 'Akun Anda telah berhasil diverifikasi.');
         WhatsApp::sendMessage($request->user()->number, 'Selamat, akun Anda telah berhasil diverifikasi. www.sanspay.id');
+
         Mail::to($user->email)->send(new WellcomeEmail($user));
 
         return redirect()->intended(route('dashboard', absolute: false) . '?verified=1');

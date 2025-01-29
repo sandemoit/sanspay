@@ -120,15 +120,19 @@ class DepositController extends Controller
 
     private function notifWhatsApp($user, $amount, $deposit, $status)
     {
-        $target = "$user->number|$user->name|$deposit->topup_id|Bank $deposit->payment_method|$amount|$status";
+        $template = $status == 'SUCCESS' ? 'done_deposit_wa' : 'create_deposit_wa';
 
-        if ($status == 'SUCCESS') {
-            $sendWa = WhatsApp::sendMessage($target, formatNotif('done_deposit_wa')->value);
-        } else {
-            $sendWa = WhatsApp::sendMessage($target, formatNotif('create_deposit_wa')->value);
-        }
+        $sendWa = sendWhatsAppMessage(
+            $user->number,
+            $template,
+            $user->name,
+            $deposit->topup_id,
+            'Bank ' . $deposit->payment_method,
+            $amount,
+            $status
+        );
 
-        if ($sendWa['success'] == false) {
+        if (!$sendWa['success']) {
             return redirect()->back()->with('error', __($sendWa['message']));
         }
     }

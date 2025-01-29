@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\WhatsApp;
 use App\Models\Announcement;
 use App\Models\Config;
 use App\Models\Notification;
@@ -248,5 +249,76 @@ if (!function_exists('formatSN')) {
 
         // Default: kembalikan SN asli jika tidak ada format yang sesuai
         return $sn;
+    }
+}
+
+if (!function_exists('formatMessage')) {
+    /**
+     * Format pesan dengan mengganti placeholder dengan nilai yang sesuai
+     * 
+     * @param string $key Kunci notifikasi
+     * @param array $values Array nilai pengganti [name, id, method, amount, dst]
+     * @return array Response dari WhatsApp API
+     */
+    function formatMessage($key, $param1 = null, $param2 = null, $param3 = null, $param4 = null, $param5 = null, $param6 = null, $param7 = null, $param8 = null, $param9 = null, $param10 = null)
+    {
+        // Dapatkan template pesan dari database
+        $message = formatNotif($key)->value;
+
+        // Definisikan placeholder yang akan diganti
+        $searchValues = [
+            '{name}',
+            '{var1}',
+            '{var2}',
+            '{var3}',
+            '{var4}',
+            '{var5}',
+            '{var6}',
+            '{var7}',
+            '{var8}',
+            '{var9}',
+            '{var10}'
+        ];
+
+        // Siapkan nilai pengganti sesuai parameter yang diberikan
+        $replaceValues = array_filter([
+            $param1,
+            $param2,
+            $param3,
+            $param4,
+            $param5,
+            $param6,
+            $param7,
+            $param8,
+            $param9,
+            $param10
+        ], function ($value) {
+            return !is_null($value);
+        });
+
+        // Hanya ambil placeholder sesuai jumlah parameter yang diberikan
+        $searchValues = array_slice($searchValues, 0, count($replaceValues));
+
+        // Ganti placeholder dengan nilai yang sesuai
+        return str_replace($searchValues, $replaceValues, $message);
+    }
+}
+
+if (!function_exists('sendWhatsAppMessage')) {
+    /**
+     * Kirim pesan WhatsApp dengan format yang sudah ditentukan
+     * 
+     * @param string $target Nomor tujuan
+     * @param string $key Kunci notifikasi
+     * @param array $params Parameter untuk format pesan
+     * @return array Response dari WhatsApp API
+     */
+    function sendWhatsAppMessage($target, $key, ...$params)
+    {
+        // Format pesan menggunakan helper formatMessage
+        $message = formatMessage($key, ...$params);
+
+        // Kirim pesan menggunakan WhatsApp helper
+        return WhatsApp::sendMessage($target, $message);
     }
 }

@@ -72,8 +72,16 @@ class MidtransController extends Controller
         $method = $order->depositmethod;
         $amount = nominal($order->amount);
 
-        $target = "$user->number|$user->name|$order->topup_id|$method->name|$amount|$status";
-        $sendWa = WhatsApp::sendMessage($target, formatNotif('done_deposit_wa')->value);
+        // Kirim notifikasi WhatsApp
+        $sendWa = sendWhatsAppMessage(
+            $user->number,
+            'done_deposit_wa',
+            $user->name,
+            $order->topup_id,
+            $method->name,
+            $amount,
+            $status
+        );
 
         if (!$sendWa['success']) {
             return redirect()->back()->with('error', __($sendWa['message']));

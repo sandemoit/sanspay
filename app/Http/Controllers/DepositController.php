@@ -181,7 +181,7 @@ class DepositController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Generate data untuk deposit
+        // Clear dari tanda titik
         $amount = (int)str_replace('.', '', $request->saldo_recived);
 
         if ((int)$request->typepayment === 0) {
@@ -203,15 +203,21 @@ class DepositController extends Controller
                 'total_transfer' => $total_transfer,
                 'status' => 'pending',
             ]);
-
             // Kirim notifikasi WhatsApp
-            $amountFormatted = nominal($amount);
-            $target = "{$user->number}|{$user->name}|{$deposit->topup_id}|{$method->name}|$amountFormatted|PENDING";
+            $target = $user->number;
+            $sendWa = sendWhatsAppMessage(
+                $target,
+                'create_deposit_wa',
+                $user->name,
+                $deposit->topup_id,
+                $method->name,
+                nominal($total_transfer),
+                'PENDING'
+            );
 
-            $sendWa = WhatsApp::sendMessage($target, formatNotif('create_deposit_wa')->value);
             if (!$sendWa['success']) {
                 DB::rollback();
-                return redirect()->back()->with('error', __($sendWa['message']));
+                return redirect()->back()->with('error', $sendWa['message']);
             }
 
             // Proses pembayaran jika typepayment adalah Midtrans
@@ -297,27 +303,35 @@ class DepositController extends Controller
 
     public function depositCancel($topup_id)
     {
-        $deposit = Deposit::with('depositmethod')->where('topup_id', $topup_id)->first();
-        $user = User::where('id', $deposit->member_id)->first();
-
-        $amount = nominal($deposit->amount);
-        $nameBank = $deposit->depositmethod->name;
-        $target = "$user->number|$user->name|$deposit->topup_id|$nameBank|$amount|CANCELED";
-        $sendWa = WhatsApp::sendMessage($target, formatNotif('done_deposit_wa')->value);
-
-        if ($sendWa['success'] == false) {
-            return redirect()->back()->with('error', __($sendWa['message']));
-        }
+        // Cari deposit dan user terkait sekaligus
+        $deposit = Deposit::with(['depositmethod', 'user'])->where('topup_id', $topup_id)->first();
 
         if (!$deposit) {
             return redirect()->back()->with('error', 'Deposit not found.', 404);
         }
 
         try {
+            // Kirim notifikasi WhatsApp
+            $sendWa = sendWhatsAppMessage(
+                $deposit->user->number,
+                'done_deposit_wa',
+                $deposit->user->name,
+                $deposit->topup_id,
+                $deposit->depositmethod->name,
+                nominal($deposit->amount),
+                'CANCELED'
+            );
+
+            if (!$sendWa['success']) {
+                return redirect()->back()->with('error', __($sendWa['message']));
+            }
+
+            // Update status deposit
             $deposit->update(['status' => 'cancel']);
 
             return redirect()->route('deposit.new')->with('success', 'Deposit has been declined');
         } catch (\Exception $e) {
+            Log::error('Error cancelling deposit: ' . $e->getMessage());
             return redirect()->back()->with('error', 'An error occurred while cancelling the deposit: ' . $e->getMessage());
         }
     }
