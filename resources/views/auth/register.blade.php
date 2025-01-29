@@ -43,7 +43,7 @@
                     @enderror
                 </div>
                 <div class="col-12">
-                    <label for="number" class="form-label">{{ __('WhatsApp') }}</label>
+                    <label for="number" class="form-label">{{ __('No HP/WhatsApp') }}</label>
                     <input type="text" class="form-control @error('number') is-invalid @enderror" id="number"
                         name="number" value="{{ old('number') }}" required autofocus autocomplete="number">
                     @error('number')

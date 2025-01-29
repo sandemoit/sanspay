@@ -10,7 +10,8 @@
                         <form action="{{ route('admin.notification') }}" method="POST" class="row g-3">
                             @csrf
                             @method('PUT')
-                            <div class="row col-12 mt-3">
+                            <div class="col-12">
+
                                 <div class="row mt-3">
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <label class="form-label">{{ __('Create Deposit WhatsApp') }}</label>

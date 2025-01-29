@@ -20,11 +20,11 @@
             <form class="sb" method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="wb">
-                    <label class="rc kk wm vb" for="email">{{ __('Email') }}</label>
-                    <input type="text" id="email" name="email" value="{{ old('email') }}" required autofocus
-                        autocomplete="email" placeholder="example@gmail.com"
-                        class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 @error('email') is-invalid @enderror" />
-                    @error('email')
+                    <label class="rc kk wm vb" for="number">{{ __('No HP/WhatsApp') }}</label>
+                    <input type="text" id="number" name="number" value="{{ old('number') }}" required autofocus
+                        autocomplete="number" placeholder="081234567890"
+                        class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 @error('number') is-invalid @enderror" />
+                    @error('number')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>

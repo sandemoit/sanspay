@@ -27,8 +27,21 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'number' => ['required', 'string'],
             'password' => ['required', 'string'],
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'number.required' => 'Nomor HP wajib diisi.',
+            'password.required' => 'Password wajib diisi.',
         ];
     }
 
@@ -41,14 +54,19 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        $credentials = $this->only('email', 'password');
+        // Normalisasi nomor HP
+        $number = normalizePhoneNumber($this->number);
 
-        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
+        $credentials = [
+            'number' => $number,
+            'password' => $this->password
+        ];
+
+        if (!Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-                'g-recaptcha-response' => trans('auth.failed'),
+                'number' => trans('auth.failed'),
             ]);
         }
 
@@ -57,7 +75,7 @@ class LoginRequest extends FormRequest
         if ($user && $user->status === 'inactive') {
             Auth::logout();
             throw ValidationException::withMessages([
-                'email' => 'Akun Anda telah di nonaktifkan. Silahkan hubungi admin untuk informasi lebih lanjut.',
+                'number' => 'Akun Anda telah di nonaktifkan. Silahkan hubungi admin untuk informasi lebih lanjut.',
             ]);
         }
 
@@ -71,7 +89,7 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -80,7 +98,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
+            'number' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -92,6 +110,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
+        return Str::transliterate(Str::lower($this->string('number')) . '|' . $this->ip());
     }
 }

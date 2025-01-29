@@ -23,9 +23,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'number',
         'password',
         'role',
-        'number',
         'status',
         'saldo',
         'point',
@@ -56,6 +56,16 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Route notifications for the WhatsApp channel.
+     *
+     * @return string
+     */
+    public function routeNotificationForWhatsApp()
+    {
+        return $this->number;
     }
 
     public function user()
