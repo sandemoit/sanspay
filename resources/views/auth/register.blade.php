@@ -21,7 +21,8 @@
                 <div class="col-12">
                     <label for="fullname" class="form-label">{{ __('Full Name') }}</label>
                     <input type="name" class="form-control @error('fullname') is-invalid @enderror" id="fullname"
-                        name="fullname" value="{{ old('fullname') }}" required autofocus autocomplete="fullname">
+                        name="fullname" value="{{ old('fullname') }}" required autocomplete="fullname"
+                        placeholder="Masukan nama lengkap">
                     @error('fullname')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -29,57 +30,73 @@
                 <div class="col-12">
                     <label for="name" class="form-label">{{ __('Username') }}</label>
                     <input type="name" class="form-control @error('name') is-invalid @enderror" id="name"
-                        name="name" value="{{ old('name') }}" required autofocus autocomplete="name">
+                        name="name" value="{{ old('name') }}" required autocomplete="name"
+                        placeholder="Masukan nama toko">
                     @error('name')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-12">
-                    <label for="email" class="form-label">{{ __('Email') }}</label>
-                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
-                        name="email" value="{{ old('email') }}" required autofocus autocomplete="email">
-                    @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-12">
                     <label for="number" class="form-label">{{ __('No HP/WhatsApp') }}</label>
                     <input type="text" class="form-control @error('number') is-invalid @enderror" id="number"
-                        name="number" value="{{ old('number') }}" required autofocus autocomplete="number">
+                        name="number" value="{{ old('number') }}" required autocomplete="number"
+                        placeholder="Contoh: 08123456789">
                     @error('number')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-12">
-                    <label for="pin" class="form-label">{{ __('PIN Transaksi') }}</label>
-                    <input type="password" class="form-control @error('pin') is-invalid @enderror" id="pin"
-                        name="pin" value="{{ old('pin') }}" required autofocus autocomplete="pin"
-                        placeholder="Masukan 6 Angka Unik" maxlength="6">
-                    @error('pin')
+                    <label for="email" class="form-label">{{ __('Email') }}</label>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
+                        name="email" value="{{ old('email') }}" required autocomplete="email"
+                        placeholder="Masukan alamat email">
+                    @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                </div>
+                <div class="col-12">
+                    <label for="pin" class="form-label">{{ __('PIN Transaksi') }}</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control @error('pin') is-invalid @enderror" id="pin"
+                            name="pin" value="{{ old('pin') }}" required autocomplete="pin"
+                            placeholder="Masukan 6 Angka Unik" maxlength="6" pattern="[0-9]*" inputmode="numeric">
+                        <button class="btn btn-outline-secondary" type="button" id="see-pin">Lihat</button>
+                        @error('pin')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
                 <div class="col-12">
                     <label for="password" class="form-label">{{ __('Password') }}</label>
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                        name="password" required autofocus autocomplete="new-password">
-                    @error('password')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <div class="input-group">
+                        <input type="password" class="form-control @error('password') is-invalid @enderror"
+                            id="password" name="password" required autocomplete="new-password"
+                            placeholder="Minimal 8 karakter">
+                        <button class="btn btn-outline-secondary" type="button" id="see-password">Lihat</button>
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
                 <div class="col-12">
                     <label for="password_confirmation" class="form-label">{{ __('Confirm Password') }}</label>
-                    <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
-                        id="password_confirmation" name="password_confirmation" required autofocus
-                        autocomplete="new-password">
-                    @error('password_confirmation')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <div class="input-group">
+                        <input type="password"
+                            class="form-control @error('password_confirmation') is-invalid @enderror"
+                            id="password_confirmation" name="password_confirmation" required
+                            autocomplete="new-password" placeholder="Ulangi password">
+                        <button class="btn btn-outline-secondary" type="button"
+                            id="see-password-confirmation">Lihat</button>
+                        @error('password_confirmation')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
                 <div class="col-12">
                     <label for="kode_referral" class="form-label">{{ __('Kode Referral (Isi jika ada)') }}</label>
                     <input type="text" class="form-control @error('kode_referral') is-invalid @enderror"
-                        id="kode_referral" name="kode_referral" autofocus autocomplete="new-password">
+                        id="kode_referral" name="kode_referral" autocomplete="new-password"
+                        placeholder="Masukan kode referral (opsional)">
                     @error('kode_referral')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -109,4 +126,7 @@
             </form>
         </div>
     </section>
+    @push('custom-js')
+        <script src="{{ asset('web/pin-visibility.js') }}"></script>
+    @endpush
 </x-guest-layout>

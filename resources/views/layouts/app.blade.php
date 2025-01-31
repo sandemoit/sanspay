@@ -168,6 +168,8 @@
         </script>
 
         @stack('custom-js')
+        @stack('scripts')
+    </div>
 </body>
 
 </html>

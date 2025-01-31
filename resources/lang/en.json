@@ -169,6 +169,9 @@
     "Update PIN Transaction": "Update PIN Transaction",
     "Make sure your transactions use a hard-to-guess PIN to stay safe.": "Make sure your transactions use a hard-to-guess PIN to stay safe.",
     "available": "available",
-    "Create an Account": "Create an Account"
+    "Create an Account": "Create an Account",
+    "Full Name": "Full Name",
+    "Username": "Username",
+    "No HP/WhatsApp": "No HP/WhatsApp"
 
 }

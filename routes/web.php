@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DigiflazzController;
-use App\Http\Controllers\WebController;;
+use App\Http\Controllers\WebController;
+use App\Http\Middleware\HasBlocked;;
 
 use App\Http\Middleware\XSS;
 use Illuminate\Support\Facades\Artisan;
@@ -12,7 +13,7 @@ Route::get('/', [WebController::class, 'index']);
 Route::get('/harga-produk', [WebController::class, 'daftarHarga'])->name('harga-produk');
 Route::get('/instal-app', [WebController::class, 'instalApp'])->name('instal-app');
 
-Route::middleware(XSS::class)->group(function () {
+Route::middleware(XSS::class, HasBlocked::class)->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -159,5 +159,8 @@
     "Update PIN Transaction": "Perbarui PIN Transaksi",
     "Make sure your transactions use a hard-to-guess PIN to stay safe.": "Pastikan transaksi Anda menggunakan PIN yang sulit ditebak untuk menjaga keamanan Anda.",
     "available": "tersedia",
-    "Create an Account": "Daftar Akun"
+    "Create an Account": "Daftar Akun",
+    "Full Name": "Nama Lengkap",
+    "Username": "Nama Toko",
+    "No HP/WhatsApp": "No HP/WhatsApp"
 }

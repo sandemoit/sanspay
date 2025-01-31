@@ -70,15 +70,6 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        // Cek status user active/inactive
-        $user = Auth::user();
-        if ($user && $user->status === 'inactive') {
-            Auth::logout();
-            throw ValidationException::withMessages([
-                'number' => 'Akun Anda telah di nonaktifkan. Silahkan hubungi admin untuk informasi lebih lanjut.',
-            ]);
-        }
-
         RateLimiter::clear($this->throttleKey());
     }
 
