@@ -55,7 +55,7 @@
             </div>
 
             <!-- Bottom Navigation Bar -->
-            <div class="bottom-navbar d-lg-none">
+            <div class="bottom-navbar d-lg-none d-md-none">
                 <nav class="navbar">
                     <div class="container">
                         <ul class="navbar-nav">
@@ -74,8 +74,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {{ Request::is('deposit') ? 'active' : '' }}"
-                                    href="{{ route('deposit') }}">
+                                <a class="nav-link {{ Request::is('deposit/new') ? 'active' : '' }}"
+                                    href="{{ route('deposit.new') }}">
                                     <ion-icon name="wallet-outline"></ion-icon>
                                     <span>Deposit</span>
                                 </a>

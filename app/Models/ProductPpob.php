@@ -13,6 +13,11 @@ class ProductPpob extends Model
     protected $table = 'products_ppob';
     protected $guarded = [];
 
+    protected $indexes = [
+        'brand',
+        'name'
+    ];
+
     public function transactions()
     {
         return $this->hasMany(TrxPpob::class, 'code', 'code')

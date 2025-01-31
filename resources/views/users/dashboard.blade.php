@@ -69,8 +69,9 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
+
             @if (Auth::user()->saldo <= '5000')
-                <div class="alert alert-primary" role="alert">
+                <div class="alert alert-primary mt-3" role="alert">
                     Pelanggan yang terhormat, saldo Anda sudah <b>menipis</b>, segera
                     lakukan deposit ya? kami tunggu nih :)
                 </div>

@@ -5,4 +5,5 @@ return [
     Yajra\DataTables\DataTablesServiceProvider::class,
     Ladumor\LaravelPwa\PWAServiceProvider::class,
     Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+    App\Providers\EventServiceProvider::class,
 ];

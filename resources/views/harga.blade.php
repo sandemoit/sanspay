@@ -1,5 +1,5 @@
 @push('custom-css')
-    </script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
     <style>
         @media (max-width: 768px) {
             .product-name {
@@ -21,7 +21,7 @@
     </style>
 @endpush
 <x-guest-layout :title="$title">
-    <section class="gj ir hj sp jr i pg ">
+    <section class="gj hj sp jr i pg ">
         <!-- Section Title Start -->
         <div x-data="{ sectionTitle: `Daftar Harga` }">
             <div class=" bb ze rj ki xn vq">
@@ -35,34 +35,29 @@
             <!-- Dropdown Kategori -->
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="category" class="form-label">Pilih Kategori</label>
-                                <select wire:model="selectedCategory" class="form-select" id="category">
-                                    <option value="prepaid">Prabayar</option>
-                                    <option value="postpaid">Pascabayar</option>
-                                </select>
+                    <form method="GET" action="{{ route('harga-produk') }}">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="mb-3">
+                                    <label for="brand" class="form-label">Pilih Produk</label>
+                                    <select name="brand" class="form-select" id="brand"
+                                        onchange="this.form.submit()">
+                                        <option value="">-- Semua Produk --</option>
+                                        @foreach ($productsByBrand as $product)
+                                            <option value="{{ $product->brand }}"
+                                                {{ request('brand') == $product->brand ? 'selected' : '' }}>
+                                                {{ $product->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
-
-                        <!-- Dropdown Produk -->
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="product" class="form-label">Pilih Produk</label>
-                                <select wire:model="selectedBrand" class="form-select" id="product">
-                                    <option value="">-- Semua Produk --</option>
-                                    @foreach ($productsByBrand as $product)
-                                        <option value="{{ $product->brand }}">{{ $product->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
 
                     <!-- Tabel Produk -->
                     <div class="table-responsive mt-3">
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="productsTable">
                             <thead>
                                 <tr>
                                     <th>Nama Produk</th>
@@ -95,4 +90,38 @@
             </div>
         </div>
     </section>
+    @push('custom-scripts')
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#productsTable').DataTable({
+                    processing: true,
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/id.json'
+                    },
+                    pageLength: 25,
+                    ordering: true,
+                    responsive: true,
+                    // Optimasi render
+                    deferRender: true,
+                    scroller: true,
+                    columnDefs: [{
+                        targets: [1, 2],
+                        render: function(data, type, row) {
+                            if (type === 'sort') {
+                                return data.replace(/[^\d]/g, '');
+                            }
+                            return data;
+                        }
+                    }],
+                    // Optimasi loading
+                    initComplete: function() {
+                        $(this.api().table().container()).find('input').addClass('form-control');
+                    }
+                });
+            });
+        </script>
+    @endpush
 </x-guest-layout>
