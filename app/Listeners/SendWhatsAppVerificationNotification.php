@@ -3,11 +3,12 @@
 namespace App\Listeners;
 
 use App\Helpers\WhatsApp;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
 
-class SendWhatsAppVerificationNotification
+class SendWhatsAppVerificationNotification implements ShouldQueue
 {
     public function handle(Registered $event)
     {
