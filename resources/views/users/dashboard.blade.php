@@ -16,27 +16,6 @@
     @include('layouts.breadcrumbs')
     <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-2">
         <div class="col mb-3">
-            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    @foreach (announcement()->where('type', 'banner') as $key => $announcement)
-                        <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                            <a href="{{ route('announcement', $announcement->slug) }}">
-                                <img src="{{ asset($announcement->image) }}" class="d-block w-100" alt="...">
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
 
             <div class="card mt-3">
                 <div class="card-body">
@@ -67,6 +46,28 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach (announcement()->where('type', 'banner') as $key => $announcement)
+                        <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                            <a href="{{ route('announcement', $announcement->slug) }}">
+                                <img src="{{ asset($announcement->image) }}" class="d-block w-100" alt="...">
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
             @if (Auth::user()->saldo <= '5000')
                 <div class="alert alert-primary" role="alert">
