@@ -122,43 +122,54 @@ class DepositController extends Controller
     }
 
     public function calculateFee(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'nominalDeposit' => 'required|numeric',
-            'methodpayment' => 'required|exists:deposit_method,code',
-        ]);
+{
+    // Validasi input
+    $request->validate([
+        'nominalDeposit' => 'required|numeric',
+        'methodpayment' => 'required|exists:deposit_method,code',
+    ]);
 
-        $nominalDeposit = request('nominalDeposit');
-        $methodPayment = DepositMethod::where('code', request('methodpayment'))->first();
+    // Simpan request dalam variabel untuk efisiensi
+    $nominalDeposit = $request->nominalDeposit;
+    $methodPaymentCode = $request->methodpayment;
 
-        // Hitung fee berdasarkan metode pembayaran
-        if ($methodPayment) {
-            $fee = $methodPayment->fee; // Ambil fee dari DepositMethod
-            $feeType = $methodPayment->xfee; // Tipe fee: 'mines' atau 'percent'
+    // Ambil metode pembayaran dengan hanya kolom yang diperlukan
+    $methodPayment = Cache::remember("methodPayment_{$methodPaymentCode}", 60, function () use ($methodPaymentCode) {
+        return DepositMethod::select('fee', 'xfee')
+            ->where('code', $methodPaymentCode)
+            ->first();
+    });
 
-            // Hitung fee berdasarkan tipe fee
-            if ($feeType === '-') {
-                // Jika fee berupa jumlah tetap
-                $calculatedFee = $fee;
-            } elseif ($feeType === '%') {
-                // Jika fee berupa persentase
-                $calculatedFee = ($nominalDeposit * $fee) / 100;
-            }
-
-            // Total transfer dan saldo yang diterima
-            $totalTransfer = $nominalDeposit + $calculatedFee;
-            $saldoReceived = $totalTransfer - $calculatedFee;
-
-            return response()->json([
-                'fee' => $feeType === '%' ? $fee . '%' : nominal($fee),
-                'total_transfer' => nominal($totalTransfer),
-                'saldo_received' => nominal($saldoReceived),
-            ]);
-        }
-
+    // Jika metode pembayaran tidak ditemukan
+    if (!$methodPayment) {
         return response()->json(['error' => 'Method payment not found.'], 404);
     }
+
+    // Ambil fee dan tipe fee
+    $fee = $methodPayment->fee;
+    $feeType = $methodPayment->xfee;
+
+    // Hitung fee
+    $calculatedFee = 0;
+    if ($feeType === '-') {
+        $calculatedFee = $fee;
+    } elseif ($feeType === '%') {
+        $calculatedFee = ($nominalDeposit * $fee) / 100;
+    }
+
+    // Hitung total transfer dan saldo yang diterima
+    $totalTransfer = $nominalDeposit + $calculatedFee;
+    $saldoReceived = $totalTransfer - $calculatedFee;
+
+    // Optimasi response
+    return response()->json([
+        'fee' => $feeType === '%' ? $fee . '%' : nominal($fee),
+        'total_transfer' => nominal($totalTransfer),
+        'saldo_received' => nominal($saldoReceived),
+    ]);
+}
+
+
 
     public function store(Request $request)
     {
