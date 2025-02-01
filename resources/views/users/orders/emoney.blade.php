@@ -32,7 +32,7 @@
         </style>
     @endpush
 
-    @include('layouts.breadcrumbs')
+
     <div class="row">
         <div class="col-xl-8 mx-auto">
 

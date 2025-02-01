@@ -32,7 +32,7 @@
         </style>
     @endpush
 
-    @include('layouts.breadcrumbs')
+
     <div class="row">
         <div class="col-lg-7 col-md-12 col-sm-12">
 

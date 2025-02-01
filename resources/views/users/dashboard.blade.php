@@ -13,11 +13,11 @@
     </style>
 @endpush
 <x-app-layout>
-    @include('layouts.breadcrumbs')
+
     <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-2">
         <div class="col mb-3">
 
-            <div class="card mt-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
